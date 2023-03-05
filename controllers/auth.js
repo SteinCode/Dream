@@ -8,6 +8,45 @@ const db = mysql.createConnection({
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE,
 });
+
+exports.login = (req, res) => {
+  console.log(req.body);
+  const name = req.body.name;
+  const password = req.body.password;
+
+  db.query(
+    "SELECT * FROM users WHERE name = ?",
+    [name],
+    async (error, results) => {
+      if (error) {
+        console.log(error);
+      }
+
+      let isAuthenticated = false;
+      let authenticatedUser = null;
+
+      for (const user of results) {
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (isMatch) {
+          isAuthenticated = true;
+          authenticatedUser = user;
+          break;
+        }
+      }
+
+      if (isAuthenticated) {
+        //req.session.user = authenticatedUser;
+        return res.redirect("/");
+      } else {
+        return res.render("login", {
+          message: "incorrect credentials",
+        });
+      }
+    }
+  );
+};
+
 exports.register = (req, res) => {
   console.log(req.body);
   const name = req.body.name;
