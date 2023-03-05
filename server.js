@@ -26,7 +26,7 @@ app.use(
 app.use("/media", express.static(path.resolve(__dirname, "frontend", "media")));
 
 //Parse URL-encoded bodies (as sent by HTML forms)
-app.use(express.urlencoded({ extend: false }));
+app.use(express.urlencoded({ extend: true }));
 //Parse JSON bodies (as sent by API clients)
 app.use(express.json());
 // prijungiam duomenu baze

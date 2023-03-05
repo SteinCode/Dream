@@ -8,7 +8,6 @@ const db = mysql.createConnection({
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE,
 });
-
 exports.register = (req, res) => {
   console.log(req.body);
   const name = req.body.name;
@@ -16,6 +15,14 @@ exports.register = (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const passwordConfirm = req.body.passwordConfirm;
+  const role = req.body.role; // Retrieve the value of the role field
+
+  if (!role) {
+    // Check if the role variable is empty
+    return res.render("register", {
+      message: "Please select a role",
+    });
+  }
 
   db.query(
     "SELECT email FROM users WHERE email = ?",
@@ -27,8 +34,7 @@ exports.register = (req, res) => {
 
       if (results.length > 0) {
         return res.render("register", {
-          message:
-            "The email is already in use                                                                                                                                                                                                                                                                                                                                                                ",
+          message: "The email is already in use",
         });
       } else if (password !== passwordConfirm) {
         return res.render("register", {
@@ -45,6 +51,7 @@ exports.register = (req, res) => {
           surname: surname,
           email: email,
           password: hashedPassword,
+          role: role, // Use the value of the role field in the INSERT query
         },
         (error, results) => {
           if (error) {
