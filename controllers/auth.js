@@ -11,12 +11,13 @@ const db = mysql.createConnection({
 
 exports.login = (req, res) => {
   console.log(req.body);
-  const name = req.body.name;
+  const email = req.body.email;
   const password = req.body.password;
-
+  console.log(email);
+  console.log(password);
   db.query(
-    "SELECT * FROM users WHERE name = ?",
-    [name],
+    "SELECT * FROM users WHERE email = ?",
+    [email],
     async (error, results) => {
       if (error) {
         console.log(error);
@@ -46,7 +47,6 @@ exports.login = (req, res) => {
     }
   );
 };
-
 exports.register = (req, res) => {
   console.log(req.body);
   const name = req.body.name;
@@ -80,6 +80,7 @@ exports.register = (req, res) => {
           message: "Passwords do not match",
         });
       }
+
       let hashedPassword = await bcrypt.hash(password, 8);
       console.log(hashedPassword);
 
@@ -97,8 +98,8 @@ exports.register = (req, res) => {
             console.log(error);
           } else {
             console.log(results);
-            return res.render("register", {
-              message: "User registered",
+            return res.render("login", {
+              message: "User registered. Please login.",
             });
           }
         }
