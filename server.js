@@ -2,7 +2,8 @@ const express = require("express");
 const path = require("path");
 const mysql = require("mysql");
 const dotenv = require("dotenv");
-
+const cookieParser = require("cookie-parser");
+const authController = require("./controllers/auth");
 dotenv.config({ path: "./.env" });
 
 const app = express();
@@ -18,6 +19,8 @@ const db = mysql.createConnection({
 
 app.set("view engine", "hbs");
 
+app.set("views", __dirname + "/views");
+
 // pasiemam stilius ir views
 app.use(
   "/static",
@@ -27,8 +30,13 @@ app.use("/media", express.static(path.resolve(__dirname, "frontend", "media")));
 
 //Parse URL-encoded bodies (as sent by HTML forms)
 app.use(express.urlencoded({ extend: true }));
+
 //Parse JSON bodies (as sent by API clients)
 app.use(express.json());
+
+//naudojam cookie
+app.use(cookieParser());
+
 // prijungiam duomenu baze
 db.connect((error) => {
   if (error) {
@@ -37,6 +45,10 @@ db.connect((error) => {
     console.log("MYSQL Connected...");
   }
 });
+
+app.get("/", authController.home);
+app.get("/logout", authController.logout);
+app.get("/login", authController.renderLogin);
 
 //Define routes
 app.use("/", require("./routes/pages"));

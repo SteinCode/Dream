@@ -1,6 +1,7 @@
 const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+require("dotenv").config();
 
 const db = mysql.createConnection({
   host: process.env.HOST,
@@ -9,12 +10,19 @@ const db = mysql.createConnection({
   database: process.env.DATABASE,
 });
 
+exports.renderLogin = (req, res) => {
+  console.log("issikviecia-----------------------------------------");
+  const token = req.cookies.token; // Read cookie
+  if (token) {
+    console.log("user already logged in");
+    return res.render("index");
+  }
+  res.render("login");
+};
+
 exports.login = (req, res) => {
-  console.log(req.body);
   const email = req.body.email;
   const password = req.body.password;
-  console.log(email);
-  console.log(password);
   db.query(
     "SELECT * FROM users WHERE email = ?",
     [email],
@@ -37,7 +45,12 @@ exports.login = (req, res) => {
       }
 
       if (isAuthenticated) {
-        //req.session.user = authenticatedUser;
+        const token = jwt.sign(
+          { userId: authenticatedUser.id },
+          process.env.JWT_SECRET,
+          { expiresIn: "1h" }
+        );
+        res.cookie("token", token, { httpOnly: true, maxAge: 3600000 }); // Set cookie with token
         return res.redirect("/");
       } else {
         return res.render("login", {
@@ -47,6 +60,33 @@ exports.login = (req, res) => {
     }
   );
 };
+
+exports.home = (req, res) => {
+  const token = req.cookies.token; // Read cookie
+  if (!token) {
+    return res.redirect("/login");
+  }
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decodedToken.userId;
+
+    db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
+      if (error) {
+        console.log(error);
+      }
+      const user = results[0];
+      res.render("index", { user });
+    });
+  } catch (err) {
+    console.log(err);
+    return res.redirect("/login");
+  }
+};
+exports.logout = (req, res) => {
+  res.clearCookie("token");
+  res.redirect("/login");
+};
+
 exports.register = (req, res) => {
   console.log(req.body);
   const name = req.body.name;
