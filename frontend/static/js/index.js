@@ -39,7 +39,11 @@ const router = async () => {
   // console.log(match.route.view());
 };
 
-window.addEventListener("popstate", router); //KOL KAS, NES NODE.JS SITAS NEPATINKA
+window.addEventListener("popstate", router);
+
+window.addEventListener("load", () => {
+  router();
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   document.body.addEventListener("click", (event) => {
@@ -54,5 +58,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
   router();
 });
-
-
