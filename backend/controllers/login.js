@@ -7,9 +7,12 @@ exports.loginRender = (req, res) => {
   const token = req.cookies.token; // Read cookie
   if (token) {
     console.log("user already logged in");
-    res.redirect("/");
+    return res.redirect("/");
   }
-  res.render("login");
+  res.render("login", {
+    successMessage: req.flash("successMessage"),
+    errorMessage: req.flash("errorMessage"),
+  });
 };
 
 //POST
@@ -44,12 +47,10 @@ exports.loginValidate = (req, res) => {
           { expiresIn: "1h" }
         );
         res.cookie("token", token, { httpOnly: true, maxAge: 3600000 }); // Set cookie with token
-        res.render("home", { user: authenticatedUser });
         return res.redirect("/");
       } else {
-        return res.render("login", {
-          message: "incorrect credentials",
-        });
+        req.flash("errorMessage", "Incorrect credentials.");
+        return res.redirect("/login");
       }
     }
   );

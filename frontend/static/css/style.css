@@ -31,6 +31,22 @@ body {
   overflow: hidden;
 }
 
+.alert {
+  padding: 25px 10px;
+  display: block;
+  text-align: center;
+}
+
+.success-alert {
+  background: rgba(144, 238, 144, 0.3) !important;
+  border-radius: 10px !important;
+}
+
+.error-alert {
+  background: rgba(240, 128, 128, 0.3) !important;
+  border-radius: 20px !important;
+}
+
 /* HEADER */
 
 header {
@@ -136,10 +152,20 @@ header .flex-user .avatar-img-container img {
   bottom: 0px;
 }
 .sidebar-nav .nav-item {
+  position: relative;
   display: flex;
   gap: 1.6rem;
   padding: 2rem;
   width: 100%;
+}
+
+.sidebar-nav .nav-item .active-indicator {
+  background: #e8c766;
+  position: absolute;
+  height: 100%;
+  width: 5px;
+  left: 0;
+  top: 0;
 }
 
 .sidebar-nav .nav-item .icon {
@@ -187,12 +213,29 @@ header .flex-user .avatar-img-container img {
 .profile-view .row {
   justify-content: center;
 }
+
 .user-name {
   font-size: large;
 }
+
 .user-role {
   font-size: medium;
   color: rgba(0, 0, 0, 0.5);
+}
+
+.password-switch-container {
+  margin: 20px 0 5px;
+}
+
+.password-switch-container input {
+  height: 2em;
+  width: 4em !important;
+}
+
+.password-switch-container .form-check-label {
+  position: relative;
+  left: 10px;
+  top: 5px;
 }
 
 .labels {

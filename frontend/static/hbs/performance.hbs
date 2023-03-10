@@ -37,12 +37,6 @@
         <div class="user-name">{{user.name}} {{user.surname}}</div>
         <div class="user-role">{{user.role}}</div>
       </a>
-      <div class="avatar-img-container">
-        <img
-          src="/static/media/green-velvet.jpg"
-          alt="Logged user profile picture"
-        />
-      </div>
     </div>
   </header>
   <body>
@@ -58,6 +52,7 @@
             <div class="text">Profile</div>
           </a>
           <a class="nav-item performance" href="/performance">
+            <div class="active-indicator"></div>
             <img class="icon" src="/static/media/performance.svg" />
             <div class="text">Performance</div>
           </a>

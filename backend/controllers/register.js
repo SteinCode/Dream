@@ -12,62 +12,79 @@ exports.registerUser = (req, res) => {
   const passwordConfirm = req.body.passwordConfirm;
   const role = req.body.role; // Retrieve the value of the role field
 
-  if (!role) {
+  if (
+    !name ||
+    !surname ||
+    !email ||
+    !phoneNumber ||
+    !password ||
+    !passwordConfirm
+  ) {
+    req.flash("errorMessage", "Please fill all the fields!");
+    return res.redirect("/register");
+  } else if (!role) {
     // Check if the role variable is empty
-    return res.render("register", {
-      message: "Please select a role",
-    });
-  }
-
-  db.query(
-    "SELECT email FROM users WHERE email = ?",
-    [email],
-    async (error, results) => {
-      if (error) {
-        console.log(error);
-      }
-
-      if (results.length > 0) {
-        return res.render("register", {
-          message: "The email is already in use",
-        });
-      } else if (password !== passwordConfirm) {
-        return res.render("register", {
-          message: "Passwords do not match",
-        });
-      }
-
-      let hashedPassword = await bcrypt.hash(password, 8);
-      console.log(hashedPassword);
-
-      db.query(
-        "INSERT INTO users SET ?",
-        {
-          name: name,
-          surname: surname,
-          email: email,
-          phoneNumber: phoneNumber,
-          password: hashedPassword,
-          role: role, // Use the value of the role field in the INSERT query
-        },
-        (error, results) => {
-          if (error) {
-            console.log(error);
-          } else {
-            console.log(results);
-            // req.session.message = "User registered. Please login.";
-            // res.app.locals.loginController.loginRenderAfterRegistration(
-            //   req,
-            //   res
-            // );
-            res.redirect("/login");
-          }
+    req.flash("errorMessage", "Please select a role!");
+    return res.redirect("/register");
+  } else {
+    db.query(
+      "SELECT email FROM users WHERE email = ?",
+      [email],
+      async (error, results) => {
+        if (error) {
+          req.flash(
+            "errorMessage",
+            "There was unknown error, sorry and try again later!"
+          );
+          return res.redirect("/register");
         }
-      );
-    }
-  );
+
+        if (results.length > 0) {
+          req.flash("errorMessage", "The email is already in use!");
+          return res.redirect("/register");
+        } else if (password !== passwordConfirm) {
+          req.flash("errorMessage", "Passwords do not match!");
+          return res.redirect("/register");
+        }
+
+        let hashedPassword = await bcrypt.hash(password, 8);
+
+        db.query(
+          "INSERT INTO users SET ?",
+          {
+            name: name,
+            surname: surname,
+            email: email,
+            phoneNumber: phoneNumber,
+            password: hashedPassword,
+            role: role, // Use the value of the role field in the INSERT query
+          },
+          (error, results) => {
+            if (error) {
+              req.flash(
+                "errorMessage",
+                "There was some unknow error, we are sorry, please try again later"
+              );
+              console.log(error);
+              return res.redirect("/register");
+            } else {
+              console.log(results);
+              req.flash(
+                "successMessage",
+                "The account was successfully created, now you can login."
+              );
+              return res.redirect("/login");
+            }
+          }
+        );
+      }
+    );
+  }
 };
 
 exports.registerRender = (req, res) => {
-  res.render("register");
+  res.render("register", {
+    successMessage: req.flash("successMessage"),
+    errorMessage: req.flash("errorMessage"),
+  });
 };
