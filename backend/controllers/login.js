@@ -44,6 +44,7 @@ exports.loginValidate = (req, res) => {
           { expiresIn: "1h" }
         );
         res.cookie("token", token, { httpOnly: true, maxAge: 3600000 }); // Set cookie with token
+        res.render("home", { user: authenticatedUser });
         return res.redirect("/");
       } else {
         return res.render("login", {
