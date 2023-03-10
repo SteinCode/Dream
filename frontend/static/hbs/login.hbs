@@ -61,8 +61,11 @@
               <span>Have an invitation code? </span>
               <a href="/register" class="link-primary">Register</a>
             </div>
-            {{#if message}}
-              <h4 class="alert mt-4">{{message}}</h4>
+            {{#if successMessage}}
+              <h4 class="alert mt-4 success-alert">{{successMessage}}</h4>
+            {{/if}}
+            {{#if errorMessage}}
+              <h4 class="alert mt-4 error-alert">{{errorMessage}}</h4>
             {{/if}}
 
           </form>
