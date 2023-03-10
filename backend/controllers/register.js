@@ -7,6 +7,7 @@ exports.registerUser = (req, res) => {
   const name = req.body.name;
   const surname = req.body.surname;
   const email = req.body.email;
+  const phoneNumber = req.body.phoneNumber;
   const password = req.body.password;
   const passwordConfirm = req.body.passwordConfirm;
   const role = req.body.role; // Retrieve the value of the role field
@@ -45,6 +46,7 @@ exports.registerUser = (req, res) => {
           name: name,
           surname: surname,
           email: email,
+          phoneNumber: phoneNumber,
           password: hashedPassword,
           role: role, // Use the value of the role field in the INSERT query
         },
