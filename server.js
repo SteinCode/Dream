@@ -67,6 +67,7 @@ app.use("/login", require(path.join(routesDir, "login")));
 app.use("/register", require(path.join(routesDir, "register")));
 app.use("/", require(path.join(routesDir, "dashboard")));
 app.use("/profile", require(path.join(routesDir, "profile")));
+app.use("/project", require(path.join(routesDir, "project")));
 
 app.use("/media", express.static(path.join(staticDir, "media")));
 app.use("/static", express.static(staticDir));
