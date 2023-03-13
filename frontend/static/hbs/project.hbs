@@ -43,6 +43,15 @@
     <div class="body-flex">
       <div class="sidebar">
         <div class="sidebar-nav nav-top">
+          <a class="nav-item projects" href="/project">
+            <div class="active-indicator"></div>
+            <img class="icon" src="/static/media/project.svg" />
+            <div class="text">Projects</div>
+            <div class="current-project-text">
+              <p>Current project:</p>
+              <p>Sukurti dreamworką</p>
+            </div>
+          </a>
           <a class="nav-item tasks" href="/tasks">
             <img class="icon" src="/static/media/tasks.svg" />
             <div class="text">Tasks</div>
@@ -52,7 +61,6 @@
             <div class="text">Profile</div>
           </a>
           <a class="nav-item performance" href="/performance">
-            <div class="active-indicator"></div>
             <img class="icon" src="/static/media/performance.svg" />
             <div class="text">Performance</div>
           </a>
@@ -70,84 +78,56 @@
         </div>
       </div>
       <div class="view-content">
-        <div class="container rounded mt-5 mb-5">
-          <div class="row">
-            <div class="col-md-6 border-right">
-              <div class="p-3 py-5">
-                <div
-                  class="d-flex justify-content-between align-items-center mb-3"
-                >
-                <div></div>
-                  <form>
-                    <label for="project-name" class="labels" >Project name:</label>
-                    <input type="text" id="project-name" class="form-control" name="project-name"><br>
-
-                    <label for="add-user" class="labels" >Add user:</label>
-                    <select name="add-user" class="form-control" >
-                      {{#each users}}
-                          <option value="{{this.id}}">{{this.name}}</option>
-                      {{/each}}
-                    </select>
-                    <br>
-                    <button type="button" class="btn btn-md btn-success" id="add-button">Add</button><br>
-                    <br>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th class="labels">User name</th>
-                          <th class="labels">Role</th>
-                        </tr>
-                      </thead>
-                      <tbody id="user-table">
-                      </tbody>
-                    </table>
-                    <br>
-                    <button type="button" class="btn btn-lg btn-primary" id="create-button">Create project</button>
-                  </form>
-
-                  <script>
-                    const addButton = document.getElementById("add-button");
-                    const createButton = document.getElementById("create-button");
-                    const table = document.getElementById("user-table");
-
-                    addButton.addEventListener("click", () => {
-                      const select = document.querySelector('select[name="add-user"]');
-                      const selectedOption = select.options[select.selectedIndex];
-                      const user = selectedOption.textContent;
-                      const role = selectedOption.getAttribute("data-role");
-                      const row = table.insertRow(-1);
-                      const userNameCell = row.insertCell(0);
-                      const roleCell = row.insertCell(1);
-                      userNameCell.innerHTML = user;
-                      roleCell.innerHTML = role;
-                    });
-
-                    createButton.addEventListener("click", () => {
-                      const projectName = document.getElementById("project-name").value;
-                      const users = [];
-                      const rows = table.rows;
-                      for (let i = 0; i < rows.length; i++) {
-                        const userName = rows[i].cells[0].textContent;
-                        const role = rows[i].cells[1].textContent;
-                        users.push({ name: userName, role: role });
-                      }
-                      fetch("/create-project", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ projectName, users }),
-                      })
-                        .then((response) => response.json())
-                        .then((data) => console.log(data))
-                        .catch((error) => console.log(error));
-                    });
-                  </script>
-                </div>
-              </div>
+        <div class="container mt-1 project-container">
+          <div class="col projects-col">
+            <h2 class="projects-header">Projects</h2>
+            <div class="list-group project-list">
+              <a
+                href="#"
+                class="list-group-item list-group-item-action active"
+                aria-current="true"
+              >
+                Sukurti dreamworką
+              </a>
+              <a href="#" class="list-group-item list-group-item-action">Project
+                2</a>
             </div>
+            <button class="create-new-project-btn">
+              <h5>Create</h5>
+              <img src="/static/media/plus.svg" />
+            </button>
+          </div>
+          <div class = "col project-info-col">
+            <h2 class="projects-header">Details</h2>
+            <div class = "project-detail-table">
+              <div class = "project-name-header">Project name</div>
+              <div class = "project-name">Sukurti dreamworką</div>
+              <div class = "project-description-header">Project description</div>
+              <div class = "project-description">Universiteto projektas - sukurti sisteam darbovietėms</div>
+              <div class = "project-deadline-header">Projekto užbaigimo data</div>
+              <div class = "project-deadline">2023-05-04</div>
+              <div class = "project-manager-header">Projekto užbaigimo data</div>
+              <div class = "project-manager">2023-05-04</div>
+            </div>
+  
+          </div>
+          <div class="col users-list-col">
+            <h2 class="projects-header">Attendants</h2>
+            <ul class="list-group attendant-list">
+              <li class="list-group-item">Ignas Dudėnas</li>
+              <li class="list-group-item">Andrius Bogda</li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="modal-window project-modal-window">
+      <div class="create-new-project-window">
+        <button class = "close-project-modal" ><img src="static/media/exit.svg"></img></a>
+      </div>
+    </div>
+    <script type="module" src="/static/js/project.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
