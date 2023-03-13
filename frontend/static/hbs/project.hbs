@@ -7,12 +7,12 @@
 
 <body>
   <h1>New Project</h1>
-  <form>
+  <form method="post">
     <label for="project-name">Project name:</label>
     <input type="text" id="project-name" name="project-name"><br>
 
     <label for="add-user">Add user:</label>
-    <select name="add-user">
+    <select name="add-user" id="add-user-select">
       {{#each users}}
       <option value="{{this.id}}" data-id="{{this.id}}" data-role="{{this.role}}">{{this.name}}</option>
       {{/each}}
@@ -37,7 +37,7 @@
     const addButton = document.getElementById("add-button");
     const createButton = document.getElementById("create-button");
     const table = document.getElementById("user-table");
-    const users = [];
+    let users = [];
 
     addButton.addEventListener("click", () => {
       const select = document.querySelector('select[name="add-user"]');
@@ -62,25 +62,25 @@
     });
 
     createButton.addEventListener("click", async () => {
-  const projectName = document.getElementById("project-name").value;
-  const users = [];
-  const rows = table.rows;
-  for (let i = 0; i < rows.length; i++) {
-    const userName = rows[i].cells[0].textContent;
-    const role = rows[i].cells[1].textContent;
-    const userIdInput = rows[i].cells[1].querySelector('input[name="user-id"]');
-    const id = userIdInput ? userIdInput.getAttribute("data-id") : null;
-    users.push({ id: id, name: userName, role: role });
-  }
-  fetch("/project/create-project", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ projectName, users }),
-  })
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
-});
+      const projectName = document.getElementById("project-name").value;
+      const users = [];
+      const rows = table.rows;
+      for (let i = 0; i < rows.length; i++) {
+        const userName = rows[i].cells[0].textContent;
+        const role = rows[i].cells[1].textContent;
+        const userIdInput = rows[i].cells[1].querySelector('input[name="user-id"]').value;
+        users.push({ id: userIdInput, name: userName, role: role });
+      }
+      fetch("/project/create-project", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ projectName, users }),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.log(error));
+    });
   </script>
 </body>
+
 </html>
