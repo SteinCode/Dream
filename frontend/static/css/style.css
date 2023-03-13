@@ -3,6 +3,10 @@
   box-sizing: border-box;
 }
 
+.container {
+  max-width: 1600px !important;
+}
+
 html {
   font-size: 62.5%; /* 10px */
   color: black;
@@ -157,6 +161,7 @@ header .flex-user .avatar-img-container img {
   gap: 1.6rem;
   padding: 2rem;
   width: 100%;
+  flex-wrap: wrap;
 }
 
 .sidebar-nav .nav-item .active-indicator {
@@ -193,6 +198,25 @@ header .flex-user .avatar-img-container img {
   justify-self: end;
 }
 
+.sidebar-nav .current-project-text {
+  flex-basis: 100%;
+}
+
+.sidebar-nav .current-project-text p:first-child {
+  font-size: 12px;
+  padding: 0px;
+  margin: 0px;
+  color: rgba(0, 0, 0, 0.69);
+}
+
+.sidebar-nav .current-project-text p:nth-child(2) {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 0px;
+  margin: 0px;
+  color: black;
+}
+
 /*------------------ View content */
 
 .body-flex {
@@ -207,6 +231,131 @@ header .flex-user .avatar-img-container img {
   justify-content: center;
   padding: 2rem;
   overflow-y: scroll;
+}
+
+/* -----------------Project-content */
+.projects-col {
+  position: relative;
+  flex-basis: 12%;
+}
+
+.project-info-col {
+  flex-basis: 44%;
+}
+
+.users-list-col {
+  flex-basis: 44%;
+}
+
+.projects-header {
+  padding: 7px 7px 10px 7px;
+  border-bottom: black solid 2px;
+  margin-bottom: 0px;
+  font-family: "Suez One", serif;
+}
+
+.project-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.current-project-header-row {
+  flex-basis: 100%;
+}
+
+.project-container .col {
+  border: solid 1px rgba(0, 0, 0, 0.179);
+  height: 100%;
+}
+
+.create-new-project-btn {
+  bottom: 0;
+  position: absolute;
+}
+
+.project-list a {
+  font-size: 12px;
+  padding: 10px 7px;
+}
+
+.project-list a:hover {
+  background: rgba(0, 0, 0, 0.063);
+}
+
+.create-new-project-btn {
+  width: 100%;
+  display: flex;
+  padding: 5px 0px;
+  justify-content: center;
+  align-items: center;
+  border: 0px solid black;
+  gap: 5px;
+}
+.create-new-project-btn img {
+  width: 23px;
+}
+
+.create-new-project-btn h5 {
+  margin: 0px;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+.modal-window {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.2);
+  top: 0px;
+  left: 0px;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.create-new-project-window {
+  border-radius: 20px;
+  width: 80%;
+  height: 80%;
+  background: white;
+  position: relative;
+}
+
+.project-modal-window {
+  display: none;
+}
+
+.close-project-modal {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  border: 0px solid white;
+  padding: 0px;
+  margin: 0px;
+}
+
+.close-project-modal img {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 26px;
+}
+
+.list-group .active {
+  border: black 0px solid;
+  background: #e8c766;
+  border-radius: 0px;
+}
+
+.project-detail-table {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.project-detail-table div {
+  outline: rgba(0, 0, 0, 0.16);
+  flex-basis: 50%;
 }
 
 /*----------------- Profile content */

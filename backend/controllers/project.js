@@ -14,17 +14,17 @@ exports.project = (req, res) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.userId;
 
-    db.query("SELECT * FROM users", (error, results) => {
-        if (error) {
-          console.log(error);
-        }
-        const users = results;
-        res.render("project", {
-            users,
-          successMessage: req.flash("successMessage"),
-          errorMessage: req.flash("errorMessage"),
-        });
+    db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
+      if (error) {
+        console.log(error);
+      }
+      const user = results[0];
+      res.render("project", {
+        user,
+        successMessage: req.flash("successMessage"),
+        errorMessage: req.flash("errorMessage"),
       });
+    });
   } catch (err) {
     console.log(err);
     return res.redirect("/login");
@@ -32,23 +32,23 @@ exports.project = (req, res) => {
 };
 
 //POST
-exports.Addproject = (req, res) => {
-    const token = req.cookies.token; // Read cookie
-  if (!token) {
-    return res.redirect("/login");
-  }
-  try {
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const { projectName, users } = req.body;
-    const project = { name: projectName };
+// exports.Addproject = (req, res) => {
+//     const token = req.cookies.token; // Read cookie
+//   if (!token) {
+//     return res.redirect("/login");
+//   }
+//   try {
+//     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+//     const { projectName, users } = req.body;
+//     const project = { name: projectName };
 
-    db.query("INSERT INTO project SET ?", project,  (error, results) => {
-        if (error) {
-          console.log(error);
-        }
-      });
-  } catch (err) {
-    console.log(err);
-    return res.redirect("/login");
-  }
-};
+//     db.query("INSERT INTO project SET ?", project,  (error, results) => {
+//         if (error) {
+//           console.log(error);
+//         }
+//       });
+//   } catch (err) {
+//     console.log(err);
+//     return res.redirect("/login");
+//   }
+// };
