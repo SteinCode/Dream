@@ -14,7 +14,7 @@
     <label for="add-user">Add user:</label>
     <select name="add-user">
       {{#each users}}
-      <option value="{{this.id}}">{{this.name}}</option>
+      <option value="{{this.id}}" data-id="{{this.id}}" data-role="{{this.role}}">{{this.name}}</option>
       {{/each}}
     </select>
     <button type="button" id="add-button">Add</button><br>
@@ -53,7 +53,7 @@
       // Store user data in an array
       const userData = { id: userId, name: userName, role: role };
       users.push(userData);
-      // Add an input element with the name "user-id" to the second cell
+      // Add an input element with the name "user-id" and the user ID as the value to the second cell
       const userIdInput = document.createElement("input");
       userIdInput.type = "hidden";
       userIdInput.name = "user-id";
@@ -62,24 +62,25 @@
     });
 
     createButton.addEventListener("click", async () => {
-      const projectName = document.getElementById("project-name").value;
-      const users = [];
-      const rows = table.rows;
-      for (let i = 0; i < rows.length; i++) {
-        const userName = rows[i].cells[0].textContent;
-        const role = rows[i].cells[1].textContent;
-        const userId = rows[i].cells[1].querySelector('input[name="user-id"]').value;
-        users.push({ id: userId, name: userName, role: role });
-      }
-      fetch("/project/create-project", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ projectName, users }),
-      })
-        .then((response) => response.json())
-        .then((data) => console.log(data))
-        .catch((error) => console.log(error));
-    });
+  const projectName = document.getElementById("project-name").value;
+  const users = [];
+  const rows = table.rows;
+  for (let i = 0; i < rows.length; i++) {
+    const userName = rows[i].cells[0].textContent;
+    const role = rows[i].cells[1].textContent;
+    const userIdInput = rows[i].cells[1].querySelector('input[name="user-id"]');
+    const id = userIdInput ? userIdInput.getAttribute("data-id") : null;
+    users.push({ id: id, name: userName, role: role });
+  }
+  fetch("/project/create-project", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ projectName, users }),
+  })
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((error) => console.log(error));
+});
   </script>
 </body>
 

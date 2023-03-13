@@ -35,7 +35,7 @@ exports.project = (req, res) => {
 exports.Addproject = async (req, res) => {
   const token = req.cookies.token; // Read cookie
   if (!token) {
-    return res.redirect("/login");
+    return res.status(401).json({ error: "Unauthorized" });
   }
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
@@ -45,7 +45,7 @@ exports.Addproject = async (req, res) => {
     const projectId = await new Promise((resolve, reject) => {
       db.query(
         "INSERT INTO project (name) VALUES (?)",
-        project.name,
+        [project.name], // add square brackets to pass the name as an array
         (error, results) => {
           if (error) {
             reject(error);
