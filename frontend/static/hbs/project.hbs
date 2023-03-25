@@ -84,38 +84,48 @@
             <div class="list-group project-list">
               <a
                 href="#"
-                class="list-group-item list-group-item-action active"
+                class="list-group-items list-group-item-action active"
                 aria-current="true"
               >
                 Sukurti dreamworką
               </a>
-              <a href="#" class="list-group-item list-group-item-action">Project
+              <a href="#" class="list-group-items list-group-item-action">Project
                 2</a>
             </div>
+            <div class="create-center">
             <button class="create-new-project-btn">
               <h5>Create</h5>
               <img src="/static/media/plus.svg" />
             </button>
+            </div>
           </div>
           <div class = "col project-info-col">
             <h2 class="projects-header">Details</h2>
             <div class = "project-detail-table">
-              <div class = "project-name-header">Project name</div>
-              <div class = "project-name">Sukurti dreamworką</div>
-              <div class = "project-description-header">Project description</div>
-              <div class = "project-description">Universiteto projektas - sukurti sisteam darbovietėms</div>
-              <div class = "project-deadline-header">Projekto užbaigimo data</div>
-              <div class = "project-deadline">2023-05-04</div>
-              <div class = "project-manager-header">Projekto užbaigimo data</div>
-              <div class = "project-manager">2023-05-04</div>
+              <div class="project-detail-bigger-container">
+                <div class = "project-detail-header">Project name</div>
+                <div class = "project-name">Sukurti dreamworką</div> 
+              </div>
+              <div class="project-detail-bigger-container">
+                <div class = "project-detail-header">Project description</div>
+                <div class = "project-description">Projektų ir užduočių valdymo sistema yra įrankis, kuris padeda organizuoti ir sekti darbo eigą, svarbias datos, susijusias su projektų ir užduočių įvykdymu. Ji gali apimti skirtingus funkcionalumus, tokius kaip darbo planavimas, projektų, užduočių ir laiko valdymas, resursų skyrimas, bendravimas ir komunikacija, ataskaitų ir statistikų analizavimas.</div>
+              </div>
+              <div class="project-detail-smaller-container">
+                <div class = "project-detail-header">Projekto pabaigos data</div>
+                <div class = "project-deadline">2023-05-04</div>
+              </div>
+              <div class="project-detail-smaller-container">
+                <div class = "project-detail-header">Projekto vadovas</div>
+                <div class = "project-manager">Green Velvet</div> 
+              </div>
             </div>
   
           </div>
           <div class="col users-list-col">
             <h2 class="projects-header">Attendants</h2>
             <ul class="list-group attendant-list">
-              <li class="list-group-item">Ignas Dudėnas</li>
-              <li class="list-group-item">Andrius Bogda</li>
+              <li class="attendant-list-group-items">Ignas Dudėnas <button class="attendant-list-item-delete">X</button></li>
+              <li class="attendant-list-group-items">Andrius Bogda <button class="attendant-list-item-delete">X</button></li>
             </ul>
           </div>
         </div>
