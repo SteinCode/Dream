@@ -73,3 +73,48 @@ exports.logout = (req, res) => {
   res.clearCookie("token");
   res.redirect("/login");
 };
+
+function generateCode(length) {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let code = "";
+  for (let i = 0; i < length; i++) {
+    code += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return code;
+}
+
+function addCodeToDB(code, callback) {
+  const query = "INSERT INTO codes (code, expiration_time) VALUES (?, ?)";
+  const expires_at = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours from now
+  db.query(query, [code, expires_at], callback);
+}
+
+exports.invitationCode = async (req, res) => {
+  const code = generateCode(20);
+  addCodeToDB(code, (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Error generating code");
+    } else {
+      // Generate a JWT with the code as payload
+      const token = jwt.sign({ code }, process.env.JWT_SECRET);
+      res.json({ token, code });
+    }
+  });
+};
+
+function deleteExpiredCodes() {
+  const now = new Date();
+  const query = "DELETE FROM codes WHERE expiration_time < ?";
+  db.query(query, [now], (err, result) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log(`Deleted ${result.affectedRows} expired codes`);
+    }
+  });
+}
+
+// Run the function every hour
+setInterval(deleteExpiredCodes, 60 * 60 * 1000);
