@@ -1,7 +1,7 @@
 // Get the button and modal elements
 const btn = document.querySelector(".create-new-project-btn");
 const modal = document.querySelector(".project-modal-window");
-const closeBtn = document.querySelector(".close-project-modal");
+const closeBtn = document.querySelector(".close-modal");
 
 // Add a click event listener to the button
 btn.addEventListener("click", function () {

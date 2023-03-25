@@ -231,8 +231,52 @@ header .flex-user .avatar-img-container img {
   justify-content: center;
   padding: 2rem;
   overflow-y: scroll;
+  position: relative;
 }
 
+/* -----------------Home (Dashboard) */
+
+.invitation-bottom-bar {
+  width: 70%;
+  height: 70px;
+  position: absolute;
+  background: #eeeee7;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  bottom: 0px;
+  right: 50%;
+  transform: translate(50%, 0%);
+  display: flex;
+  padding: 10px;
+}
+
+.invitation-bottom-bar .text-col {
+  flex-basis: 90%;
+}
+
+.invitation-bottom-bar .code-generation-col {
+  flex-basis: 10%;
+}
+
+.code-generation-button {
+  border: 0px;
+  width: 100%;
+  height: 100%;
+  font-size: 13px;
+}
+
+.invitation-modal-window {
+  display: none;
+}
+
+.invitation-modal-body {
+  background: white;
+  border-radius: 20px;
+  position: relative;
+  max-width: 600px;
+  width: 100%;
+  height: 200px;
+  padding: 20px;
+}
 /* -----------------Project-content */
 .projects-col {
   position: relative;
@@ -309,7 +353,6 @@ header .flex-user .avatar-img-container img {
   top: 0px;
   left: 0px;
   z-index: 2;
-  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -326,7 +369,7 @@ header .flex-user .avatar-img-container img {
   display: none;
 }
 
-.close-project-modal {
+.close-modal {
   position: absolute;
   top: 0px;
   right: 0px;
@@ -335,7 +378,7 @@ header .flex-user .avatar-img-container img {
   margin: 0px;
 }
 
-.close-project-modal img {
+.close-modal img {
   position: absolute;
   top: 5px;
   right: 5px;

@@ -20,7 +20,6 @@ const backendDir = path.join(root, "backend");
 const frontendDir = path.join(root, "frontend");
 const staticDir = path.join(frontendDir, "static");
 const routesDir = path.join(backendDir, "routes");
-
 //Define routes
 app.use(
   session({
