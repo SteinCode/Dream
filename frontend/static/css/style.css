@@ -241,6 +241,7 @@ header .flex-user .avatar-img-container img {
 
 .project-info-col {
   flex-basis: 44%;
+  
 }
 
 .users-list-col {
@@ -249,14 +250,19 @@ header .flex-user .avatar-img-container img {
 
 .projects-header {
   padding: 7px 7px 10px 7px;
-  border-bottom: black solid 2px;
+  border-bottom: rgba(99, 99, 99, 0.5) solid 2px;
   margin-bottom: 0px;
-  font-family: "Suez One", serif;
 }
 
 .project-container {
   display: flex;
   flex-wrap: wrap;
+  background-color: var(--white);
+  padding: 1rem;
+  border-radius: 8px;
+  width: 100%;
+  min-height: 350px;
+  margin-bottom: 1rem;
 }
 
 .current-project-header-row {
@@ -264,7 +270,8 @@ header .flex-user .avatar-img-container img {
 }
 
 .project-container .col {
-  border: solid 1px rgba(0, 0, 0, 0.179);
+ box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+ padding: 1rem;
   height: 100%;
 }
 
@@ -275,7 +282,13 @@ header .flex-user .avatar-img-container img {
 
 .project-list a {
   font-size: 12px;
-  padding: 10px 7px;
+  padding: 10px;
+  margin-top: 10px;
+}
+.list-group-items {
+  border-radius: 20px;
+  border: 1px solid rgba(99, 99, 99, 0.1);
+  color: black
 }
 
 .project-list a:hover {
@@ -283,13 +296,18 @@ header .flex-user .avatar-img-container img {
 }
 
 .create-new-project-btn {
-  width: 100%;
+  width: 80%;
   display: flex;
   padding: 5px 0px;
+  margin-bottom: 2rem;
   justify-content: center;
   align-items: center;
   border: 0px solid black;
   gap: 5px;
+}
+.create-center{
+  display: flex;
+  justify-content: center;
 }
 .create-new-project-btn img {
   width: 23px;
@@ -344,18 +362,64 @@ header .flex-user .avatar-img-container img {
 
 .list-group .active {
   border: black 0px solid;
-  background: #e8c766;
-  border-radius: 0px;
+  background-color: var(--tag-3);
 }
 
 .project-detail-table {
   display: flex;
   flex-wrap: wrap;
+  font-size: 12px;
+}
+.project-detail-bigger-container{
+  width: 100%;
+  margin: 10px;
+}
+.project-detail-smaller-container{
+  width: 45%;
+  margin: 10px;
 }
 
 .project-detail-table div {
   outline: rgba(0, 0, 0, 0.16);
-  flex-basis: 50%;
+
+}
+.project-detail-header{
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+.attendant-list{
+  font-size: 12px;
+  color: black;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  list-style-type: none;
+}
+.attendant-list-group-items {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding: 5px;
+  border-top: 1px solid rgba(99, 99, 99, 0.1);
+  position: relative;
+}
+
+.attendant-list-item-delete {
+  margin-left: 10px;
+  padding: 2px 4px;
+  background-color: var(--tag-4);
+  color: var(--tag-4-text);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  position: absolute;
+  right: 15px;
+  height: 80%;
+  visibility: hidden;
+}
+.attendant-list li:hover > .attendant-list-item-delete{
+  background: rgba(153, 77, 77, 0.063);
+  visibility: visible;
 }
 
 /*----------------- Profile content */
