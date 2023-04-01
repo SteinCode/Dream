@@ -21,13 +21,6 @@ const frontendDir = path.join(root, "frontend");
 const staticDir = path.join(frontendDir, "static");
 const routesDir = path.join(backendDir, "routes");
 //Define routes
-app.use(
-  session({
-    secret: "secret",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
 app.use(flash());
 app.set("view engine", "hbs");
 app.set("views", path.join(staticDir, "hbs"));
@@ -67,6 +60,8 @@ app.use("/register", require(path.join(routesDir, "register")));
 app.use("/", require(path.join(routesDir, "dashboard")));
 app.use("/profile", require(path.join(routesDir, "profile")));
 app.use("/project", require(path.join(routesDir, "project")));
+app.use("/tasks", require(path.join(routesDir, "tasks")));
+app.use("/performance", require(path.join(routesDir, "performance")));
 
 app.use("/media", express.static(path.join(staticDir, "media")));
 app.use("/static", express.static(staticDir));
