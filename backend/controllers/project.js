@@ -1,26 +1,12 @@
-// POST
-exports.addProject = async (req, res) => {
-  try {
-    const decodedToken = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
-    const { projectName, users } = req.body;
-    const project = { name: projectName };
+const mysql = require("mysql");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const { db } = require("../../server.js");
+const flash = require("express-flash");
 
-    const projectId = await insertProject(project);
-
-    if (users && users.length > 0) {
-      await addUsersToProject(projectId, users);
-    }
-
-    return res.json({ projectId });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-// GET
+// GET method to display project page
 exports.project = (req, res) => {
-  const token = req.cookies.token;
+  const token = req.cookies.token; // Read cookie
   if (!token) {
     return res.redirect("/login");
   }
@@ -28,11 +14,11 @@ exports.project = (req, res) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.userId;
 
-    getUsers((error, users) => {
+    getUsers((error, results) => {
       if (error) {
         console.log(error);
-        return res.status(500).json({ error: "Internal server error" });
       }
+      const users = results;
       res.render("project", {
         users,
         successMessage: req.flash("successMessage"),
@@ -45,8 +31,38 @@ exports.project = (req, res) => {
   }
 };
 
-// Pagalbines
-async function insertProject(project) {
+// Helper function to get all users
+function getUsers(callback) {
+  db.query("SELECT * FROM users", callback);
+}
+
+// POST method to add a new project
+exports.addProject = async (req, res) => {
+  const token = req.cookies.token; // Read cookie
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const { projectName, users } = req.body;
+    const project = { name: projectName };
+
+    const projectId = await insertProject(project);
+
+    if (users && users.length > 0) {
+      const values = users.map((user) => [projectId, user.id]);
+      await insertProjectUsers(values);
+    }
+
+    return res.json({ projectId });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// Helper function to insert a new project
+function insertProject(project) {
   return new Promise((resolve, reject) => {
     db.query(
       "INSERT INTO project (name) VALUES (?)",
@@ -62,8 +78,8 @@ async function insertProject(project) {
   });
 }
 
-async function addUsersToProject(projectId, users) {
-  const values = users.map((user) => [projectId, user.id]);
+// Helper function to insert project users
+function insertProjectUsers(values) {
   return new Promise((resolve, reject) => {
     db.query(
       "INSERT INTO project_user (project_id, user_id) VALUES ?",
@@ -76,15 +92,5 @@ async function addUsersToProject(projectId, users) {
         }
       }
     );
-  });
-}
-
-function getUsers(callback) {
-  db.query("SELECT * FROM users", (error, results) => {
-    if (error) {
-      callback(error, null);
-    } else {
-      callback(null, results);
-    }
   });
 }
