@@ -14,15 +14,24 @@ exports.project = (req, res) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.userId;
 
-    getUsers((error, results) => {
+    getUsers((error, userResults) => {
       if (error) {
         console.log(error);
+        return res.redirect("/login");
       }
-      const users = results;
-      res.render("project", {
-        users,
-        successMessage: req.flash("successMessage"),
-        errorMessage: req.flash("errorMessage"),
+      getProjects((error, projectResults) => {
+        if (error) {
+          console.log(error);
+          return res.redirect("/login");
+        }
+        const users = userResults;
+        const projects = projectResults;
+        res.render("project", {
+          users,
+          projects,
+          successMessage: req.flash("successMessage"),
+          errorMessage: req.flash("errorMessage"),
+        });
       });
     });
   } catch (err) {
@@ -34,6 +43,11 @@ exports.project = (req, res) => {
 // Helper function to get all users
 function getUsers(callback) {
   db.query("SELECT * FROM users", callback);
+}
+
+// Helper function to get all projects
+function getProjects(callback) {
+  db.query("SELECT * FROM projects", callback);
 }
 
 // POST method to add a new project
