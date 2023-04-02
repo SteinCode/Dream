@@ -61,3 +61,15 @@ createButton.addEventListener("click", async () => {
     .then((data) => console.log(data))
     .catch((error) => console.log(error));
 });
+
+const projectList = document.querySelector('.project-list');
+const selectedProjectName = document.querySelector('.project-name');
+
+function selectProject(event) {
+  if (event.target.classList.contains('list-group-item')) {
+    const selectedProject = event.target.textContent.trim();
+    selectedProjectName.textContent = selectedProject;
+  }
+}
+
+projectList.addEventListener('click', selectProject);
