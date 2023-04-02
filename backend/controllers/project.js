@@ -47,7 +47,7 @@ function getUsers(callback) {
 
 // Helper function to get all projects
 function getProjects(callback) {
-  db.query("SELECT * FROM projects", callback);
+  db.query("SELECT * FROM project", callback);
 }
 
 // POST method to add a new project
