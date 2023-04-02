@@ -3,7 +3,7 @@ const controller = require("../controllers/project");
 
 const router = express.Router();
 // /profile/create-project
- router.post("/create-project", controller.Addproject);
+router.post("/create-project", controller.addProject);
 // /profile
 router.get("/", controller.project);
 

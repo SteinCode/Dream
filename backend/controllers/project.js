@@ -32,7 +32,7 @@ exports.project = (req, res) => {
 };
 
 // POST
-exports.Addproject = async (req, res) => {
+exports.addProject = async (req, res) => {
   const token = req.cookies.token; // Read cookie
   if (!token) {
     return res.status(401).json({ error: "Unauthorized" });
