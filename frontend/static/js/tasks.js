@@ -1,5 +1,33 @@
 /* Task page js*/
 
+// Create task window
+const createTaskBtn = document.querySelector(".project-participants__add");
+const modal = document.querySelector(".create-task-modal-window");
+const closeBtn = document.querySelector(".close-modal");
+
+createTaskBtn.addEventListener("click", async () => {
+  modal.style.display = "flex";
+});
+
+closeBtn.addEventListener("click", function () {
+  modal.style.display = "none";
+});
+
+const workerRows = document.querySelectorAll(".worker-table .worker-row");
+
+workerRows.forEach((row) => {
+  row.addEventListener("click", () => {
+    // Remove the selected class from all rows
+    workerRows.forEach((row) => {
+      row.classList.remove("selected");
+    });
+
+    // Add the selected class to the clicked row
+    row.classList.add("selected");
+  });
+});
+
+// Task dragging logic
 document.addEventListener("DOMContentLoaded", (event) => {
   var dragSrcEl = null;
 
