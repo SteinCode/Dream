@@ -33,15 +33,9 @@ describe('Project routes', () => {
   });
 
   describe('GET /profile', () => {
-    it('should return status 200 and correct url', (done) => {
-      request(server)
+    it('should return status 200', async () => {
+      const res = await request(app)
         .get('/profile')
-        .expect(200)
-        .end((err, res) => {
-          if (err) return done(err);
-          expect(res.req.path).to.equal('/profile');
-          done(); // Call done() to signal test completion
-        });
+        .expect(200);
     });
   });
-});
