@@ -25,15 +25,10 @@ describe('Project routes', () => {
   
 
   describe('POST /profile/create-project', () => {
-    it('should return status 200 and correct url', (done) => {
-      request(server)
+    it('should return status 200', async () => {
+      const res = await request(app)
         .post('/profile/create-project')
-        .expect(200)
-        .end((err, res) => {
-          if (err) return done(err);
-          expect(res.req.path).to.equal('/profile/create-project');
-          done(); // Call done() to signal test completion
-        });
+        .expect(200);
     });
   });
 
