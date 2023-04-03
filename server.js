@@ -34,7 +34,7 @@ app.set("view engine", "hbs");
 app.set("views", path.join(staticDir, "hbs"));
 
 //Parse URL-encoded bodies (as sent by HTML forms)
-app.use(express.urlencoded({ extend: true }));
+app.use(express.urlencoded({ extended: true }));
 
 //Parse JSON bodies (as sent by API clients)
 app.use(express.json());
@@ -59,9 +59,6 @@ db.connect((error) => {
     console.log("MYSQL Connected...");
   }
 });
-module.exports = {
-  db: db,
-};
 
 app.use("/login", require(path.join(routesDir, "login")));
 app.use("/register", require(path.join(routesDir, "register")));
@@ -76,3 +73,8 @@ app.use("/static", express.static(staticDir));
 app.listen(process.env.PORT || PORT, () =>
   console.log("Dreamwork has started, the server is running on 3000 port")
 );
+
+module.exports = {
+  db: db,
+  app: app,
+};
