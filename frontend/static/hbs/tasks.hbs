@@ -77,7 +77,121 @@
           </a>
         </div>
       </div>
-      <div class="view-content">
+      <div id="task-container">              
+      <div class="task-list">
+        <div class="row m-2 projects-header">
+                    <div class="col-md-6"><h2>TODO</h2></div>
+                    <div class="col-md-6 project-participants"><button class="project-participants__add">Add Task</button></div>
+      </div>
+        <div class="draggingContainer">
+          <div class="task-card" draggable="true">
+            <div class="task__tags">
+                    <span class="task__tag task__tag--easy">Easy</span>
+                    <button class="task__options">
+                      <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                  </div>
+                  <p>Finish task page</p>
+                  <div class="task__stats">
+                    <span>
+                      <img style="opacity:0.5" width="15px" src="/static/media/comments.svg" />
+                      3
+                    </span>
+                    <span>
+                      <img style="opacity:0.5" width="15px" src="/static/media/user.svg" />
+                      unassigned
+                    </span>
+                  </div>
+                </div>
+        </div>
+      </div>
+
+      <div class="task-list">
+        <div class="m-2 projects-header"><h2>In Progress</h2></div>
+        <div class="draggingContainer">
+          <div class="task-card" draggable="true">
+            <div class="task__tags"><span
+                      class="task__tag task__tag--medium"
+                    >Medium</span><button class="task__options"><i
+                        class="fas fa-ellipsis-h"
+                      ></i></button></div>
+                  <p>Replace lorem ipsum text in the final designs</p>
+                  <div class="task__stats">
+                    <span><img
+                        style="opacity:0.5"
+                        width="15px"
+                        src="/static/media/comments.svg"
+                      />
+                      0</span>
+                    <span><img
+                        style="opacity:0.5"
+                        width="15px"
+                        src="/static/media/user.svg"
+                      />
+                      Green velvet</span>
+                  </div>
+                </div>
+
+        </div>
+      </div>
+
+      <div class="task-list">
+        <div class="m-2 projects-header"><h2>Needs review</h2></div>
+        <div class="draggingContainer">
+          <div class="task-card" draggable="true">
+                  <div class="task__tags"><span
+                      class="task__tag task__tag--easy"
+                    >Easy</span><button class="task__options"><i
+                        class="fas fa-ellipsis-h"
+                      ></i></button></div>
+                  <p>Send Advert illustrations over to production company.</p>
+                  <div class="task__stats">
+                    <span><img
+                        style="opacity:0.5"
+                        width="15px"
+                        src="/static/media/comments.svg"
+                      />
+                      3</span>
+                    <span><img
+                        style="opacity:0.5"
+                        width="15px"
+                        src="/static/media/user.svg"
+                      />
+                      Green velvet</span>
+                  </div>
+                </div>
+        </div>
+      </div>
+
+      <div class="task-list">
+        <div class="m-2 projects-header"><h2>Done</h2></div>
+        <div class="draggingContainer">
+          <div class="task-card" draggable="true">
+                  <div class="task__tags"><span
+                      class="task__tag task__tag--hard"
+                    >Hard</span><button class="task__options"><i
+                        class="fas fa-ellipsis-h"
+                      ></i></button></div>
+                  <p>Check the company we copied doesn't think we copied them.</p>
+                  <div class="task__stats">
+                    <span><img
+                        style="opacity:0.5"
+                        width="15px"
+                        src="/static/media/comments.svg"
+                      />
+                      0</span>
+                    <span><img
+                        style="opacity:0.5"
+                        width="15px"
+                        src="/static/media/user.svg"
+                      />
+                      unassigned</span>
+                  </div>
+                </div>
+        </div>
+      </div>
+    </div>
+      {{!-- <div class="view-content">
 
         <div class="app">
           <main class="project">
@@ -214,8 +328,8 @@
           </main>
         </div>
 
-      </div>
-    </div>
+      </div> --}}
+    {{!-- </div> --}}
 
     <div class="modal-window create-task-modal-window">
       <div class="create-task-modal-body">

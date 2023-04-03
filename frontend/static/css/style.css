@@ -586,7 +586,7 @@ header .flex-user .avatar-img-container img {
 }
 .project-participants {
   display: flex;
-  align-items: center;
+  justify-content: right;
 }
 .project-participants span,
 .project-participants__add {
@@ -799,6 +799,37 @@ header .flex-user .avatar-img-container img {
 }
 .task-icon--edit {
   background-color: #7784ee;
+}
+#task-container {
+  width: 100%;
+  height: 100%;
+  float: left;
+  display: flex;
+  flex-direction: row;
+  padding: 40px;
+  box-sizing: border-box;
+  justify-content: space-between;
+}
+
+.task-list {
+  width: 23%;
+  border-radius: 3px;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.task-card {
+  background-color: #fff;
+  padding: 15px;
+  font-size: 12px;
+  border-radius: 3px;
+  margin-bottom: 15px;
+  border: none;
+  cursor: move;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+}
+.task-card.dragging {
+  opacity: 0.4;
 }
 
 @media only screen and (max-width: 1300px) {
