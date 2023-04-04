@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { db } = require("../../server.js");
+const db = require("../../database.js");
 
 exports.tasks = (req, res) => {
   const token = req.cookies.token; // Read cookie

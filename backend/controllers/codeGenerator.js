@@ -1,9 +1,6 @@
-const { db } = require("../../server.js");
+const db = require("../../database.js");
 
 function generateCode(length) {
-  if (isNaN(length)) {
-    throw new Error("Length must be a number");
-  }
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let code = "";
@@ -16,7 +13,13 @@ function generateCode(length) {
 function addCodeToDB(code, callback) {
   const query = "INSERT INTO codes (code, expiration_time) VALUES (?, ?)";
   const expires_at = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours from now
-  db.query(query, [code, expires_at], callback);
+  db.query(query, [code, expires_at], function (error, results, fields) {
+    if (error) {
+      callback(error);
+    } else {
+      callback(null, results);
+    }
+  });
 }
 
 module.exports = {

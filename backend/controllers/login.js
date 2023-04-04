@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { db } = require("../../server.js");
+const db = require("../../database.js");
 
 //GET
 exports.loginRender = (req, res) => {
@@ -30,6 +30,7 @@ exports.loginValidate = async (req, res) => {
     if (isAuthenticated) {
       const token = createToken(authenticatedUser.id);
       res.cookie("token", token, { httpOnly: true, maxAge: 3600000 });
+      req.session.user = authenticatedUser;
       return res.redirect("/");
     } else {
       req.flash("errorMessage", "Incorrect credentials.");
