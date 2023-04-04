@@ -15,6 +15,7 @@ closeBtn.addEventListener("click", function () {
 
 const workerRows = document.querySelectorAll(".worker-table .worker-row");
 
+const assignedUserIdInput = document.querySelector("#assignedUserIdInput");
 workerRows.forEach((row) => {
   row.addEventListener("click", () => {
     // Remove the selected class from all rows
@@ -24,9 +25,12 @@ workerRows.forEach((row) => {
 
     // Add the selected class to the clicked row
     row.classList.add("selected");
+
+    // Set the value of the hidden input field to the ID of the selected row
+    const userId = row.getAttribute("data-user-id");
+    assignedUserIdInput.value = userId;
   });
 });
-
 // Task dragging logic
 document.addEventListener("DOMContentLoaded", (event) => {
   var dragSrcEl = null;

@@ -220,7 +220,7 @@
     <div class="modal-window create-task-modal-window">
       <div class="create-task-modal-body">
         <button class="close-modal"><img src="static/media/exit.svg" /></button>
-        <form action="/create-task" method="POST">
+        <form action="/tasks/create-task" method="POST">
           <h1>Create a task</h1>
           <div class="flex-container">
             <div class="flex-col-left">
@@ -231,6 +231,7 @@
                   class="form-control"
                   id="taskName"
                   placeholder="Enter task name"
+                  name="taskName"
                 />
               </div>
               <div class="form-group">
@@ -240,11 +241,16 @@
                   id="taskDescription"
                   rows="3"
                   placeholder="Enter task description"
+                  name="taskDescription"
                 ></textarea>
               </div>
               <div class="form-group">
                 <label for="taskDifficulty">Task Difficulty</label>
-                <select class="form-control" id="taskDifficulty">
+                <select
+                  class="form-control"
+                  id="taskDifficulty"
+                  name="taskDifficulty"
+                >
                   <option value="easy">Easy</option>
                   <option value="medium">Medium</option>
                   <option value="hard">Hard</option>
@@ -252,7 +258,12 @@
               </div>
               <div class="form-group">
                 <label for="taskDeadline">Task Deadline</label>
-                <input type="date" class="form-control" id="taskDeadline" />
+                <input
+                  name="taskDeadline"
+                  type="date"
+                  class="form-control"
+                  id="taskDeadline"
+                />
               </div>
             </div>
             <div class="flex-col-right">
@@ -270,11 +281,16 @@
                   </thead>
                   <tbody>
                     {{#each developers}}
-                      <tr class="worker-row">
+                      <tr data-user-id="{{this.id}}" class="worker-row">
                         <td>{{this.name}} {{this.surname}}</td>
+                        <input
+                          type="hidden"
+                          value="{{this.id}}"
+                        />
                       </tr>
                     {{/each}}
                   </tbody>
+                  <input type="hidden" name="assignedUserId" id="assignedUserIdInput" />
                 </table>
 
               </div>

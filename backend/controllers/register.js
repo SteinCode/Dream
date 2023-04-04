@@ -12,7 +12,6 @@ exports.registerUser = (req, res) => {
   const passwordConfirm = req.body.passwordConfirm;
   const role = req.body.role; // Retrieve the value of the role field
   const code = req.body.code; // Retrieve the value of the code field
-
   if (
     !name ||
     !surname ||

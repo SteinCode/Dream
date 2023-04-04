@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const db = require("../../database.js");
 
+//GET
 exports.tasks = (req, res) => {
   const token = req.cookies.token; // Read cookie
   if (!token) {
@@ -74,3 +75,18 @@ function getDevelopers(callback) {
     return callback(null, developers);
   });
 }
+
+//POST
+exports.createTask = (req, res) => {
+  const taskName = req.body.taskName;
+  const taskDescription = req.body.taskDescription;
+  const taskDifficulty = req.body.taskDifficulty;
+  const taskDeadline = req.body.taskDeadline;
+  const assignedUserId = req.body.assignedUserId;
+  console.log("taskName" + taskName);
+  console.log("taskDescription" + taskDescription);
+  console.log("taskDifficulty" + taskDifficulty);
+  console.log("taskDeadline" + taskDeadline);
+  console.log("assignedUserId" + assignedUserId);
+  return res.redirect("/tasks");
+};
