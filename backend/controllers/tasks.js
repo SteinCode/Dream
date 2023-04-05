@@ -2,6 +2,7 @@ const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const db = require("../../database.js");
+const { json } = require("body-parser");
 
 //GET
 exports.tasks = (req, res) => {
@@ -54,21 +55,22 @@ function getUser(userId, callback) {
 }
 
 function getTasksForUser(userId, userRole, callback) {
-  if (userRole == "Project manager") {
+  if (userRole === "Project manager") {
     db.query(
-      "SELECT * FROM tasks WHERE manager_id = ?", //Reiks pakeisti, kad ne pagal manageri o pagal projekta
+      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users ON tasks.asignee_id = users.id WHERE tasks.manager_id = ?",
       [userId],
       (error, results) => {
         if (error) {
           return callback(error);
         }
         const tasks = results;
+        console.log(JSON.stringify(tasks));
         return callback(null, tasks);
       }
     );
-  } else if (userRole == "Developer") {
+  } else if (userRole === "Developer") {
     db.query(
-      "SELECT * FROM tasks WHERE asignee_id = ?",
+      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users ON tasks.manager_id = users.id WHERE tasks.manager_id = ?",
       [userId],
       (error, results) => {
         if (error) {
@@ -80,11 +82,10 @@ function getTasksForUser(userId, userRole, callback) {
     );
   } else {
     console.log(
-      "Error: porbably bad naming in database, should be Project manager or developer"
+      "Error: probably bad naming in database, should be Project manager or Developer"
     );
   }
 }
-
 function getDevelopers(callback) {
   db.query("SELECT * FROM users WHERE role = 'developer'", (error, results) => {
     if (error) {
