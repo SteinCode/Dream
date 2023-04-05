@@ -5,6 +5,7 @@ const createTaskBtn = document.querySelector(".project-participants__add");
 const modal = document.querySelector(".create-task-modal-window");
 const closeBtn = document.querySelector(".close-modal");
 
+//Toggle visibility of modal window
 createTaskBtn.addEventListener("click", async () => {
   modal.style.display = "flex";
 });
@@ -31,6 +32,26 @@ workerRows.forEach((row) => {
     assignedUserIdInput.value = userId;
   });
 });
+
+// Task form validation
+
+function getCurrentDate() {
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  let month = currentDate.getMonth() + 1;
+  let day = currentDate.getDate();
+
+  // Add leading zero to single digit month and day values
+  if (month < 10) {
+    month = "0" + month;
+  }
+  if (day < 10) {
+    day = "0" + day;
+  }
+
+  return `${year}-${month}-${day}`;
+}
+document.getElementById("taskDeadline").min = getCurrentDate();
 // Task dragging logic
 document.addEventListener("DOMContentLoaded", (event) => {
   var dragSrcEl = null;

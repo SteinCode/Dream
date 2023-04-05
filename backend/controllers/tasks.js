@@ -83,10 +83,6 @@ exports.createTask = (req, res) => {
   const taskDifficulty = req.body.taskDifficulty;
   const taskDeadline = req.body.taskDeadline;
   const assignedUserId = req.body.assignedUserId;
-  console.log("taskName" + taskName);
-  console.log("taskDescription" + taskDescription);
-  console.log("taskDifficulty" + taskDifficulty);
-  console.log("taskDeadline" + taskDeadline);
-  console.log("assignedUserId" + assignedUserId);
+  console.log(assignedUserId);
   return res.redirect("/tasks");
 };
