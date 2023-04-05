@@ -52,6 +52,30 @@ function getCurrentDate() {
   return `${year}-${month}-${day}`;
 }
 document.getElementById("taskDeadline").min = getCurrentDate();
+
+// Updating form page
+const form = document.querySelector("form"); // select the form element
+
+// form.addEventListener("submit", (event) => {
+//   event.preventDefault(); // prevent default form submission
+
+//   const formData = new FormData(form); // create a FormData object from the form data
+
+//   fetch("/tasks/create-task", {
+//     // send the POST request to the server
+//     method: "POST",
+//     body: formData,
+//   })
+//     .then((response) => response.json()) // parse the response as JSON
+//     .then((data) => {
+//       console.log(data.newTask); // log the new task information to the console
+//       // do something with the new task information, such as updating the UI
+//     })
+//     .catch((error) => {
+//       console.error("Error creating task:", error); // log any errors to the console
+//     });
+// });
+
 // Task dragging logic
 document.addEventListener("DOMContentLoaded", (event) => {
   var dragSrcEl = null;

@@ -12,7 +12,8 @@ exports.tasks = (req, res) => {
 
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decodedToken.userId;
+    const userId = decodedToken.id;
+    const userRole = decodedToken.role;
 
     getUser(userId, (error, user) => {
       if (error) {
@@ -20,7 +21,7 @@ exports.tasks = (req, res) => {
         return res.redirect("/login");
       }
 
-      getTasksForUser(userId, (error, tasks) => {
+      getTasksForUser(userId, userRole, (error, tasks) => {
         if (error) {
           console.log(error);
           return res.redirect("/login");
@@ -52,18 +53,36 @@ function getUser(userId, callback) {
   });
 }
 
-function getTasksForUser(userId, callback) {
-  db.query(
-    "SELECT * FROM tasks WHERE asignee_id = ?",
-    [userId],
-    (error, results) => {
-      if (error) {
-        return callback(error);
+function getTasksForUser(userId, userRole, callback) {
+  if (userRole == "Project manager") {
+    db.query(
+      "SELECT * FROM tasks WHERE manager_id = ?", //Reiks pakeisti, kad ne pagal manageri o pagal projekta
+      [userId],
+      (error, results) => {
+        if (error) {
+          return callback(error);
+        }
+        const tasks = results;
+        return callback(null, tasks);
       }
-      const tasks = results;
-      return callback(null, tasks);
-    }
-  );
+    );
+  } else if (userRole == "Developer") {
+    db.query(
+      "SELECT * FROM tasks WHERE asignee_id = ?",
+      [userId],
+      (error, results) => {
+        if (error) {
+          return callback(error);
+        }
+        const tasks = results;
+        return callback(null, tasks);
+      }
+    );
+  } else {
+    console.log(
+      "Error: porbably bad naming in database, should be Project manager or developer"
+    );
+  }
 }
 
 function getDevelopers(callback) {
@@ -78,11 +97,81 @@ function getDevelopers(callback) {
 
 //POST
 exports.createTask = (req, res) => {
-  const taskName = req.body.taskName;
-  const taskDescription = req.body.taskDescription;
-  const taskDifficulty = req.body.taskDifficulty;
-  const taskDeadline = req.body.taskDeadline;
-  const assignedUserId = req.body.assignedUserId;
+  const token = req.cookies.token; // Read cookie
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  const userId = decodedToken.id;
+
+  const {
+    taskName,
+    taskDescription,
+    taskDifficulty,
+    taskDeadline,
+    assignedUserId,
+  } = req.body;
   console.log(assignedUserId);
-  return res.redirect("/tasks");
+  db.query(
+    "INSERT INTO tasks SET ?",
+    {
+      name: taskName,
+      description: taskDescription,
+      status: "to do",
+      difficulty: taskDifficulty,
+      deadline: taskDeadline,
+      manager_id: userId,
+      asignee_id: assignedUserId,
+      project_id: 1, //TEMPORARY!
+    },
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send("Error creating task");
+      } else {
+        return res.redirect("/tasks");
+        // res.status(200).json({ newTask: results }); // Return the newly created task
+      }
+    }
+  );
 };
+
+// exports.createTask = (req, res) => {
+//   const {
+//     taskName,
+//     taskDescription,
+//     taskDifficulty,
+//     taskDeadline,
+//     assignedUserId,
+//   } = req.body;
+//   // console.log(assignedUserId);
+//   db.query(
+//     "INSERT INTO tasks SET ?",
+//     {
+//       name: taskName,
+//       description: taskDescription,
+//       status: "to do",
+//       difficulty: taskDifficulty,
+//       deadline: taskDeadline,
+//       manager_id: 1,
+//       asignee_id: assignedUserId,
+//       project_id: 1, //TEMPORARY!
+//     },
+//     (error, results) => {
+//       if (error) {
+//         console.log(error);
+//         res.status(500).send("Error creating task");
+//       } else {
+//         const task = {
+//           id: results.insertId,
+//           name: taskName,
+//           description: taskDescription,
+//           status: "to do",
+//           difficulty: taskDifficulty,
+//           deadline: taskDeadline,
+//           manager_id: 1,
+//           asignee_id: assignedUserId,
+//           project_id: 1,
+//         };
+//         res.status(200).json({ task }); // Return the newly created task as a JSON response
+//       }
+//     }
+//   );
+// };
