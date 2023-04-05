@@ -70,7 +70,7 @@ function getTasksForUser(userId, userRole, callback) {
     );
   } else if (userRole === "Developer") {
     db.query(
-      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users ON tasks.manager_id = users.id WHERE tasks.manager_id = ?",
+      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users ON tasks.manager_id = users.id WHERE tasks.asignee_id = ?",
       [userId],
       (error, results) => {
         if (error) {
