@@ -1,7 +1,7 @@
 /* Task page js*/
 
 // Create task window
-const createTaskBtn = document.querySelector(".project-participants__add");
+const createTaskBtn = document.querySelector(".project-task-btn__add");
 const modal = document.querySelector(".create-task-modal-window");
 const closeBtn = document.querySelector(".close-modal");
 
