@@ -4,11 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-<<<<<<< HEAD
-    "test": "jest --silent --detectOpenHandles tests/unit/project_page.test.js",
-=======
     "test": "jest",
->>>>>>> develop
     "start": "nodemon server.js"
   },
   "keywords": [],
@@ -16,11 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-<<<<<<< HEAD
-    "chai": "^4.3.7",
-=======
     "body-parser": "^1.20.2",
->>>>>>> develop
+    "chai": "^4.3.7",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
@@ -39,11 +32,12 @@
     ]
   },
   "devDependencies": {
-<<<<<<< HEAD
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "babel-jest": "^29.5.0",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
     "mocha": "^10.2.0",
     "supertest": "^6.3.3"
-=======
-    "jest": "^29.5.0"
->>>>>>> develop
   }
 }
