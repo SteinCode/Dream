@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { db } = require("../../server.js");
+const db = require("../../database.js");
 const flash = require("express-flash");
 
 // GET method to display project page
@@ -40,6 +40,7 @@ exports.project = (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 // Helper function to get all users
 function getUsers(callback) {
   db.query("SELECT * FROM users", callback);
@@ -51,6 +52,9 @@ function getProjects(callback) {
 }
 
 // POST method to add a new project
+=======
+// POST
+>>>>>>> develop
 exports.addProject = async (req, res) => {
   const token = req.cookies.token; // Read cookie
   if (!token) {

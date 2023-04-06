@@ -1,7 +1,8 @@
 const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { db } = require("../../server.js");
+const db = require("../../database.js");
+
 //GET
 exports.loginRender = (req, res) => {
   const token = req.cookies.token; // Read cookie
@@ -16,42 +17,73 @@ exports.loginRender = (req, res) => {
 };
 
 //POST
-exports.loginValidate = (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
-  db.query(
-    "SELECT * FROM users WHERE email = ?",
-    [email],
-    async (error, results) => {
-      if (error) {
-        console.log(error);
-      }
+exports.loginValidate = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
+    const users = await getUserByEmail(email);
+    const { isAuthenticated, authenticatedUser } = await authenticateUser(
+      password,
+      users
+    );
 
-      let isAuthenticated = false;
-      let authenticatedUser = null;
+    if (isAuthenticated) {
+      const token = createToken(authenticatedUser);
+      res.cookie("token", token, { httpOnly: true, maxAge: 3600000 });
+      req.session.user = authenticatedUser;
+      return res.redirect("/");
+    } else {
+      req.flash("errorMessage", "Incorrect credentials.");
+      return res.redirect("/login");
+    }
+  } catch (error) {
+    console.log(error);
+    req.flash("errorMessage", "Something went wrong.");
+    return res.redirect("/login");
+  }
+};
 
-      for (const user of results) {
-        const isMatch = await bcrypt.compare(password, user.password);
-
-        if (isMatch) {
-          isAuthenticated = true;
-          authenticatedUser = user;
-          break;
+const getUserByEmail = (email) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT * FROM users WHERE email = ?",
+      [email],
+      (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
         }
       }
+    );
+  });
+};
 
-      if (isAuthenticated) {
-        const token = jwt.sign(
-          { userId: authenticatedUser.id },
-          process.env.JWT_SECRET,
-          { expiresIn: "1h" }
-        );
-        res.cookie("token", token, { httpOnly: true, maxAge: 3600000 }); // Set cookie with token
-        return res.redirect("/");
-      } else {
-        req.flash("errorMessage", "Incorrect credentials.");
-        return res.redirect("/login");
-      }
+const authenticateUser = async (password, users) => {
+  let isAuthenticated = false;
+  let authenticatedUser = null;
+
+  for (const user of users) {
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (isMatch) {
+      isAuthenticated = true;
+      authenticatedUser = user;
+      break;
     }
-  );
+  }
+
+  return { isAuthenticated, authenticatedUser };
+};
+
+const createToken = (user) => {
+  const payload = {
+    id: user.id,
+    name: user.name,
+    surname: user.surname,
+    email: user.email,
+    phoneNumber: user.phoneNumber,
+    role: user.role,
+  };
+  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
 };

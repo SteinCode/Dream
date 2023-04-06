@@ -1,7 +1,7 @@
 // Get the button and modal elements
 const btn = document.querySelector(".create-new-project-btn");
 const modal = document.querySelector(".project-modal-window");
-const closeBtn = document.querySelector(".close-project-modal");
+const closeBtn = document.querySelector(".close-modal");
 
 // Add a click event listener to the button
 btn.addEventListener("click", function () {
@@ -20,46 +20,43 @@ let users = [];
 
 addButton.addEventListener("click", () => {
   const select = document.querySelector('select[name="add-user"]');
-  const selectedOption = select.options[select.selectedIndex];
-  const userId = selectedOption.getAttribute("data-id");
-  const userName = selectedOption.textContent;
-  const role = selectedOption.getAttribute("data-role");
-  const row = table.insertRow(-1);
-  const userNameCell = row.insertCell(0);
-  const roleCell = row.insertCell(1);
-  userNameCell.innerHTML = userName;
-  roleCell.innerHTML = role;
-  // Store user data in an array
-  const userData = { id: userId, name: userName, role: role };
+  const {dataset, textContent} = select.options[select.selectedIndex];
+  const {id: userId, role} = dataset;
+  
+  const rowHtml = `
+    <tr>
+      <td>${textContent}</td>
+      <td>${role}</td>
+      <input type="hidden" name="user-id" value="${userId}">
+    </tr>
+  `;
+  table.insertAdjacentHTML('beforeend', rowHtml);
+
+  // Store user data in an object and push it to the users array
+  const userData = { id: userId, name: textContent, role };
   users.push(userData);
-  // Add an input element with the name "user-id" and the user ID as the value to the second cell
-  const userIdInput = document.createElement("input");
-  userIdInput.type = "hidden";
-  userIdInput.name = "user-id";
-  userIdInput.value = userId;
-  roleCell.appendChild(userIdInput);
 });
 
 createButton.addEventListener("click", async () => {
-  const projectName = document.getElementById("project-name").value;
-  const users = [];
-  const rows = table.rows;
-  for (let i = 0; i < rows.length; i++) {
-    const userName = rows[i].cells[0].textContent;
-    const role = rows[i].cells[1].textContent;
-    const userIdInput = rows[i].cells[1].querySelector(
-      'input[name="user-id"]'
-    ).value;
-    users.push({ id: userIdInput, name: userName, role: role });
+  const projectNameInput = document.getElementById("project-name");
+  const projectName = projectNameInput.value;
+  const tableRows = Array.from(table.rows);
+  const users = tableRows.map(row => {
+    const [userName, role] = row.cells;
+    const userId = row.querySelector('input[name="user-id"]').value;
+    return { id: userId, name: userName.textContent, role: role.textContent };
+  });
+  try {
+    const response = await fetch("/project/create-project", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ projectName, users }),
+    });
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.log(error);
   }
-  fetch("/project/create-project", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ projectName, users }),
-  })
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
 });
 
 const projectList = document.querySelector('.project-list');

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const PORT = 3000;
 const express = require("express");
 const path = require("path");
@@ -38,27 +39,17 @@ app.use(express.urlencoded({ extended: true }));
 
 //Parse JSON bodies (as sent by API clients)
 app.use(express.json());
+=======
+const app = require("./app");
+// Set port
+const PORT = process.env.PORT || 3000;
+>>>>>>> develop
 
-//naudojam cookie
-app.use(cookieParser());
-
-app.use(
-  session({
-    secret: "your secret",
-    resave: false,
-    saveUninitialized: true,
-  })
-);
-app.use(flash());
-
-// prijungiam duomenu baze
-db.connect((error) => {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log("MYSQL Connected...");
-  }
+// Start server
+const server = app.listen(PORT, () => {
+  console.log(`Dreamwork has started, the server is running on ${PORT} port`);
 });
+<<<<<<< HEAD
 
 app.use("/login", require(path.join(routesDir, "login")));
 app.use("/register", require(path.join(routesDir, "register")));
@@ -78,3 +69,7 @@ module.exports = {
   db: db,
   app: app,
 };
+=======
+
+module.exports = { server };
+>>>>>>> develop

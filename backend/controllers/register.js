@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { db } = require("../../server.js");
+const db = require("../../database.js");
 
 exports.registerUser = (req, res) => {
   const name = req.body.name;
@@ -11,14 +11,15 @@ exports.registerUser = (req, res) => {
   const password = req.body.password;
   const passwordConfirm = req.body.passwordConfirm;
   const role = req.body.role; // Retrieve the value of the role field
-
+  const code = req.body.code; // Retrieve the value of the code field
   if (
     !name ||
     !surname ||
     !email ||
     !phoneNumber ||
     !password ||
-    !passwordConfirm
+    !passwordConfirm ||
+    !code
   ) {
     req.flash("errorMessage", "Please fill all the fields!");
     return res.redirect("/register");
@@ -47,34 +48,68 @@ exports.registerUser = (req, res) => {
           return res.redirect("/register");
         }
 
-        let hashedPassword = await bcrypt.hash(password, 8);
-
         db.query(
-          "INSERT INTO users SET ?",
-          {
-            name: name,
-            surname: surname,
-            email: email,
-            phoneNumber: phoneNumber,
-            password: hashedPassword,
-            role: role, // Use the value of the role field in the INSERT query
-          },
-          (error, results) => {
+          "SELECT * FROM codes WHERE code = ?",
+          [code],
+          async (error, results) => {
             if (error) {
               req.flash(
                 "errorMessage",
-                "There was some unknow error, we are sorry, please try again later"
+                "There was unknown error, sorry and try again later!"
               );
-              console.log(error);
               return res.redirect("/register");
-            } else {
-              console.log(results);
-              req.flash(
-                "successMessage",
-                "The account was successfully created, now you can login."
-              );
-              return res.redirect("/login");
             }
+
+            if (results.length === 0) {
+              req.flash("errorMessage", "The code is invalid!");
+              return res.redirect("/register");
+            }
+
+            let hashedPassword = await bcrypt.hash(password, 8);
+
+            db.query(
+              "INSERT INTO users SET ?",
+              {
+                name: name,
+                surname: surname,
+                email: email,
+                phoneNumber: phoneNumber,
+                password: hashedPassword,
+                role: role, // Use the value of the role field in the INSERT query
+              },
+              (error, results) => {
+                if (error) {
+                  req.flash(
+                    "errorMessage",
+                    "There was some unknow error, we are sorry, please try again later"
+                  );
+                  console.log(error);
+                  return res.redirect("/register");
+                } else {
+                  console.log(results);
+                  db.query(
+                    "DELETE FROM codes WHERE code = ?",
+                    [code],
+                    (error, results) => {
+                      if (error) {
+                        req.flash(
+                          "errorMessage",
+                          "There was some unknow error, we are sorry, please try again later"
+                        );
+                        console.log(error);
+                        return res.redirect("/register");
+                      } else {
+                        req.flash(
+                          "successMessage",
+                          "The account was successfully created, now you can login."
+                        );
+                        return res.redirect("/login");
+                      }
+                    }
+                  );
+                }
+              }
+            );
           }
         );
       }
