@@ -5,6 +5,7 @@ const createTaskBtn = document.querySelector(".project-task-btn__add");
 const modal = document.querySelector(".create-task-modal-window");
 const closeBtn = document.querySelector(".close-modal");
 
+//Toggle visibility of modal window
 createTaskBtn.addEventListener("click", async () => {
   modal.style.display = "flex";
 });
@@ -15,6 +16,7 @@ closeBtn.addEventListener("click", function () {
 
 const workerRows = document.querySelectorAll(".worker-table .worker-row");
 
+const assignedUserIdInput = document.querySelector("#assignedUserIdInput");
 workerRows.forEach((row) => {
   row.addEventListener("click", () => {
     // Remove the selected class from all rows
@@ -24,6 +26,10 @@ workerRows.forEach((row) => {
 
     // Add the selected class to the clicked row
     row.classList.add("selected");
+
+    // Set the value of the hidden input field to the ID of the selected row
+    const userId = row.getAttribute("data-user-id");
+    assignedUserIdInput.value = userId;
   });
 });
 

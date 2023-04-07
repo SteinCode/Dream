@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { db } = require("../../server.js");
+const db = require("../../database.js");
 
 //GET
 exports.loginRender = (req, res) => {
@@ -28,8 +28,9 @@ exports.loginValidate = async (req, res) => {
     );
 
     if (isAuthenticated) {
-      const token = createToken(authenticatedUser.id);
+      const token = createToken(authenticatedUser);
       res.cookie("token", token, { httpOnly: true, maxAge: 3600000 });
+      req.session.user = authenticatedUser;
       return res.redirect("/");
     } else {
       req.flash("errorMessage", "Incorrect credentials.");
@@ -75,6 +76,14 @@ const authenticateUser = async (password, users) => {
   return { isAuthenticated, authenticatedUser };
 };
 
-const createToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "1h" });
+const createToken = (user) => {
+  const payload = {
+    id: user.id,
+    name: user.name,
+    surname: user.surname,
+    email: user.email,
+    phoneNumber: user.phoneNumber,
+    role: user.role,
+  };
+  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
 };

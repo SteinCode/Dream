@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { db } = require("../../server.js");
+const db = require("../../database.js");
 
 exports.registerUser = (req, res) => {
   const name = req.body.name;
@@ -12,7 +12,6 @@ exports.registerUser = (req, res) => {
   const passwordConfirm = req.body.passwordConfirm;
   const role = req.body.role; // Retrieve the value of the role field
   const code = req.body.code; // Retrieve the value of the code field
-
   if (
     !name ||
     !surname ||

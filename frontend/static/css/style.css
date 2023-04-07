@@ -50,6 +50,12 @@ body {
   border-radius: 20px !important;
 }
 
+/* BOOTSTRAP */
+
+.selectpicker {
+  font-size: 15px; /* change this value to the desired font size */
+}
+
 /* HEADER */
 
 header {
