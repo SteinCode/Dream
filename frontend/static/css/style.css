@@ -307,11 +307,6 @@ header .flex-user {
   height: 100%;
 }
 
-.create-new-project-btn {
-  bottom: 0;
-  position: absolute;
-}
-
 .project-list a {
   font-size: 12px;
   padding: 10px;
@@ -337,6 +332,8 @@ header .flex-user {
   align-items: center;
   border: 0px solid black;
   gap: 5px;
+  bottom: 0;
+  position: absolute;
 }
 
 .create-center {
@@ -687,6 +684,39 @@ header .flex-user {
 
 .task-card.dragging {
   opacity: 0.4;
+}
+
+/* Performance window  */
+
+.performance-container{
+  margin: 2rem;
+  padding: 2rem;
+  width: 80%;
+  border-radius: 3px;
+  box-sizing: border-box;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+}
+.performance-top{
+  /* display: inline-block; */
+  /* width: 100%; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.performance-total{
+  font-size: 14pt;
+  font-weight: 400;
+}
+
+.performance-btn-filter {
+  display: inline-block;
+  width: 100px;
+  padding: 5px 0px;
+  justify-content: center;
+  align-items: center;
+  border: 0px solid black;
+  gap: 5px;
 }
 
 @media only screen and (max-width: 1300px) {
