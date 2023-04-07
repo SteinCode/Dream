@@ -64,7 +64,6 @@ function getTasksForUser(userId, userRole, callback) {
           return callback(error);
         }
         const tasks = results;
-        console.log(JSON.stringify(tasks));
         return callback(null, tasks);
       }
     );
@@ -128,7 +127,6 @@ exports.createTask = (req, res) => {
         res.status(500).send("Error creating task");
       } else {
         return res.redirect("/tasks");
-        // res.status(200).json({ newTask: results }); // Return the newly created task
       }
     }
   );
