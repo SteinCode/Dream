@@ -1,41 +1,23 @@
-// const xValues = [50,60,70,80,90,100,110,120,130,140,150];
-// const yValues = [7,8,8,9,9,9,10,11,14,14,15];
+const xValuesWeek = ["Monday","Tuesday","Wednesday","Thursday","Friday"];
+const xValuesMonth = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+const yValues = [3,4,8,3.5,4];
+const xValues = xValuesWeek;
 
-// new Chart("user-performance", {
-//   type: "line",
-//   data: {
-//     labels: xValues,
-//     datasets: [{
-//       fill: false,
-//       lineTension: 0,
-//       backgroundColor: "rgba(0,0,255,1.0)",
-//       borderColor: "rgba(0,0,255,0.1)",
-//       data: yValues
-//     }]
-//   },
-//   options: {
-//     legend: {display: false},
-//     scales: {
-//       yAxes: [{ticks: {min: 6, max:16}}],
-//     }
-//   }
-// });
-
-//import Chart from 'chart.js' 
-
-const xValues = ["Monday","Tuesday","Wednesday","Thursday","Friday"];
-const yValues = [7,8,2,9,15];
+const filterWeek = document.getElementById("week-performance");
+const filterMonth = document.getElementById("month-performance");
+const filterYear = document.getElementById("year-performance");
 
 (async function() {
 const data = {
   labels: xValues,
   datasets: [{
-    label: 'Your points',
     data: yValues,
+    label: 'Your points',
     fill: false,
     borderColor: '#162f65',
-    tension: 0.1
-    
+    pointRadius: 4,
+    pointBackgroundColor: "#e8c766",
+    tension: 0
   }]
 };
 
@@ -45,6 +27,9 @@ const data = {
       type: 'line',
       data: data,
       options: {
+        plugins: {
+          legend: { display: false }
+        },
         scales: {
           y: {
             beginAtZero: true,
@@ -64,4 +49,9 @@ const data = {
     }
   );
 })();
+
+filterMonth.addEventListener("click", () => {
+  const xValues = xValuesMonth;
+
+});
  
