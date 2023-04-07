@@ -1,4 +1,4 @@
-/* Task page js*/
+
 
 // Create task window
 const createTaskBtn = document.querySelector(".project-task-btn__add");
@@ -32,7 +32,6 @@ workerRows.forEach((row) => {
     assignedUserIdInput.value = userId;
   });
 });
-
 let cards = document.querySelectorAll(".task-card");
 let lists = document.querySelectorAll(".task-list");
 
@@ -83,3 +82,4 @@ function registerEventsOnCard(card) {
     card.classList.remove("dragging");
   });
 }
+
