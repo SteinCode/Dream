@@ -40,7 +40,6 @@ exports.project = (req, res) => {
   }
 };
 
-<<<<<<< HEAD
 // Helper function to get all users
 function getUsers(callback) {
   db.query("SELECT * FROM users", callback);
@@ -52,9 +51,6 @@ function getProjects(callback) {
 }
 
 // POST method to add a new project
-=======
-// POST
->>>>>>> develop
 exports.addProject = async (req, res) => {
   const token = req.cookies.token; // Read cookie
   if (!token) {

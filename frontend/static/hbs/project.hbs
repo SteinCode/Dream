@@ -1,7 +1,7 @@
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8" />
+  <head>
+    <meta charset="UTF-8" />
 
     <title>Dreamwork</title>
     <link
@@ -74,72 +74,78 @@
               >
                 Sukurti dreamworką
               </a>
-              <a href="#" class="list-group-items list-group-item-action">Project
-                2</a>
+              <a
+                href="#"
+                class="list-group-items list-group-item-action"
+              >Project 2</a>
             </div>
             <div class="create-center">
-            <button class="create-new-project-btn">
-              <h5>Create</h5>
-              <img src="/static/media/plus.svg" />
-            </button>
+              <button class="create-new-project-btn">
+                <h5>Create</h5>
+                <img src="/static/media/plus.svg" />
+              </button>
             </div>
           </div>
-          <div class = "col project-info-col">
+          <div class="col project-info-col">
             <h2 class="projects-header">Details</h2>
-            <div class = "project-detail-table">
+            <div class="project-detail-table">
               <div class="project-detail-bigger-container">
-                <div class = "project-detail-header">Project name</div>
-                <div class = "project-name">Sukurti dreamworką</div> 
+                <div class="project-detail-header">Project name</div>
+                <div class="project-name">Sukurti dreamworką</div>
               </div>
               <div class="project-detail-bigger-container">
-                <div class = "project-detail-header">Project description</div>
-                <div class = "project-description">Projektų ir užduočių valdymo sistema yra įrankis, kuris padeda organizuoti ir sekti darbo eigą, svarbias datos, susijusias su projektų ir užduočių įvykdymu. Ji gali apimti skirtingus funkcionalumus, tokius kaip darbo planavimas, projektų, užduočių ir laiko valdymas, resursų skyrimas, bendravimas ir komunikacija, ataskaitų ir statistikų analizavimas.</div>
+                <div class="project-detail-header">Project description</div>
+                <div class="project-description">Projektų ir užduočių valdymo
+                  sistema yra įrankis, kuris padeda organizuoti ir sekti darbo
+                  eigą, svarbias datos, susijusias su projektų ir užduočių
+                  įvykdymu. Ji gali apimti skirtingus funkcionalumus, tokius
+                  kaip darbo planavimas, projektų, užduočių ir laiko valdymas,
+                  resursų skyrimas, bendravimas ir komunikacija, ataskaitų ir
+                  statistikų analizavimas.</div>
               </div>
               <div class="project-detail-smaller-container">
-                <div class = "project-detail-header">Projekto pabaigos data</div>
-                <div class = "project-deadline">2023-05-04</div>
+                <div class="project-detail-header">Projekto pabaigos data</div>
+                <div class="project-deadline">2023-05-04</div>
               </div>
               <div class="project-detail-smaller-container">
-                <div class = "project-detail-header">Projekto vadovas</div>
-                <div class = "project-manager">Green Velvet</div> 
+                <div class="project-detail-header">Projekto vadovas</div>
+                <div class="project-manager">Green Velvet</div>
               </div>
             </div>
-  
+
           </div>
           <div class="col users-list-col">
             <h2 class="projects-header">Attendants</h2>
             <ul class="list-group attendant-list">
-              <li class="attendant-list-group-items">Ignas Dudėnas <button class="attendant-list-item-delete">X</button></li>
-              <li class="attendant-list-group-items">Andrius Bogda <button class="attendant-list-item-delete">X</button></li>
+              {{#each selectedProject.attendants}}
+                <li class="list-group-item">{{this}}</li>
+              {{/each}}
             </ul>
           </div>
         </div>
-        <div class="col users-list-col">
-          <h2 class="projects-header">Attendants</h2>
-          <ul class="list-group attendant-list">
-            {{#each selectedProject.attendants}}
-            <li class="list-group-item">{{this}}</li>
-            {{/each}}
-          </ul>
-        </div>
+
       </div>
     </div>
 
     <div class="modal-window project-modal-window">
       <div class="create-new-project-window">
-        <button class = "close-modal" ><img src="static/media/exit.svg"></img></button>
+        <button class="close-modal"><img src="static/media/exit.svg" /></button>
         <h1>New Project</h1>
         <form method="post">
           <label for="project-name">Project name:</label>
-          <input type="text" id="project-name" name="project-name"><br>
+          <input type="text" id="project-name" name="project-name" /><br />
 
           <label for="add-user">Add user:</label>
           <select name="add-user" id="add-user-select">
             {{#each users}}
-            <option value="{{this.id}}" data-id="{{this.id}}" data-role="{{this.role}}">{{this.name}}</option>
+              <option
+                value="{{this.id}}"
+                data-id="{{this.id}}"
+                data-role="{{this.role}}"
+              >{{this.name}}</option>
             {{/each}}
           </select>
-          <button type="button" id="add-button">Add</button><br>
+          <button type="button" id="add-button">Add</button><br />
 
           <table>
             <thead>
@@ -151,23 +157,29 @@
             <tbody id="user-table">
             </tbody>
           </table>
-          <br>
+          <br />
           <button type="button" id="create-button">Create project</button>
         </form>
       </div>
 
     </div>
     <script type="module" src="/static/js/project.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-      crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
       integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-      crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
       integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous"
+    ></script>
 
-</body>
+  </body>
 
 </html>
