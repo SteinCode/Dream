@@ -1,7 +1,18 @@
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 
-const { db, getUser } = require("../../database");
+const  db = require("../../database");
+const getUser = () => {
+    return new Promise((resolve, reject) => {
+      db.query("SELECT * FROM users WHERE id = 2", (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results[0]);
+        }
+      });
+    });
+  };
 
 describe("user input fields", () => {
   let user;
