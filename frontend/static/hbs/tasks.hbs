@@ -272,7 +272,6 @@
                     id="taskName"
                     placeholder="Enter task name"
                     name="taskName"
-                    required
                     oninvalid="this.setCustomValidity('Please enter a task name')"
                   />
                 </div>
@@ -284,7 +283,6 @@
                     rows="3"
                     placeholder="Enter task description"
                     name="taskDescription"
-                    required
                     oninvalid="this.setCustomValidity('Please input a task description')"
                   ></textarea>
                 </div>
@@ -295,7 +293,6 @@
                     id="taskDifficulty"
                     name="taskDifficulty"
                     oninvalid="this.setCustomValidity('Please select task difficulty')"
-                    required
                   >
                     <option value="easy">Easy</option>
                     <option value="medium">Medium</option>
@@ -311,7 +308,6 @@
                     id="taskDeadline"
                     oninvalid="this.setCustomValidity('Please select a valid date')"
                     min=""
-                    required
                   />
                 </div>
               </div>
@@ -325,7 +321,6 @@
                     id="assignedUserId"
                     class="selectpicker"
                     oninvalid="this.setCustomValidity('Please select an assignee')"
-                    required
                   >
                     <option value="">Select one</option>
                     <optgroup label="Developers">
