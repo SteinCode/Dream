@@ -21,6 +21,8 @@ describe("taskName input", () => {
                 placeholder="Enter task name"
                 name="taskName"
                 oninvalid="this.setCustomValidity('Please enter a task name')"
+                required
+                maxLength = 60
               />
             </div>
             <div class="form-group">
@@ -32,6 +34,8 @@ describe("taskName input", () => {
                 placeholder="Enter task description"
                 name="taskDescription"
                 oninvalid="this.setCustomValidity('Please input a task description')"
+                required
+                maxLength = 2000
               ></textarea>
             </div>
             <div class="form-group">
@@ -41,6 +45,7 @@ describe("taskName input", () => {
                 id="taskDifficulty"
                 name="taskDifficulty"
                 oninvalid="this.setCustomValidity('Please select task difficulty')"
+                required
               >
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
@@ -55,6 +60,7 @@ describe("taskName input", () => {
                 class="form-control"
                 id="taskDeadline"
                 oninvalid="this.setCustomValidity('Please select a valid date')"
+                required
                 min=""
               />
             </div>
@@ -69,6 +75,7 @@ describe("taskName input", () => {
                 id="assignedUserId"
                 class="selectpicker"
                 oninvalid="this.setCustomValidity('Please select an assignee')"
+                required
               >
                 <option value="">Select one</option>
                 <optgroup label="Developers">
