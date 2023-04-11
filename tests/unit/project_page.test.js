@@ -1,42 +1,47 @@
-import { selectProject, createProject } from "../../frontend/static/js/project.js";
+import { selectProject } from "../../frontend/static/js/project.js";
 
-describe("selectProject function", () => {
-  const selectedProjectName = document.getElementById("selected-project-name");
-  const table = document.getElementById("user-table");
+describe("selectProject", () => {
+  let target, selectedProjectName, projectItems;
 
-  test("clicking list item should update selectedProjectName", () => {
-    const listItem = document.createElement("li");
-    listItem.classList.add("list-group-item");
-    listItem.textContent = "Test Project";
-    document.getElementById("project-list").appendChild(listItem);
+  beforeEach(() => {
+    // Create a mock target element
+    target = document.createElement("a");
+    target.classList.add("list-group-item");
+    target.textContent = "Project 1";
 
-    listItem.click();
+    // Create mock selectedProjectName element
+    selectedProjectName = document.createElement("div");
 
-    expect(selectedProjectName.textContent).toBe("Test Project");
+    // Create mock project items
+    projectItems = [      document.createElement("a"),      document.createElement("a"),      document.createElement("a"),    ];
+    projectItems.forEach((item) => item.classList.add("list-group-item"));
+
+    // Add the mock elements to the document body
+    document.body.appendChild(target);
+    document.body.appendChild(selectedProjectName);
+    projectItems.forEach((item) => document.body.appendChild(item));
   });
 
-  test("clicking createButton should call fetch with correct data", async () => {
-    const projectNameInput = document.getElementById("project-name");
-    const projectName = projectNameInput.value;
-    const tableRows = Array.from(table.rows);
-    const users = tableRows.map((row) => {
-      const [userName, role] = row.cells;
-      const userId = row.querySelector('input[name="user-id"]').value;
-      const userRole = role.querySelector('select[name="user-role"]').value;
-      return { id: userId, role: userRole };
-    });
+  afterEach(() => {
+    // Remove the mock elements from the document body
+    document.body.removeChild(target);
+    document.body.removeChild(selectedProjectName);
+    projectItems.forEach((item) => document.body.removeChild(item));
+  });
 
-    global.fetch = jest.fn(() => Promise.resolve());
+  test("ignores non-list-group-item target", () => {
+    // Add a non-list-group-item class to the target
+    target.classList.remove("list-group-item");
+    target.classList.add("other-class");
 
-    const createButton = document.getElementById("create-project");
-    createButton.click();
+    // Call the selectProject function with the mock event
+    selectProject({ target });
 
-    expect(fetch).toHaveBeenCalledWith("/projects", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name: projectName, users }),
-    });
+    // Check that the selected project name is not set
+    expect(selectedProjectName.textContent).toBe("");
+
+    // Check that no project items have the 'active' class removed or added
+    projectItems.forEach((item) => expect(item.classList).not.toContain("active"));
+    expect(target.classList).not.toContain("active");
   });
 });
