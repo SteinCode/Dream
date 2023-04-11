@@ -64,7 +64,6 @@ function getTasksForUser(userId, userRole, callback) {
           return callback(error);
         }
         const tasks = results;
-        console.log(JSON.stringify(tasks));
         return callback(null, tasks);
       }
     );
@@ -109,7 +108,6 @@ exports.createTask = (req, res) => {
     taskDeadline,
     assignedUserId,
   } = req.body;
-  console.log(assignedUserId);
   db.query(
     "INSERT INTO tasks SET ?",
     {

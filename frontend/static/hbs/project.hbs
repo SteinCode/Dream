@@ -131,22 +131,50 @@
       <div class="create-new-project-window">
         <button class="close-modal"><img src="static/media/exit.svg" /></button>
         <h1>New Project</h1>
-        <form method="post">
-          <label for="project-name">Project name:</label>
-          <input type="text" id="project-name" name="project-name" /><br />
-
-          <label for="add-user">Add user:</label>
-          <select name="add-user" id="add-user-select">
-            {{#each users}}
-              <option
-                value="{{this.id}}"
-                data-id="{{this.id}}"
-                data-role="{{this.role}}"
-              >{{this.name}}</option>
-            {{/each}}
-          </select>
-          <button type="button" id="add-button">Add</button><br />
-
+        <form method="POST" action="project/create-project">
+          <div class="form-group">
+            <label for="project-name">Project name:</label>
+            <input
+              type="text"
+              id="project-name"
+              name="project-name"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label for="project-description">Project description:</label>
+            <textarea
+              type="text"
+              id="project-description"
+              name="project-description"
+              class="form-control"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="project-deadline">Task Deadline</label>
+            <input
+              name="project-deadline"
+              type="date"
+              class="form-control"
+              id="project-deadline"
+              oninvalid="this.setCustomValidity('Please select a valid date')"
+              min=""
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="add-user">Add user:</label>
+            <select name="add-user" id="add-user-select" class="form-control">
+              {{#each users}}
+                <option
+                  value="{{this.id}}"
+                  data-id="{{this.id}}"
+                  data-role="{{this.role}}"
+                >{{this.name}}</option>
+              {{/each}}
+            </select>
+          </div>
+          <button type="submit" id="add-button btn btn-primary">Add</button>
           <table>
             <thead>
               <tr>
