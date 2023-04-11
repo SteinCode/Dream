@@ -2,6 +2,7 @@ import { selectProject, createProject } from "../../frontend/static/js/project.j
 
 describe("selectProject function", () => {
   const selectedProjectName = document.getElementById("selected-project-name");
+  const table = document.getElementById("user-table");
 
   test("clicking list item should update selectedProjectName", () => {
     const listItem = document.createElement("li");
@@ -13,10 +14,6 @@ describe("selectProject function", () => {
 
     expect(selectedProjectName.textContent).toBe("Test Project");
   });
-});
-
-describe("createProject function", () => {
-  const table = document.getElementById("user-table");
 
   test("clicking createButton should call fetch with correct data", async () => {
     const projectNameInput = document.getElementById("project-name");
