@@ -27,17 +27,16 @@ module.exports = {
   addCodeToDB,
 };
 
-// function deleteExpiredCodes() {
-//   const now = new Date();
-//   const query = "DELETE FROM codes WHERE expiration_time < ?";
-//   db.query(query, [now], (err, result) => {
-//     if (err) {
-//       console.error(err);
-//     } else {
-//       console.log(`Deleted ${result.affectedRows} expired codes`);
-//     }
-//   });
-// }
+function deleteExpiredCodes() {
+  const now = new Date();
+  const query = "DELETE FROM codes WHERE expiration_time < ?";
+  db.query(query, [now], (err, result) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log(`Deleted ${result.affectedRows} expired codes`);
+    }
+  });
+}
 
-// Run the function every hour
-// setInterval(deleteExpiredCodes, 60 * 60 * 1000);
+setInterval(deleteExpiredCodes, 60 * 60 * 1000);
