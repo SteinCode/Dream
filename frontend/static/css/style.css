@@ -159,6 +159,11 @@ header .flex-user .avatar-img-container img {
   justify-content: center;
 }
 
+.list-group-item.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
 /* .nav-top {
 } */
 .nav-bottom {

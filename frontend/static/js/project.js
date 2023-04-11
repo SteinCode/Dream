@@ -51,11 +51,17 @@ async function createProject() {
   }
 }
 
-
 function selectProject(event) {
   if (event.target.classList.contains("list-group-item")) {
     const selectedProject = event.target.textContent.trim();
     selectedProjectName.textContent = selectedProject;
+
+    // Remove the 'active' class from all project items
+    const projectItems = document.querySelectorAll('.list-group-item');
+    projectItems.forEach(item => item.classList.remove('active'));
+
+    // Add the 'active' class to the selected project item
+    event.target.classList.add('active');
   }
 }
 
@@ -68,12 +74,12 @@ document.addEventListener("DOMContentLoaded", function () {
   btn.addEventListener("click", showModal);
   closeBtn.addEventListener("click", hideModal);
 
-  const addButton = document.getElementById("add-button");
   const createButton = document.getElementById("create-button");
   const table = document.getElementById("user-table");
   let users = [];
 
-  addButton.addEventListener("click", addUser);
+  const select = document.querySelector('select[name="add-user"]');
+  select.addEventListener("change", addUser);
   createButton.addEventListener("click", createProject);
 
   const projectList = document.querySelector(".project-list");
