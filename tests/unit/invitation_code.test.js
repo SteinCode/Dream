@@ -24,6 +24,28 @@ describe("The generateCode function", () => {
       const code = generateCode(20);
       expect(code.length).toBe(20);
     });
+    test("generateCode returns a unique code each time it is called with the same length parameter", () => {
+      const length = 10;
+      const code1 = generateCode(length);
+      const code2 = generateCode(length);
+      expect(code1).not.toEqual(code2);
+    });
+  });
+});
+
+describe("The addCodeToDB function", () => {
+  test("addCodeToDB calls back with the correct results when the database query is successful", (done) => {
+    const code = generateCode(10);
+    const expectedResults = { insertId: 123, affectedRows: 1 };
+    jest.spyOn(db, "query").mockImplementation((query, params, callback) => {
+      callback(null, expectedResults);
+    });
+
+    addCodeToDB(code, (error, results) => {
+      expect(error).toBeNull();
+      expect(results).toEqual(expectedResults);
+      done();
+    });
   });
   describe("Error guessing", () => {
     test("addCodeToDB calls back with an error if the database query fails", () => {
