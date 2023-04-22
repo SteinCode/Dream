@@ -1,0 +1,75 @@
+const { Builder, By, Key, until } = require('selenium-webdriver');
+const assert = require('assert');
+
+class InputField {
+    driver: any;
+    element: any;
+  constructor(driver, element) {
+    this.driver = driver;
+    this.element = element;
+  }
+
+  async setValue(value) {
+    await this.driver.wait(until.elementIsVisible(this.element), 10000);
+    await this.element.clear();
+    await this.element.sendKeys(value);
+  }
+
+  async clear() {
+    await this.element.clear();
+  }
+}
+
+describe('Test projects tab', function () {
+  let driver;
+
+  before(async function () {
+    this.timeout(10000); // set timeout to 10 seconds
+    driver = await new Builder().forBrowser('chrome').build();
+
+    // log in
+    await driver.get('http://127.0.0.1:3000/login');
+
+    const emailInput = new InputField(driver, await driver.findElement(By.id('email')));
+    const passwordInput = new InputField(driver, await driver.findElement(By.id('password')));
+    const loginButton = await driver.findElement(By.css('button[type="submit"]'));
+
+    await emailInput.setValue('ad@ad.lt');
+    await passwordInput.setValue('ad');
+    await loginButton.click();
+  });
+
+  after(async function () {
+    await driver.quit();
+  });
+
+  it('should navigate to the profile page and assert details of user profile', async function () {
+    // Find the profile link and click it
+    const profileLink = await driver.findElement(By.xpath("//a[contains(@class,'nav-item') and contains(@href,'/profile')]"));
+    await profileLink.click();
+
+
+    // Wait for the URL to change and assert that it's the expected URL
+    await driver.wait(until.urlContains("/profile"));
+    const currentUrl = await driver.getCurrentUrl();
+    assert.strictEqual(currentUrl, "http://127.0.0.1:3000/profile");
+
+
+    // Assert that there is any text displayed in profile information window
+    const name = await driver.findElement(By.xpath("//div[contains(@class, 'profile_info') and @name='name']"));
+    const name_text = await name.getText();
+    assert(name_text.length > 0, 'Name section does not have any text');
+
+    const surname = await driver.findElement(By.xpath("//div[contains(@class, 'profile_info') and @name='surname']"));
+    const surname_text = await surname.getText();
+    assert(surname_text.length > 0, 'Surname section does not have any text');
+
+    const phoneNumber = await driver.findElement(By.xpath("//div[contains(@class, 'profile_info') and @name='phoneNumber']"));
+    const phoneNumber_text = await phoneNumber.getText();
+    assert(phoneNumber_text.length > 0, 'PhoneNumber section does not have any text');
+
+    const email = await driver.findElement(By.xpath("//div[contains(@class, 'profile_info') and @name='email']"));
+    const email_text = await email.getText();
+    assert(email_text.length > 0, 'Email section does not have any text');
+  });
+});
