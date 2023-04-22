@@ -1,8 +1,7 @@
 <html lang="en">
 
-<head>
+  <head>
   <meta charset="UTF-8" />
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -62,98 +61,106 @@
         </a>
       </div>
     </div>
-    <div class="view-content">
-      <div class="container mt-1 project-container">
-        <div class="col projects-col">
-          <h2 class="projects-header">Projects</h2>
-          <div class="list-group project-list">
-            <a href="#" class="list-group-items list-group-item-action active" aria-current="true">
-              Sukurti dreamworką
-            </a>
-            <a href="#" class="list-group-items list-group-item-action">Project 2</a>
-          </div>
-          <div class="create-center">
-            <button class="create-new-project-btn">
-              <h5>Create</h5>
-              <img src="/static/media/plus.svg" />
-            </button>
-          </div>
-        </div>
-        <div class="col project-info-col">
-          <h2 class="projects-header">Details</h2>
-          <div class="project-detail-table">
-            <div class="project-detail-bigger-container">
-              <div class="project-detail-header">Project name</div>
-              <div class="project-name">Sukurti dreamworką</div>
-            </div>
-            <div class="project-detail-bigger-container">
-              <div class="project-detail-header">Project description</div>
-              <div class="project-description">Projektų ir užduočių valdymo sistema yra įrankis, kuris padeda
-                organizuoti ir sekti darbo eigą, svarbias datos, susijusias su projektų ir užduočių įvykdymu. Ji gali
-                apimti skirtingus funkcionalumus, tokius kaip darbo planavimas, projektų, užduočių ir laiko valdymas,
-                resursų skyrimas, bendravimas ir komunikacija, ataskaitų ir statistikų analizavimas.</div>
-            </div>
-            <div class="project-detail-smaller-container">
-              <div class="project-detail-header">Projekto pabaigos data</div>
-              <div class="project-deadline">2023-05-04</div>
-            </div>
-            <div class="project-detail-smaller-container">
-              <div class="project-detail-header">Projekto vadovas</div>
-              <div class="project-manager">Green Velvet</div>
-            </div>
-          </div>
-        </div>
-        <div class="col users-list-col">
-          <h2 class="projects-header">Attendants</h2>
-          <ul class="list-group attendant-list">
-            <li class="attendant-list-group-items">Ignas Dudėnas <button class="attendant-list-item-delete">X</button>
-            </li>
-            <li class="attendant-list-group-items">Andrius Bogda <button class="attendant-list-item-delete">X</button>
-            </li>
-          </ul>
-        </div>
+      <div class="view-content">
+  <div class="container mt-1 project-container">
+    <div class="col projects-col">
+      <h2 class="projects-header">Projects</h2>
+      <div class="list-group project-list" onclick="selectProject(event)">
+        {{#each projects}}
+        <a href="#" class="list-group-item list-group-item-action{{#if this.active}} active{{/if}}"
+          aria-current="{{#if this.active}}true{{/if}}">
+          {{this.name}}
+        </a>
+        {{/each}}
+      </div>
+      <button class="create-new-project-btn">
+        <h5>Create</h5>
+        <img src="/static/media/plus.svg" />
+      </button>
+    </div>
+    <div class="col project-info-col">
+      <h2 class="projects-header">Details</h2>
+      <div class="project-detail-table">
+        <div class="project-name-header">Project name</div>
+        <div class="project-name" id="selectedProjectName"></div>
+        <div class="project-description-header">Project description</div>
+        <div class="project-description" id="selectedProjectDescription"></div>
+        <div class="project-deadline-header">Project deadline</div>
+        <div class="project-deadline" id="selectedProjectDeadline"></div>
+        <div class="project-manager-header">Project manager</div>
+        <div class="project-manager" id="selectedProjectManager"></div>
       </div>
     </div>
+    <div class="col users-list-col">
+      <h2 class="projects-header">Attendants</h2>
+      <ul class="list-group attendant-list" id="selectedProjectAttendants">
+      </ul>
+    </div>
   </div>
-  <div class="modal-window project-modal-window">
-    <div class="create-new-project-window">
-      <button class="close-modal"><img src="static/media/exit.svg" /></button>
-      <form action="/create-task" method="POST">
+</div>
+
+
+    <div class="modal-window project-modal-window">
+      <div class="create-new-project-window">
+        <button class="close-modal"><img src="static/media/exit.svg" /></button>
         <h1>New Project</h1>
-        <br>
-        <div class="flex-container">
-          <div class="flex-col-left">
-            <div class="form-group">
-              <label for="taskName">Project name</label>
-              <input type="text" class="form-control" id="project-name" name="project-name" />
-            </div>
-            <div class="form-group">
-              <label for="add-user">Add user</label>
-              <br>
-              <select name="add-user" id="add-user-select">
-                {{#each users}}
-                <option value="{{this.id}}" data-id="{{this.id}}" data-role="{{this.role}}">{{this.name}}</option>
-                {{/each}}
-              </select>
-              <button type="button" id="add-button" class="btn btn-primary">Add</button><br>
-            </div>
-            <br>
-            <button type="submit" class="btn btn-primary" id="create-button">Create project</button>
+        <form method="POST" action="project/create-project">
+          <div class="form-group">
+            <label for="project-name">Project name:</label>
+            <input
+              type="text"
+              id="project-name"
+              name="project-name"
+              class="form-control"
+            />
           </div>
-          <div class="flex-col-right">
-            <div class="form-group">
-              <label id="developer-list" for="developer-list">Participants</label>
-              <table class="worker-table table table-hover table-select">
-                <thead>
-                  <tr>
-                    <th>User name</th>
-                    <th>Role</th>
-                  </tr>
-                </thead>
-                <tbody id="user-table">
-                </tbody>
-              </table>
-              <br>
+          <div class="form-group">
+            <label for="project-description">Project description:</label>
+            <textarea
+              type="text"
+              id="project-description"
+              name="project-description"
+              class="form-control"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="project-deadline">Task Deadline</label>
+            <input
+              name="project-deadline"
+              type="date"
+              class="form-control"
+              id="project-deadline"
+              oninvalid="this.setCustomValidity('Please select a valid date')"
+              min=""
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="add-user">Add user:</label>
+            <select name="add-user" id="add-user-select" class="form-control">
+              {{#each users}}
+                <option
+                  value="{{this.id}}"
+                  data-id="{{this.id}}"
+                  data-role="{{this.role}}"
+                >{{this.name}}</option>
+              {{/each}}
+            </select>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>User name</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody id="user-table">
+            </tbody>
+          </table>
+          <br />
+          <button type="button" id="create-button">Create project</button>
+        </form>
+      </div>
 
             </div>
           </div>
@@ -173,5 +180,7 @@
     crossorigin="anonymous"></script>
 
 </body>
+
+  </body>
 
 </html>

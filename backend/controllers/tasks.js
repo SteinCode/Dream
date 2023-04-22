@@ -108,7 +108,6 @@ exports.createTask = (req, res) => {
     taskDeadline,
     assignedUserId,
   } = req.body;
-  console.log(assignedUserId);
   db.query(
     "INSERT INTO tasks SET ?",
     {
