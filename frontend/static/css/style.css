@@ -141,6 +141,13 @@ header .flex-user {
   justify-content: center;
 }
 
+.list-group-item.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* .nav-top {
+} */
 .nav-bottom {
   position: relative;
   bottom: 0px;
