@@ -41,7 +41,16 @@ describe('Test projects tab', function () {
     await driver.quit();
   });
 
-  it('should navigate to the home page', async function () {
+  it('should navigate to the poject page', async function () {
+    // Find the Projects link and click it
+    const projectLink = await driver.findElement(By.linkText("Projects"));
+    await projectLink.click();
+
+    // Wait for the URL to change and assert that it's the expected URL
+    await driver.wait(until.urlContains("/project"));
+    const currentUrl = await driver.getCurrentUrl();
+    assert.strictEqual(currentUrl, "http://127.0.0.1:3000/project");
+
     await driver.sleep(5000);
   });
 });
