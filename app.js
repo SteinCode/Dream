@@ -4,7 +4,7 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const flash = require("connect-flash");
 const hbs = require("hbs");
-
+const hbsHelperFunctions = require("./hbsHelperFunctions");
 // Defining routes
 const loginRoute = require("./backend/routes/login");
 const registerRoute = require("./backend/routes/register");
@@ -32,6 +32,7 @@ app.use(
     saveUninitialized: true,
   })
 );
+hbs.registerHelper(hbsHelperFunctions);
 
 app.use("/login", loginRoute);
 app.use("/register", registerRoute);

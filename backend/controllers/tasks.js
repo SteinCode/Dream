@@ -126,7 +126,24 @@ exports.createTask = (req, res) => {
         res.status(500).send("Error creating task");
       } else {
         return res.redirect("/tasks");
-        // res.status(200).json({ newTask: results }); // Return the newly created task
+      }
+    }
+  );
+};
+//tasks/update-task-status/:id
+exports.updateTaskStatus = (req, res) => {
+  const taskId = req.params.id; // Get task ID from URL parameter
+  const status = req.body.status;
+  console.log(status);
+  db.query(
+    "UPDATE tasks SET status=? WHERE id=?",
+    [status, taskId],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send("Error updating task");
+      } else {
+        return res.status(200).send("Task status was changed successfully");
       }
     }
   );

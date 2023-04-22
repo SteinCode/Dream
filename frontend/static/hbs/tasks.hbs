@@ -26,10 +26,6 @@
       crossorigin="anonymous"
     />
     <link href="static/css/style.css" rel="stylesheet" />
-    <link
-      rel="stylesheet"
-      href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css"
-    />
   </head>
   <header>
     <div class="flex-logo header-part">
@@ -43,6 +39,7 @@
       </a>
     </div>
   </header>
+
   <body>
     <div class="body-flex">
       <div class="sidebar">
@@ -81,66 +78,79 @@
           </a>
         </div>
       </div>
-      <div class="view-content">
+      <div id="task-container">
 
-        <div class="app">
-          <main class="project">
-            <div class="project-info">
-              <div class="project-participants">
-                <button class="project-participants__add">Add Task</button>
-
-              </div>
+        <div class="task-list tasklist-to-do">
+          <div class="row m-2 tasks-header">
+            <div class="col-md-6">
+              <h2>TODO</h2>
             </div>
-            <div class="project-tasks">
-
-              <div class="project-column to-do-column">
-                <div class="project-column-heading">
-                  <h2 class="project-column-heading__title">To do</h2><button
-                    class="project-column-heading__options"
-                  ><i class="fas fa-ellipsis-h"></i></button>
-                </div>
-                {{#each tasks}}
-                  <div class="task" draggable="true">
-                    <div class="task__tags"><span
-                        class="task__tag task__tag--{{this.difficulty}}"
-                      >{{this.difficulty}}</span><button
-                        class="task__options"
-                      ><i class="fas fa-ellipsis-h"></i></button></div>
-                    <p>{{this.name}}</p>
-                    <div class="task__stats">
-                      <span><img
-                          style="opacity:0.5"
-                          width="15px"
-                          src="/static/media/comments.svg"
-                        />
-                        3</span>
-                      <span><img
-                          style="opacity:0.5"
-                          width="15px"
-                          src="/static/media/user.svg"
-                        />
-                        {{this.user_name}}
-                        {{this.user_surname}}</span>
-                    </div>
-                  </div>
-                {{/each}}
-              </div>
-
-              <div class="project-column in-progress-column"><div
-                  class="project-column-heading"
+            <div class="col-md-6 project-task-btn"><button
+                class="project-task-btn__add"
+              >Add Task</button></div>
+          </div>
+          <div class="draggingContainer">
+            {{#each tasks}}
+              {{#if (eq this.status "to do")}}
+                <div
+                  status="{{this.status}}"
+                  task-id="{{this.id}}"
+                  class="task-card"
+                  draggable="true"
                 >
-                  <h2 class="project-column-heading__title">In Progress</h2><button
-                    class="project-column-heading__options"
-                  ><i class="fas fa-ellipsis-h"></i></button>
+                  <div class="task__tags">
+                    <span
+                      class="task__tag task__tag--{{this.difficulty}}"
+                    >{{this.difficulty}}</span>
+                    <button class="task__options">
+                      <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                  </div>
+                  <p>{{this.name}}</p>
+                  <div class="task__stats">
+                    <span>
+                      <img
+                        style="opacity:0.5"
+                        width="15px"
+                        src="/static/media/comments.svg"
+                      />
+                      3
+                    </span>
+                    <span>
+                      <img
+                        style="opacity:0.5"
+                        width="15px"
+                        src="/static/media/user.svg"
+                      />
+                      {{this.user_name}}
+                      {{this.user_surname}}
+                    </span>
+                  </div>
                 </div>
+              {{/if}}
+            {{/each}}
+          </div>
+        </div>
 
-                <div class="task" draggable="true">
+        <div class="task-list tasklist-in-progress">
+          <div class="m-2 tasks-header">
+            <h2>In Progress</h2>
+          </div>
+          <div class="draggingContainer">
+            {{#each tasks}}
+              {{#if (eq this.status "in progress")}}
+                <div
+                  status="{{this.status}}"
+                  task-id="{{this.id}}"
+                  class="task-card"
+                  draggable="true"
+                >
                   <div class="task__tags"><span
-                      class="task__tag task__tag--medium"
-                    >Medium</span><button class="task__options"><i
+                      class="task__tag task__tag--{{this.difficulty}}"
+                    >{{this.difficulty}}</span><button class="task__options"><i
                         class="fas fa-ellipsis-h"
                       ></i></button></div>
-                  <p>Replace lorem ipsum text in the final designs</p>
+                  <p>{{this.name}}</p>
                   <div class="task__stats">
                     <span><img
                         style="opacity:0.5"
@@ -153,58 +163,34 @@
                         width="15px"
                         src="/static/media/user.svg"
                       />
-                      Green velvet</span>
+                      {{this.user_name}}
+                      {{this.user_surname}}</span>
                   </div>
                 </div>
-              </div>
+              {{/if}}
+            {{/each}}
+          </div>
+        </div>
 
-              <div class="project-column needs-review-column"><div
-                  class="project-column-heading"
+        <div class="task-list tasklist-needs-review">
+          <div class="m-2 tasks-header">
+            <h2>Needs review</h2>
+          </div>
+          <div class="draggingContainer">
+            {{#each tasks}}
+              {{#if (eq this.status "needs review")}}
+                <div
+                  status="{{this.status}}"
+                  task-id="{{this.id}}"
+                  class="task-card"
+                  draggable="true"
                 >
-                  <h2 class="project-column-heading__title">Needs Review</h2><button
-                    class="project-column-heading__options"
-                  ><i class="fas fa-ellipsis-h"></i></button>
-                </div>
-
-                <div class="task" draggable="true">
                   <div class="task__tags"><span
-                      class="task__tag task__tag--hard"
-                    >Hard</span><button class="task__options"><i
+                      class="task__tag task__tag--{{this.difficulty}}"
+                    >{{this.difficulty}}</span><button class="task__options"><i
                         class="fas fa-ellipsis-h"
                       ></i></button></div>
-                  <p>Check the company we copied doesn't think we copied them.</p>
-                  <div class="task__stats">
-                    <span><img
-                        style="opacity:0.5"
-                        width="15px"
-                        src="/static/media/comments.svg"
-                      />
-                      0</span>
-                    <span><img
-                        style="opacity:0.5"
-                        width="15px"
-                        src="/static/media/user.svg"
-                      />
-                      unassigned</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="project-column done-column"><div
-                  class="project-column-heading"
-                >
-                  <h2 class="project-column-heading__title">Done</h2><button
-                    class="project-column-heading__options"
-                  ><i class="fas fa-ellipsis-h"></i></button>
-                </div>
-
-                <div class="task" draggable="true">
-                  <div class="task__tags"><span
-                      class="task__tag task__tag--easy"
-                    >Easy</span><button class="task__options"><i
-                        class="fas fa-ellipsis-h"
-                      ></i></button></div>
-                  <p>Send Advert illustrations over to production company.</p>
+                  <p>{{this.name}}</p>
                   <div class="task__stats">
                     <span><img
                         style="opacity:0.5"
@@ -217,111 +203,156 @@
                         width="15px"
                         src="/static/media/user.svg"
                       />
-                      Green velvet</span>
+                      {{this.user_name}}
+                      {{this.user_surname}}</span>
                   </div>
+
                 </div>
+              {{/if}}
+            {{/each}}
+          </div>
+        </div>
 
-              </div>
+        <div class="task-list tasklist-done">
+          <div class="m-2 tasks-header">
+            <h2>Done</h2>
+          </div>
+          <div class="draggingContainer">
+            {{#each tasks}}
+              {{#if (eq this.status "done")}}
+                <div
+                  status="{{this.status}}"
+                  task-id="{{this.id}}"
+                  class="task-card"
+                  draggable="true"
+                >
+                  <div class="task__tags"><span
+                      class="task__tag task__tag--{{this.difficulty}}"
+                    >{{this.difficulty}}</span><button class="task__options"><i
+                        class="fas fa-ellipsis-h"
+                      ></i></button></div>
+                  <p>{{this.name}}</p>
+                  <div class="task__stats">
+                    <span><img
+                        style="opacity:0.5"
+                        width="15px"
+                        src="/static/media/comments.svg"
+                      />
+                      0</span>
+                    <span><img
+                        style="opacity:0.5"
+                        width="15px"
+                        src="/static/media/user.svg"
+                      />
+                      {{this.user_name}}
+                      {{this.user_surname}}</span>
+                  </div>
 
-            </div>
-          </main>
+                </div>
+              {{/if}}
+            {{/each}}
+          </div>
         </div>
 
       </div>
-    </div>
+      <div class="modal-window create-task-modal-window">
+        <div class="create-task-modal-body">
+          <button class="close-modal"><img
+              src="static/media/exit.svg"
+            /></button>
+          <form id="create-task-form" action="/tasks/create-task" method="POST">
+            <h1>Create a task</h1>
+            <div class="flex-container">
+              <div class="flex-col-left">
+                <div class="form-group">
+                  <label for="taskName">Task Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="taskName"
+                    placeholder="Enter task name"
+                    name="taskName"
+                    oninvalid="this.setCustomValidity('Please enter a task name')"
+                    required
+                    maxLength="60"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="taskDescription">Task Description</label>
+                  <textarea
+                    class="form-control"
+                    id="taskDescription"
+                    rows="3"
+                    placeholder="Enter task description"
+                    name="taskDescription"
+                    oninvalid="this.setCustomValidity('Please input a task description')"
+                    required
+                    maxLength="2000"
+                  ></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="taskDifficulty">Task Difficulty</label>
+                  <select
+                    class="form-control"
+                    id="taskDifficulty"
+                    name="taskDifficulty"
+                    oninvalid="this.setCustomValidity('Please select task difficulty')"
+                    required
+                  >
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
 
-    <div class="modal-window create-task-modal-window">
-      <div class="create-task-modal-body">
-        <button class="close-modal"><img src="static/media/exit.svg" /></button>
-        <form action="/tasks/create-task" method="POST">
-          <h1>Create a task</h1>
-          <div class="flex-container">
-            <div class="flex-col-left">
-              <div class="form-group">
-                <label for="taskName">Task Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="taskName"
-                  placeholder="Enter task name"
-                  name="taskName"
-                  required
-                  oninvalid="this.setCustomValidity('Please enter a task name')"
-                />
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="taskDeadline">Task Deadline</label>
+                  <input
+                    name="taskDeadline"
+                    type="date"
+                    class="form-control"
+                    id="taskDeadline"
+                    oninvalid="this.setCustomValidity('Please select a valid date')"
+                    min=""
+                    required
+                  />
+                </div>
               </div>
-              <div class="form-group">
-                <label for="taskDescription">Task Description</label>
-                <textarea
-                  class="form-control"
-                  id="taskDescription"
-                  rows="3"
-                  placeholder="Enter task description"
-                  name="taskDescription"
-                  required
-                  oninvalid="this.setCustomValidity('Please input a task description')"
-                ></textarea>
-              </div>
-              <div class="form-group">
-                <label for="taskDifficulty">Task Difficulty</label>
-                <select
-                  class="form-control"
-                  id="taskDifficulty"
-                  name="taskDifficulty"
-                  oninvalid="this.setCustomValidity('Please select task difficulty')"
-                  required
-                >
-                  <option value="easy">Easy</option>
-                  <option value="medium">Medium</option>
-                  <option value="hard">Hard</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="taskDeadline">Task Deadline</label>
-                <input
-                  name="taskDeadline"
-                  type="date"
-                  class="form-control"
-                  id="taskDeadline"
-                  oninvalid="this.setCustomValidity('Please select a valid date')"
-                  min=""
-                  required
-                />
+              <div class="flex-col-right">
+                <div class="form-group">
+                  <label id="developer-list" for="developer-list">Select an
+                    asignee:
+                  </label>
+                  <select
+                    name="assignedUserId"
+                    id="assignedUserId"
+                    class="selectpicker"
+                    oninvalid="this.setCustomValidity('Please select an assignee')"
+                    required
+                  >
+                    <option value="">Select one</option>
+                    <optgroup label="Developers">
+
+                      {{#each developers}}
+                        <option value={{this.id}}>{{this.name}}
+                          {{this.surname}}</option>
+                      {{/each}}
+                    </optgroup>
+                  </select>
+                </div>
               </div>
             </div>
-            <div class="flex-col-right">
-              <div class="form-group">
-                <label id="developer-list" for="developer-list">Select an
-                  asignee:
-                </label>
-                <select
-                  name="assignedUserId"
-                  id="assignedUserId"
-                  class="selectpicker"
-                  oninvalid="this.setCustomValidity('Please select an assignee')"
-                  required
-                >
-                  <option value="">Select one</option>
-                  <optgroup label="Developers">
 
-                    {{#each developers}}
-                      <option value={{this.id}}>{{this.name}}
-                        {{this.surname}}</option>
-                    {{/each}}
-                  </optgroup>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Create Task</button>
-        </form>
+            <button type="submit" class="btn btn-primary">Create Task</button>
+          </form>
+        </div>
       </div>
     </div>
-    <script>
-      function sum(a, b) { return a + b; }
-    </script>
-
     <script type="module" src="/static/js/tasks.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"
+    ></script>
+
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
@@ -337,7 +368,8 @@
       integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
       crossorigin="anonymous"
     ></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="module" src="/static/js/tasks.js"></script>
 
   </body>
+
 </html>
