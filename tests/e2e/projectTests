@@ -41,16 +41,24 @@ describe('Test projects tab', function () {
     await driver.quit();
   });
 
-  it('should navigate to the poject page', async function () {
+  it('should navigate to the poject page and assert details of any project', async function () {
     // Find the Projects link and click it
-    const projectLink = await driver.findElement(By.linkText("Projects"));
+    const projectLink = await driver.findElement(By.xpath("//a[contains(@class,'nav-item') and contains(@href,'/project')]"));
     await projectLink.click();
+
 
     // Wait for the URL to change and assert that it's the expected URL
     await driver.wait(until.urlContains("/project"));
     const currentUrl = await driver.getCurrentUrl();
     assert.strictEqual(currentUrl, "http://127.0.0.1:3000/project");
 
-    await driver.sleep(5000);
+    // Click on a project from the Projects list
+    const project = await driver.findElement(By.xpath('//div[@class="list-group project-list"]//a[1]'));
+    await project.click();
+
+    // Assert that there is any text displayed in the Details section
+    const details = await driver.findElement(By.xpath('//div[@class="project-detail-table"]'));
+    const text = await details.getText();
+    assert(text.length > 0, 'Details section does not have any text');
   });
 });
