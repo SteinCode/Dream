@@ -2,6 +2,7 @@ const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const db = require("../../database.js");
+const flash = require("express-flash");
 
 exports.performance = (req, res) => {
   const token = req.cookies.token; // Read cookie
