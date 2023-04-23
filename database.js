@@ -19,17 +19,3 @@ db.connect((error) => {
 });
 
 module.exports = db;
-
-// const getUser = () => {
-//   return new Promise((resolve, reject) => {
-//     db.query("SELECT * FROM users WHERE id = 2", (error, results) => {
-//       if (error) {
-//         reject(error);
-//       } else {
-//         resolve(results[0]);
-//       }
-//     });
-//   });
-// };
-
-// module.exports = { db, getUser };
