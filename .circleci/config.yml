@@ -7,7 +7,6 @@ jobs:
     steps:
       - checkout
       - run: npm install
-      - run: npm start
 
   run_regression_tests:
     docker:
