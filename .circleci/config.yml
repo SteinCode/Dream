@@ -21,6 +21,6 @@ workflows:
   start_and_regression:
     jobs:
       - build
-      - test_regression
+      - test_regression:
         requires:
         - build
