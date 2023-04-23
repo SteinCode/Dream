@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "start": "nodemon server.js",
-    "regressionProject": "mocha ./tests/e2e/projectTests"
+    "regression": "mocha ./tests/e2e/projectTests",
+    "smoke": "mocha ./tests/e2e/projectTestsSmoke"
   },
   "keywords": [],
   "author": "",
