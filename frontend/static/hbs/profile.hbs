@@ -68,6 +68,7 @@
         <div class="sidebar-nav nav-bottom">
           <a
             class="nav-item logout"
+            id="logout-btn"
             href="/logout"
             action="/logout"
             method="GET"
@@ -90,7 +91,7 @@
                 </div>
                 <form action="/profile" method="POST">
                   <div class="row mt-2">
-                    <div class="col-md-6"><label
+                    <div class="col-md-6 profile_info"><label
                         for="name"
                         class="labels"
                       >Name</label><input
@@ -101,7 +102,7 @@
                         placeholder="first name"
                         value="{{user.name}}"
                       /></div>
-                    <div class="col-md-6"><label
+                    <div class="col-md-6 profile_info"><label
                         for="surname"
                         class="labels"
                       >Surname</label><input
@@ -112,7 +113,7 @@
                         value="{{user.surname}}"
                         placeholder="surname"
                       /></div>
-                    <div class="col-md-12"><label
+                    <div class="col-md-12 profile_info"><label
                         class="labels"
                         for="phoneNumber"
                       >Phone Number</label><input
@@ -123,7 +124,7 @@
                         placeholder="enter phone number"
                         value="{{user.phoneNumber}}"
                       /></div>
-                    <div class="col-md-12"><label
+                    <div class="col-md-12 profile_info"><label
                         class="labels"
                         for="email"
                       >Email</label><input
