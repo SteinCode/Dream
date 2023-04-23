@@ -2,16 +2,20 @@
   "name": "dreamwork",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "test": "jest",
+    "start": "nodemon server.js",
+    "regressionProject": "mocha ./tests/e2e/projectTests"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "chromedriver": "^112.0.0",
+    "chai": "^4.3.7",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
@@ -21,11 +25,20 @@
     "hbs": "^4.2.0",
     "jsonwebtoken": "^9.0.0",
     "mysql": "^2.18.1",
-    "nodemon": "^2.0.21"
+    "nodemon": "^2.0.21",
+    "polyfill": "^0.1.0",
+    "supertest": "^6.3.3"
   },
   "paths": {
     "handlebars": [
       "node_modules/handlebars/dist/handlebars.min.js"
     ]
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
+    "jsdom": "^21.1.1",
+    "mocha": "^10.2.0",
+    "selenium-webdriver": "^4.9.0"
   }
 }

@@ -1,10 +1,11 @@
 const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { db } = require("../../server.js");
+const db = require("../../database.js");
 
 exports.performance = (req, res) => {
   const token = req.cookies.token; // Read cookie
+
   if (!token) {
     return res.redirect("/login");
   }
