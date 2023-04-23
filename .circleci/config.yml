@@ -14,7 +14,6 @@ jobs:
       - image: circleci/node:16.10
     steps:
       - checkout
-      - run: npm install
       - run: npm run regression
 
 workflows:
@@ -23,3 +22,5 @@ workflows:
     jobs:
       - build
       - test_regression
+        requires:
+        - build
