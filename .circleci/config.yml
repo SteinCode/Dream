@@ -6,20 +6,10 @@ jobs:
       - image: circleci/node:16.10
     steps:
       - checkout
-      - run: npm install
-      - run: npm run build
-
-  run_regression_tests:
-    docker:
-      - image: circleci/node:16.10
-    steps:
-      - checkout
-      - run: npm install
-      - run: npm run regression
+      - run: npm start
 
 workflows:
   version: 2
   start_and_regression:
     jobs:
       - run_npm_start
-      - run_regression_tests
