@@ -72,4 +72,49 @@ describe('Test projects tab', function () {
     const email_text = await email.getText();
     assert(email_text.length > 0, 'Email section does not have any text');
   });
+
+  it('should successfully change user password and log in with new password', async function () {
+  // Navigate to the profile page
+  const profileLink = await driver.findElement(By.xpath("//a[contains(@class,'nav-item') and contains(@href,'/profile')]"));
+  await profileLink.click();
+
+  // Find the change password form elements
+  const currentPasswordInput = new InputField(driver, await driver.findElement(By.id('currentPassword')));
+  const newPasswordInput = new InputField(driver, await driver.findElement(By.id('newPassword')));
+  const repeatPasswordInput = new InputField(driver, await driver.findElement(By.id('repeatPassword')));
+  const changePasswordButton = await driver.findElement(By.css('button[type="submit"]'));
+
+  // Set current and new password values and submit the form
+  const currentPassword = 'ad';
+  const newPassword = 'newPassword';
+  await currentPasswordInput.setValue(currentPassword);
+  await newPasswordInput.setValue(newPassword);
+  await repeatPasswordInput.setValue(newPassword);
+  await changePasswordButton.click();
+
+  // Wait for the change password success message and assert its presence
+  const successMessage = await driver.wait(until.elementLocated(By.id('successMessage')), 10000);
+  assert.strictEqual(await successMessage.isDisplayed(), true, 'Change password success message is not displayed');
+
+  // Log out
+  const logoutButton = await driver.findElement(By.id('logout-btn'));
+  await logoutButton.click();
+
+  // Log back in with the new password and assert successful login
+  await driver.get('http://127.0.0.1:3000/login');
+
+  const emailInput = new InputField(driver, await driver.findElement(By.id('email')));
+  const passwordInput = new InputField(driver, await driver.findElement(By.id('password')));
+  const loginButton = await driver.findElement(By.css('button[type="submit"]'));
+
+  await emailInput.setValue('ad@ad.lt');
+  await passwordInput.setValue(newPassword);
+  await loginButton.click();
+
+  await driver.wait(until.urlContains("/dashboard"), 10000);
+  const currentUrl = await driver.getCurrentUrl();
+  assert.strictEqual(currentUrl, "http://127.0.0.1:3000/dashboard", 'User login with new password failed');
+});
+
+
 });
