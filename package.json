@@ -8,7 +8,9 @@
     "start": "nodemon server.js",
     "regression": "mocha ./tests/e2e/projectTests",
     "create-task-test": "mocha ./tests/e2e/createTaskTests.js",
-    "project-test": "mocha ./tests/e2e/projectTests.js"
+    "project-test": "mocha ./tests/e2e/projectTests.js",
+    "profile-test": "mocha ./tests/e2e/profileTests.js",
+    "register-code-integration-test": "mocha ./tests/e2e/codeAndRegisterTests.js"
   },
   "keywords": [],
   "author": "",

@@ -1,4 +1,4 @@
-const { Builder, By, until, Select } = require("selenium-webdriver");
+const { Builder, By, until, Select, Actions } = require("selenium-webdriver");
 const assert = require("assert");
 
 describe("Task creation tests", function () {
@@ -20,6 +20,10 @@ describe("Task creation tests", function () {
 
     // Wait for page to load and assert that we're logged in
     await driver.wait(until.urlIs("http://localhost:3000/"), 5000);
+  });
+
+  after(async function () {
+    await driver.quit();
   });
 
   it("Should open tasks page with task page link", async function () {
@@ -134,7 +138,7 @@ describe("Task creation tests", function () {
       `The non-existent user was selected: ${assignedUserValue}`
     );
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    // await new Promise((resolve) => setTimeout(resolve, 500));
   });
 
   it("After submitting the new task creation, the new task should be visible in the to-do column", async function () {
@@ -156,10 +160,5 @@ describe("Task creation tests", function () {
     }
 
     await new Promise((resolve) => setTimeout(resolve, 500));
-  });
-
-  after(async function () {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    await driver.quit();
   });
 });

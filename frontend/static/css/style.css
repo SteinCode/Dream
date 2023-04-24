@@ -409,9 +409,12 @@ header .flex-user {
   position: absolute;
   top: 0px;
   right: 0px;
-  border: 0px solid white;
+  border: 0px solid rgba(255, 255, 255, 0);
   padding: 0px;
   margin: 0px;
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0);
 }
 
 .close-modal img {
@@ -483,7 +486,7 @@ header .flex-user {
   visibility: hidden;
 }
 
-.attendant-list li:hover>.attendant-list-item-delete {
+.attendant-list li:hover > .attendant-list-item-delete {
   background: rgba(153, 77, 77, 0.063);
   visibility: visible;
 }
@@ -695,7 +698,7 @@ header .flex-user {
 
 /* Performance window  */
 
-.performance-container{
+.performance-container {
   margin: 2rem;
   padding: 2rem;
   width: 80%;
@@ -703,7 +706,7 @@ header .flex-user {
   box-sizing: border-box;
   box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
 }
-.performance-top{
+.performance-top {
   /* display: inline-block; */
   /* width: 100%; */
   display: flex;
@@ -711,7 +714,7 @@ header .flex-user {
   align-items: center;
 }
 
-.performance-total{
+.performance-total {
   font-size: 14pt;
   font-weight: 400;
 }
@@ -747,7 +750,6 @@ header .flex-user {
 }
 
 @media only screen and (max-width: 1000px) {
-
   .project-column:nth-child(2),
   .project-column:nth-child(3) {
     display: none;
