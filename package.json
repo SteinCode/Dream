@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "start": "nodemon server.js &",
-    "regression": "mocha --timeout 10000 ./tests/e2e/projectTests"
+    "regression": "mocha --timeout 10000 ./tests/e2e/projectTests",
+    "integration": "mocha --timeout 10000 ./tests/e2e/intergrationTest"
   },
   "keywords": [],
   "author": "",
@@ -14,8 +15,8 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
-    "chromedriver": "^112.0.0",
     "chai": "^4.3.7",
+    "chromedriver": "^112.0.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
@@ -39,6 +40,7 @@
     "jest-environment-jsdom": "^29.5.0",
     "jsdom": "^21.1.1",
     "mocha": "^10.2.0",
+    "mocha-tags": "^1.0.1",
     "selenium-webdriver": "^4.9.0"
   }
 }
