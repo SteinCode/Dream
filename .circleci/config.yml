@@ -1,0 +1,16 @@
+version: 2.1
+
+jobs:
+  run_npm_start:
+    docker:
+      - image: circleci/node:16.10
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm start
+
+workflows:
+  version: 2
+  start_and_regression:
+    jobs:
+      - run_npm_start

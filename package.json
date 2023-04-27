@@ -5,7 +5,11 @@
   "main": "app.js",
   "scripts": {
     "test": "jest",
-    "start": "nodemon server.js &",
+    "start": "nodemon server.js",
+    "create-task-test": "mocha ./tests/e2e/createTaskTests.js",
+    "project-test": "mocha ./tests/e2e/projectTests.js",
+    "profile-test": "mocha ./tests/e2e/profileTests.js",
+    "register-code-integration-test": "mocha ./tests/e2e/codeAndRegisterTests.js",
     "regression": "mocha --timeout 10000 ./tests/e2e/projectTests",
     "integration": "mocha --timeout 10000 ./tests/e2e/intergrationTest"
   },
@@ -13,13 +17,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@cubejs-client/core": "^0.31.0",
     "assert": "^2.0.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
-    "chai": "^4.3.7",
-    "chromedriver": "^112.0.0",
-    "@cubejs-client/core": "^0.31.0",
     "chart.js": "^4.2.1",
+    "chromedriver": "^112.0.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
@@ -40,6 +43,7 @@
   },
   "devDependencies": {
     "@types/selenium-webdriver": "^4.1.13",
+    "chai": "^4.3.7",
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
     "jsdom": "^21.1.1",
