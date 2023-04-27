@@ -10,19 +10,26 @@ exports.project = (req, res) => {
   if (!token) {
     return res.redirect("/login");
   }
+
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decodedToken.userId;
-
-    db.query("SELECT * FROM users", (error, results) => {
+    const userId = decodedToken.id;
+    getUser(userId, (error, user) => {
       if (error) {
         console.log(error);
+        return res.redirect("/login");
       }
-      const users = results;
-      res.render("project", {
-        users,
-        successMessage: req.flash("successMessage"),
-        errorMessage: req.flash("errorMessage"),
+      db.query("SELECT * FROM users", (error, results) => {
+        if (error) {
+          console.log(error);
+        }
+        const users = results;
+        res.render("project", {
+          user,
+          users,
+          successMessage: req.flash("successMessage"),
+          errorMessage: req.flash("errorMessage"),
+        });
       });
     });
   } catch (err) {
@@ -79,3 +86,13 @@ exports.addProject = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+function getUser(userId, callback) {
+  db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
+    if (error) {
+      return callback(error);
+    }
+    const user = results[0];
+    return callback(null, user);
+  });
+}
