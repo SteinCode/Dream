@@ -12,7 +12,7 @@ exports.profile = (req, res) => {
   }
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decodedToken.userId;
+    const userId = decodedToken.id;
 
     db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
       if (error) {
@@ -158,6 +158,20 @@ async function updateProfile(
   req,
   res
 ) {
+  if (
+    name.length > 50 ||
+    surname.length > 50 ||
+    phoneNumber.length > 50 ||
+    email.length > 50
+  ) {
+    req.flash(
+      "errorMessage",
+      "Name, surname, email, and phone number should be under 50 characters."
+    );
+    res.redirect("/profile");
+    return;
+  }
+
   try {
     await updateUser(userId, name, surname, email, phoneNumber);
     req.flash("successMessage", "Your profile was successfully updated!");
