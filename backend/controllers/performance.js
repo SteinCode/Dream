@@ -12,7 +12,7 @@ exports.performance = (req, res) => {
   }
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decodedToken.userId;
+    const userId = decodedToken.id;
 
     db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
       if (error) {

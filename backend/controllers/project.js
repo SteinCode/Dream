@@ -10,8 +10,11 @@ exports.project = (req, res) => {
   if (!token) {
     return res.redirect("/login");
   }
+
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decodedToken.id;
+    getUser(userId, (error, user) => {
     const userId = decodedToken.userId;
 
     getUsers((error, userResults) => {
@@ -19,6 +22,14 @@ exports.project = (req, res) => {
         console.log(error);
         return res.redirect("/login");
       }
+      db.query("SELECT * FROM users", (error, results) => {
+        if (error) {
+          console.log(error);
+        }
+        const users = results;
+        res.render("project", {
+          user,
+          users,
       getProjects((error, projectResults) => {
         if (error) {
           console.log(error);
@@ -74,6 +85,14 @@ exports.addProject = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+function getUser(userId, callback) {
+  db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
+    if (error) {
+      return callback(error);
+    }
+    const user = results[0];
+    return callback(null, user);
 
 // Helper function to insert a new project
 function insertProject(project) {
