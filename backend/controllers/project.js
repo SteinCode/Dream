@@ -12,7 +12,7 @@ exports.project = (req, res) => {
   }
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decodedToken.userId;
+    const userId = decodedToken.id;
 
     getUsers((error, userResults) => {
       if (error) {
@@ -33,6 +33,13 @@ exports.project = (req, res) => {
           errorMessage: req.flash("errorMessage"),
         });
       });
+    });
+    db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
+      if (error) {
+        console.log(error);
+      }
+      const user = results[0];
+      res.render("project", { user });
     });
   } catch (err) {
     console.log(err);

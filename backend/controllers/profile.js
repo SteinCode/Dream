@@ -64,7 +64,7 @@ exports.updateUser = async (req, res) => {
 function getUserId(req) {
   const token = req.cookies.token;
   const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-  return decodedToken.userId;
+  return decodedToken.id;
 }
 
 async function updatePassword(
