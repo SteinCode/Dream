@@ -141,6 +141,13 @@ header .flex-user {
   justify-content: center;
 }
 
+.list-group-item.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* .nav-top {
+} */
 .nav-bottom {
   position: relative;
   bottom: 0px;
@@ -307,11 +314,6 @@ header .flex-user {
   height: 100%;
 }
 
-.create-new-project-btn {
-  bottom: 0;
-  position: absolute;
-}
-
 .project-list a {
   font-size: 12px;
   padding: 10px;
@@ -337,6 +339,8 @@ header .flex-user {
   align-items: center;
   border: 0px solid black;
   gap: 5px;
+  bottom: 0;
+  position: absolute;
 }
 
 .create-center {
@@ -405,9 +409,12 @@ header .flex-user {
   position: absolute;
   top: 0px;
   right: 0px;
-  border: 0px solid white;
+  border: 0px solid rgba(255, 255, 255, 0);
   padding: 0px;
   margin: 0px;
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0);
 }
 
 .close-modal img {
@@ -479,7 +486,7 @@ header .flex-user {
   visibility: hidden;
 }
 
-.attendant-list li:hover>.attendant-list-item-delete {
+.attendant-list li:hover > .attendant-list-item-delete {
   background: rgba(153, 77, 77, 0.063);
   visibility: visible;
 }
@@ -689,6 +696,39 @@ header .flex-user {
   opacity: 0.4;
 }
 
+/* Performance window  */
+
+.performance-container {
+  margin: 2rem;
+  padding: 2rem;
+  width: 80%;
+  border-radius: 3px;
+  box-sizing: border-box;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+}
+.performance-top {
+  /* display: inline-block; */
+  /* width: 100%; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.performance-total {
+  font-size: 14pt;
+  font-weight: 400;
+}
+
+.performance-btn-filter {
+  display: inline-block;
+  width: 100px;
+  padding: 5px 0px;
+  justify-content: center;
+  align-items: center;
+  border: 0px solid black;
+  gap: 5px;
+}
+
 @media only screen and (max-width: 1300px) {
   .project {
     max-width: 100%;
@@ -710,7 +750,6 @@ header .flex-user {
 }
 
 @media only screen and (max-width: 1000px) {
-
   .project-column:nth-child(2),
   .project-column:nth-child(3) {
     display: none;

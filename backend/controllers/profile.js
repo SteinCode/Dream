@@ -155,6 +155,20 @@ async function updateProfile(
   req,
   res
 ) {
+  if (
+    name.length > 50 ||
+    surname.length > 50 ||
+    phoneNumber.length > 50 ||
+    email.length > 50
+  ) {
+    req.flash(
+      "errorMessage",
+      "Name, surname, email, and phone number should be under 50 characters."
+    );
+    res.redirect("/profile");
+    return;
+  }
+
   try {
     await updateUser(userId, name, surname, email, phoneNumber);
     req.flash("successMessage", "Your profile was successfully updated!");
