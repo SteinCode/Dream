@@ -46,6 +46,7 @@ async function createProject() {
     });
     const data = await response.json();
     console.log(data);
+    window.alert('Project created successfully!');
   } catch (error) {
     console.log(error);
   }

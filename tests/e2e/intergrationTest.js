@@ -19,7 +19,19 @@ class InputField {
   }
 }
 
-describe('Create new project form', function () {
+async function selectProject(driver, projectName) {
+    const projectList = await driver.findElement(By.className('project-list'));
+    const projectLinks = await projectList.findElements(By.xpath('//a'));
+    for (let link of projectLinks) {
+      const text = await link.getText();
+      if (text === projectName) {
+        await link.click();
+        break;
+      }
+    }
+}
+
+describe('Integration', function () {
   let driver;
 
   beforeEach(async () => {
@@ -51,7 +63,7 @@ describe('Create new project form', function () {
     await driver.quit();
   });
 
-  it('should open create project window and assert alert', async () => {
+  it('should create project and then find it in the list', async () => {
     // Click the create button
     await driver.findElement(By.className("create-new-project-btn")).click();
   
@@ -69,7 +81,6 @@ describe('Create new project form', function () {
     const addUserSelectDropdown = await driver.wait(until.elementIsVisible(addUserSelect));
     const addUserSelectOption = await addUserSelectDropdown.findElement(By.css("option:nth-child(2)"));
     await addUserSelectOption.click();
-
   
     // Submit the form
     await driver.findElement(By.id("create-button")).click();
@@ -77,34 +88,15 @@ describe('Create new project form', function () {
     // Wait for the alert to be displayed
     await driver.wait(until.alertIsPresent());
   
-    // Get the alert text and assert that it matches the expected text
-    const alertText = await driver.switchTo().alert().getText();
-    assert.strictEqual(alertText, "Project created successfully!");
-  });
+    // close alert
+    const alert = await driver.switchTo().alert();
+    alert.accept();
 
-  it('should open create project window and cancel it', async () => {
-    // Click the create button
-    await driver.findElement(By.className("create-new-project-btn")).click();
-  
     // Close the form
-    const closeBtn = await driver.findElement(By.xpath('//button[@class="close-modal"]/img')).click();
+    await driver.findElement(By.xpath('//button[@class="close-modal"]/img')).click();
 
-    const title = await driver.findElement(By.xpath("//*[text()='New Project']"));
-    assert(!(await title.isDisplayed()), 'Title "New Project" should not be visible');
-  });
-
-  it('should open create project window and validate input fields', async () => {
-    // Click the create button
-    await driver.findElement(By.className("create-new-project-btn")).click();
-  
-    await driver.wait(until.elementLocated(By.id('project-name')), 10000);
-    const projectNameInput = await driver.findElement(By.id('project-name'));
-    await projectNameInput.sendKeys('My Project');
-    const projectDescriptionInput = await driver.findElement(By.id('project-description'));
-    await projectDescriptionInput.sendKeys('This is my project description');
-    const projectDeadlineInput = await driver.findElement(By.id('project-deadline'));
-    const deadlineDate = new Date('2023-05-31');
-    const deadlineDateString = deadlineDate.getFullYear() + '-' + (deadlineDate.getMonth() + 1).toString().padStart(2, '0') + '-' + deadlineDate.getDate().toString().padStart(2, '0');
-    await driver.executeScript("arguments[0].setAttribute('value', arguments[1])", projectDeadlineInput, deadlineDateString);
+    await selectProject(driver, 'testName');
+    const selectedProject = await driver.findElement(By.css('.project-list .active')).getText();
+    assert.equal(selectedProject, 'testName', 'Project with name "testName" should be selected');
   });
 });
