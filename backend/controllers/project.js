@@ -15,34 +15,30 @@ exports.project = (req, res) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.id;
     getUser(userId, (error, user) => {
-    const userId = decodedToken.userId;
-
-    getUsers((error, userResults) => {
       if (error) {
         console.log(error);
         return res.redirect("/login");
       }
-      db.query("SELECT * FROM users", (error, results) => {
-        if (error) {
-          console.log(error);
-        }
-        const users = results;
-        res.render("project", {
-          user,
-          users,
       getProjects((error, projectResults) => {
         if (error) {
           console.log(error);
           return res.redirect("/login");
         }
-        const users = userResults;
         const projects = projectResults;
-        res.render("project", {
-          users,
-          projects,
-          successMessage: req.flash("successMessage"),
-          errorMessage: req.flash("errorMessage"),
-        });
+        getUsers((error, usersResults) => {
+          if (error) {
+            console.log(error);
+            return res.redirect("/login");
+          }
+          const users = usersResults;
+          res.render("project", {
+            user,
+            users,
+            projects,
+            successMessage: req.flash("successMessage"),
+            errorMessage: req.flash("errorMessage"),
+          });
+        }); // <-- add this closing brace
       });
     });
   } catch (err) {
@@ -93,7 +89,8 @@ function getUser(userId, callback) {
     }
     const user = results[0];
     return callback(null, user);
-
+  });
+}
 // Helper function to insert a new project
 function insertProject(project) {
   return new Promise((resolve, reject) => {
