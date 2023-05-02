@@ -14,10 +14,11 @@ exports.profile = (req, res) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.id;
 
-    getUser(userId, (error, user) => {
+    db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
       if (error) {
         console.log(error);
       }
+      const user = results[0];
       res.render("profile", {
         user,
         successMessage: req.flash("successMessage"),
@@ -63,7 +64,7 @@ exports.updateUser = async (req, res) => {
 function getUserId(req) {
   const token = req.cookies.token;
   const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-  return decodedToken.userId;
+  return decodedToken.id;
 }
 
 async function updatePassword(
@@ -96,7 +97,7 @@ async function updatePassword(
   }
 
   try {
-    const user = await getUser(userId);
+    const user = await getUserById(userId);
     const passwordMatch = await bcrypt.compare(currentPassword, user.password);
 
     if (!passwordMatch) {
@@ -120,13 +121,15 @@ async function updatePassword(
   }
 }
 
-function getUser(userId, callback) {
-  db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
-    if (error) {
-      return callback(error);
-    }
-    const user = results[0];
-    return callback(null, user);
+async function getUserById(userId) {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results[0]);
+      }
+    });
   });
 }
 
