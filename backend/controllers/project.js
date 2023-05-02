@@ -124,3 +124,50 @@ function insertProjectUsers(values) {
     );
   });
 }
+
+// delete project
+exports.deleteProject = async (req, res) => { console.log("++++++++++++++++++++++++++++");
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const { projectId } = req.params;
+
+    const project = await findProjectById(projectId);
+    if (!project) {
+      return res.status(404).json({ error: "Project not found" });
+    }
+    
+    // Delete project users
+    await deleteProjectUsers(projectId);
+
+    // Delete project
+    await deleteProjectFromDatabase(projectId);
+
+    return res.json({ message: "Project deleted successfully" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+async function deleteProjectUsers(projectId) {
+  try {
+    await pool.query("DELETE FROM project_user WHERE project_id = $1", [projectId]);
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+async function deleteProjectFromDatabase(projectId) {
+  try {
+    await pool.query("DELETE FROM project WHERE project_id = $1", [projectId]);
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}

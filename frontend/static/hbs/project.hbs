@@ -65,14 +65,21 @@
   <div class="container mt-1 project-container">
     <div class="col projects-col">
       <h2 class="projects-header">Projects</h2>
-      <div class="list-group project-list" onclick="selectProject(event)">
-        {{#each projects}}
-        <a href="#" class="list-group-item list-group-item-action{{#if this.active}} active{{/if}}"
-          aria-current="{{#if this.active}}true{{/if}}">
-          {{this.name}}
-        </a>
-        {{/each}}
-      </div>
+      <div class="list-group project-list">
+  {{#each projects}}
+  <div class="list-group-item-container">
+    <a href="#" class="list-group-item list-group-item-action{{#if this.active}} active{{/if}}"
+      aria-current="{{#if this.active}}true{{/if}}">
+      {{this.name}}
+    </a>
+    <button class="delete-project-btn" data-project-id="{{this.project_id}}">
+      <img src="/static/media/exit.svg" />
+    </button>
+  </div>
+  {{/each}}
+</div>
+
+
       <button class="create-new-project-btn">
         <h5>Create</h5>
         <img src="/static/media/plus.svg" />

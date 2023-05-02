@@ -696,6 +696,11 @@ header .flex-user {
   opacity: 0.4;
 }
 
+.delete-project-btn img {
+  width: 16px;
+  height: 16px;
+}
+
 /* Performance window  */
 
 .performance-container {

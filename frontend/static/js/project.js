@@ -53,8 +53,13 @@ async function createProject() {
 }
 
 function selectProject(event) {
-  if (event.target.classList.contains("list-group-item")) {
-    const selectedProject = event.target.textContent.trim();
+  const target = event.target;
+  console.log(target.classList);
+
+  if (target.classList.contains("delete-project-btn")) {
+    deleteProject(event);
+  } else if (target.classList.contains("list-group-item")) {
+    const selectedProject = target.textContent.trim();
     selectedProjectName.textContent = selectedProject;
 
     // Remove the 'active' class from all project items
@@ -62,7 +67,40 @@ function selectProject(event) {
     projectItems.forEach(item => item.classList.remove('active'));
 
     // Add the 'active' class to the selected project item
-    event.target.classList.add('active');
+    target.classList.add('active');
+  }
+}
+
+const projectList = document.querySelector(".project-list");
+const selectedProjectName = document.querySelector(".project-name");
+
+projectList.addEventListener("click", selectProject);
+
+const deleteButtons = document.querySelectorAll(".delete-project-btn");
+
+deleteButtons.forEach((button) => {
+  button.addEventListener("click", deleteProject);
+});
+
+async function deleteProject(event) {
+  event.stopPropagation();
+  const projectId = event.currentTarget.dataset.projectId;
+  const url = `/project/delete-project/${projectId}`;
+
+  try {
+    const response = await fetch(url, { method: "DELETE" });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Handle the success response
+      console.log(data);
+    } else {
+      // Handle the error response
+      const errorData = await response.json();
+      console.log(errorData);
+    }
+  } catch (err) {
+    console.log(err);
   }
 }
 
@@ -82,11 +120,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const select = document.querySelector('select[name="add-user"]');
   select.addEventListener("change", addUser);
   createButton.addEventListener("click", createProject);
-
-  const projectList = document.querySelector(".project-list");
-  const selectedProjectName = document.querySelector(".project-name");
-
-  projectList.addEventListener("click", selectProject);
 });
 
 export { showModal, hideModal, addUser, createProject, selectProject };
