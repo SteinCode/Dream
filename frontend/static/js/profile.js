@@ -12,3 +12,8 @@ formSwitch.addEventListener("click", () => {
   togglePassword.style.display =
     togglePassword.style.display === "none" ? "block" : "none";
 });
+
+window.addEventListener('beforeunload', function() {
+  // Save the value of the checkbox to local storage
+  localStorage.setItem('passwordChecked', formSwitch.checked);
+});
