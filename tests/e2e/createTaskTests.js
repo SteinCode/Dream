@@ -28,7 +28,7 @@ describe("Task creation tests", function () {
 
   it("Should open tasks page with task page link", async function () {
     await driver.get("http://localhost:3000/tasks");
-    //await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   });
 
   it("Should open task creation modal window", async function () {
@@ -36,13 +36,13 @@ describe("Task creation tests", function () {
       By.className("project-task-btn__add")
     );
     await openTaskBtn.click();
-    //await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   });
 
   it("Should not let create the task without any input", async function () {
     const submitNewTask = await driver.findElement(By.id("submitNewTask"));
     await submitNewTask.click();
-    //await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   });
 
   it("Should not let create the task only with task name", async function () {
@@ -50,7 +50,7 @@ describe("Task creation tests", function () {
     await taskName.sendKeys("test task name");
     const submitNewTask = await driver.findElement(By.id("submitNewTask"));
     await submitNewTask.click();
-    //await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   });
 
   it("Should not let create the task only with task name and description", async function () {
@@ -58,7 +58,7 @@ describe("Task creation tests", function () {
     await taskDescription.sendKeys("test task description");
     const submitNewTask = await driver.findElement(By.id("submitNewTask"));
     await submitNewTask.click();
-    //await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   });
 
   it("Should not let create the task only with task name and description and deadline", async function () {
@@ -66,7 +66,7 @@ describe("Task creation tests", function () {
     await taskDeadline.sendKeys("2023-06-01");
     const submitNewTask = await driver.findElement(By.id("submitNewTask"));
     await submitNewTask.click();
-    // await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   });
 
   it("Should not let create task with past date", async function () {
@@ -80,7 +80,7 @@ describe("Task creation tests", function () {
     await taskDeadline.sendKeys("2023-03-01");
     const submitNewTask = await driver.findElement(By.id("submitNewTask"));
     await submitNewTask.click();
-    //await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   });
 
   it("Should not let input more than 60 symbols in task name", async function () {
@@ -92,7 +92,7 @@ describe("Task creation tests", function () {
       taskNameLength <= 60,
       `There were more than 60 symbols in task name: '${taskNameValue}'`
     );
-    //await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   });
 
   it("Should not let input more than 2000 symbols in task description", async function () {
@@ -104,7 +104,7 @@ describe("Task creation tests", function () {
       taskDescriptionLength <= 2000,
       `There were more than 2000 symbols in task Description: '${taskDescriptionValue}'`
     );
-    //await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   });
 
   it("Should not let input non-date value into deadline input", async function () {
@@ -115,7 +115,7 @@ describe("Task creation tests", function () {
       taskDeadlineValue == "",
       `The date picker accepted wrong input'${taskDeadlineValue}'`
     );
-    //await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   });
 
   it("Should not let assign non-existent user to the task (non-valid id)", async function () {
@@ -138,7 +138,7 @@ describe("Task creation tests", function () {
       `The non-existent user was selected: ${assignedUserValue}`
     );
 
-    // await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   });
 
   it("After submitting the new task creation, the new task should be visible in the to-do column", async function () {
