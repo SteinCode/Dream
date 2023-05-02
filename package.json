@@ -6,11 +6,12 @@
   "scripts": {
     "test": "jest",
     "start": "nodemon server.js",
-    "regression": "mocha ./tests/e2e/projectTests",
     "create-task-test": "mocha ./tests/e2e/createTaskTests.js",
     "project-test": "mocha ./tests/e2e/projectTests.js",
     "profile-test": "mocha ./tests/e2e/profileTests.js",
-    "register-code-integration-test": "mocha ./tests/e2e/codeAndRegisterTests.js"
+    "register-code-integration-test": "mocha ./tests/e2e/codeAndRegisterTests.js",
+    "regression": "mocha --timeout 10000 ./tests/e2e/projectTests",
+    "integration": "mocha --timeout 10000 ./tests/e2e/intergrationTest"
   },
   "keywords": [],
   "author": "",
@@ -47,6 +48,7 @@
     "jest-environment-jsdom": "^29.5.0",
     "jsdom": "^21.1.1",
     "mocha": "^10.2.0",
+    "mocha-tags": "^1.0.1",
     "selenium-webdriver": "^4.9.0"
   }
 }
