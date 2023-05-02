@@ -13,6 +13,7 @@ const profileRoute = require("./backend/routes/profile");
 const projectRoute = require("./backend/routes/project");
 const tasksRoute = require("./backend/routes/tasks");
 const performanceRoute = require("./backend/routes/performance");
+const userRoute = require("./backend/routes/user");
 
 const app = express();
 
@@ -41,7 +42,7 @@ app.use("/profile", profileRoute);
 app.use("/project", projectRoute);
 app.use("/tasks", tasksRoute);
 app.use("/performance", performanceRoute);
-
+app.use("/user", userRoute);
 app.use(
   "/media",
   express.static(path.join(__dirname, "frontend", "static", "media"))
