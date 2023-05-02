@@ -15,7 +15,6 @@ exports.tasks = (req, res) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.id;
     const userRole = decodedToken.role;
-
     getUser(userId, (error, user) => {
       if (error) {
         console.log(error);
@@ -57,7 +56,7 @@ function getUser(userId, callback) {
 function getTasksForUser(userId, userRole, callback) {
   if (userRole === "Project manager") {
     db.query(
-      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users ON tasks.asignee_id = users.id WHERE tasks.manager_id = ?",
+      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users WHERE tasks.manager_id = ?",
       [userId],
       (error, results) => {
         if (error) {
@@ -69,7 +68,7 @@ function getTasksForUser(userId, userRole, callback) {
     );
   } else if (userRole === "Developer") {
     db.query(
-      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users ON tasks.manager_id = users.id WHERE tasks.asignee_id = ?",
+      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users WHERE tasks.asignee_id = ?",
       [userId],
       (error, results) => {
         if (error) {
