@@ -6,4 +6,6 @@ const router = express.Router();
 router.get("/", controller.profile);
 // /profile/updateUser
 router.post("/update-user", controller.updateUser);
+// /profile/deleteUser/:id
+router.delete("/delete-user/:id", controller.deleteUser);
 module.exports = router;

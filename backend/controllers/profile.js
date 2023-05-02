@@ -201,3 +201,26 @@ async function updateUser(userId, name, surname, email, phoneNumber) {
     );
   });
 }
+
+//DELETE
+
+exports.deleteUser = (req, res) => {
+  const token = req.cookies.token; // Read cookie
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decodedToken.id;
+
+    db.query("DELETE FROM users WHERE id = ?", [userId], (error, results) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Failed to delete user" });
+      }
+      const user = results[0];
+      res.clearCookie("token"); // clear the session cookie
+      return res.status(200).json({ message: "User deleted successfully" });
+    });
+  } catch (err) {
+    console.log(err);
+    return res.redirect("/login");
+  }
+};
