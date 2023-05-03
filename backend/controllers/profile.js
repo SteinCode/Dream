@@ -209,7 +209,6 @@ exports.deleteUser = (req, res) => {
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = req.params.id;
-
     db.query("DELETE FROM users WHERE id = ?", [userId], (error, results) => {
       if (error) {
         console.log(error);

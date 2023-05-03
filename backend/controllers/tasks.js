@@ -150,12 +150,8 @@ exports.updateTaskStatus = (req, res) => {
 
 //DELETE
 exports.deleteTask = (req, res) => {
-  const token = req.cookies.token; // Read cookie
   try {
-    console.log("issikviecia");
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decodedToken.id;
-
+    const taskId = req.params.id;
     db.query("DELETE FROM tasks WHERE id = ?", [taskId], (error, results) => {
       if (error) {
         console.log(error);
