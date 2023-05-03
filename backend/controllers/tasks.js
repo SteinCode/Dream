@@ -84,6 +84,7 @@ function getTasksForUser(userId, userRole, callback) {
     );
   }
 }
+
 function getDevelopers(callback) {
   db.query("SELECT * FROM users WHERE role = 'developer'", (error, results) => {
     if (error) {
