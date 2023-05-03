@@ -130,3 +130,28 @@ function getCurrentDate() {
   return `${year}-${month}-${day}`;
 }
 document.getElementById("taskDeadline").min = getCurrentDate();
+
+//Delete task
+const deleteTaskButtons = document.querySelectorAll(".delete__task");
+deleteTaskButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const taskId = button.parentNode.parentNode.getAttribute("task-id");
+    console.log("==============" + taskId);
+    fetch(`/tasks/delete-task/${taskId}`, {
+      method: "DELETE",
+      credentials: "same-origin",
+    })
+      .then((response) => {
+        if (response.ok) {
+          // User was deleted successfully, redirect to /login page
+          window.location.href = "/tasks";
+        } else {
+          throw new Error("Failed to delete task");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        // Handle the error here
+      });
+  });
+});
