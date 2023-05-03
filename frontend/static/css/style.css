@@ -661,7 +661,7 @@ header .flex-user {
   justify-content: space-between;
 }
 
-.task__options {
+.delete__task {
   background: transparent;
   border: 0;
   color: var(--light-grey);

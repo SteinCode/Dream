@@ -147,3 +147,25 @@ exports.updateTaskStatus = (req, res) => {
     }
   );
 };
+
+//DELETE
+exports.deleteTask = (req, res) => {
+  const token = req.cookies.token; // Read cookie
+  try {
+    console.log("issikviecia");
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decodedToken.id;
+
+    db.query("DELETE FROM tasks WHERE id = ?", [taskId], (error, results) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Failed to delete task" });
+      }
+      const task = results[0];
+      return res.status(200).json({ message: "Task deleted successfully" });
+    });
+  } catch (err) {
+    console.log(err);
+    return res.redirect("/tasks");
+  }
+};
