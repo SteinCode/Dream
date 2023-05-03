@@ -203,7 +203,6 @@ async function updateUser(userId, name, surname, email, phoneNumber) {
 }
 
 //DELETE
-
 exports.deleteUser = (req, res) => {
   const token = req.cookies.token; // Read cookie
   try {

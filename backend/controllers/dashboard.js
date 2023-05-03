@@ -61,3 +61,20 @@ function getCodes(callback) {
     return callback(null, codes);
   });
 }
+
+exports.updateExpirationDate = (req, res) => {
+  const code = req.params.code; // Get code from URL parameter
+  const date = req.body.expiration_time; // Get new expiration date from request body
+  db.query(
+    "UPDATE codes SET expiration_time=? WHERE code=?",
+    [date, code],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send("Error updating code expiration date");
+      } else {
+        res.status(200).send("Code expiration date was updated successfully");
+      }
+    }
+  );
+};

@@ -130,7 +130,8 @@ exports.createTask = (req, res) => {
     }
   );
 };
-//tasks/update-task-status/:id
+
+//PUT
 exports.updateTaskStatus = (req, res) => {
   const taskId = req.params.id; // Get task ID from URL parameter
   const status = req.body.status;
