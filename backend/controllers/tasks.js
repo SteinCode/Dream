@@ -15,7 +15,6 @@ exports.tasks = (req, res) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.id;
     const userRole = decodedToken.role;
-
     getUser(userId, (error, user) => {
       if (error) {
         console.log(error);
@@ -57,7 +56,7 @@ function getUser(userId, callback) {
 function getTasksForUser(userId, userRole, callback) {
   if (userRole === "Project manager") {
     db.query(
-      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users ON tasks.asignee_id = users.id WHERE tasks.manager_id = ?",
+      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users WHERE tasks.manager_id = ?",
       [userId],
       (error, results) => {
         if (error) {
@@ -69,7 +68,7 @@ function getTasksForUser(userId, userRole, callback) {
     );
   } else if (userRole === "Developer") {
     db.query(
-      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users ON tasks.manager_id = users.id WHERE tasks.asignee_id = ?",
+      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users WHERE tasks.asignee_id = ?",
       [userId],
       (error, results) => {
         if (error) {
@@ -85,6 +84,7 @@ function getTasksForUser(userId, userRole, callback) {
     );
   }
 }
+
 function getDevelopers(callback) {
   db.query("SELECT * FROM users WHERE role = 'developer'", (error, results) => {
     if (error) {
@@ -130,7 +130,8 @@ exports.createTask = (req, res) => {
     }
   );
 };
-//tasks/update-task-status/:id
+
+//PUT
 exports.updateTaskStatus = (req, res) => {
   const taskId = req.params.id; // Get task ID from URL parameter
   const status = req.body.status;
@@ -147,4 +148,22 @@ exports.updateTaskStatus = (req, res) => {
       }
     }
   );
+};
+
+//DELETE
+exports.deleteTask = (req, res) => {
+  try {
+    const taskId = req.params.id;
+    db.query("DELETE FROM tasks WHERE id = ?", [taskId], (error, results) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Failed to delete task" });
+      }
+      const task = results[0];
+      return res.status(200).json({ message: "Task deleted successfully" });
+    });
+  } catch (err) {
+    console.log(err);
+    return res.redirect("/tasks");
+  }
 };

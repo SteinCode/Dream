@@ -272,7 +272,7 @@ header .flex-user {
   position: relative;
   max-width: 600px;
   width: 100%;
-  height: 200px;
+  min-height: 200px;
   padding: 20px;
 }
 
@@ -492,6 +492,19 @@ header .flex-user {
 }
 
 /*----------------- Profile content */
+.delete-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.delete-button {
+  font-size: 12.5px;
+  padding: 6px 10px;
+  background: rgb(153, 1, 1);
+  color: white;
+  border-radius: 5px;
+}
+
 .profile-view .row {
   justify-content: center;
 }
@@ -648,7 +661,7 @@ header .flex-user {
   justify-content: space-between;
 }
 
-.task__options {
+.delete__task {
   background: transparent;
   border: 0;
   color: var(--light-grey);
