@@ -11,14 +11,19 @@ exports.home = (req, res) => {
   }
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decodedToken.userId;
+    const userId = decodedToken.id;
 
     db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
       if (error) {
         console.log(error);
       }
       const user = results[0];
-      res.render("home", { user });
+      getCodes((err, codes) => {
+        if (err) {
+          console.log(err);
+        }
+        res.render("home", { user, codes });
+      });
     });
   } catch (err) {
     console.log(err);
@@ -46,3 +51,13 @@ exports.invitationCode = async (req, res) => {
     }
   });
 };
+
+function getCodes(callback) {
+  db.query("SELECT * FROM codes", (error, results) => {
+    if (error) {
+      return callback(error);
+    }
+    const codes = results;
+    return callback(null, codes);
+  });
+}
