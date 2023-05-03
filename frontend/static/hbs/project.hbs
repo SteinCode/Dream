@@ -62,18 +62,28 @@
       </div>
     </div>
       <div class="view-content">
+        <div class="window" id="myWindow">
+        <input class="bbdbutton" id="textField" type="text" placeholder="Enter text">
+        <button id="submitBtn">Submit</button>
+        <button id="closeBtn">Close</button>
+    </div>
   <div class="container mt-1 project-container">
+    
     <div class="col projects-col">
+      
       <h2 class="projects-header">Projects</h2>
       <div class="list-group project-list">
   {{#each projects}}
   <div class="list-group-item-container">
     <a href="#" class="list-group-item list-group-item-action{{#if this.active}} active{{/if}}"
-      aria-current="{{#if this.active}}true{{/if}}">
+      aria-current="{{#if this.active}}true{{/if}}" data-project-id="{{this.project_id}}">
       {{this.name}}
     </a>
     <button class="delete-project-btn" data-project-id="{{this.project_id}}">
       <img src="/static/media/exit.svg" />
+    </button>
+    <button type="button" class="btn btn-primary" id="EditButton" data-project-id="{{this.project_id}}">
+    Edit
     </button>
   </div>
   {{/each}}

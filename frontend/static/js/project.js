@@ -7,7 +7,8 @@ function hideModal() {
   const modal = document.querySelector(".project-modal-window");
   modal.style.display = "none";
 }
-
+var windowElement = document.getElementById('myWindow');
+windowElement.style.display = 'none';
 function addUser() {
   const select = document.querySelector('select[name="add-user"]');
   const { dataset, textContent } = select.options[select.selectedIndex];
@@ -58,7 +59,11 @@ function selectProject(event) {
 
   if (target.classList.contains("delete-project-btn")) {
     deleteProject(event);
-  } else if (target.classList.contains("list-group-item")) {
+  } 
+  else if (target.classList.contains(".btn btn-primary"))
+  {console.log("asdsadsadsad");
+    editProject(event);
+  }else if (target.classList.contains("list-group-item")) {
     const selectedProject = target.textContent.trim();
     selectedProjectName.textContent = selectedProject;
 
@@ -68,6 +73,7 @@ function selectProject(event) {
 
     // Add the 'active' class to the selected project item
     target.classList.add('active');
+    windowElement.style.display = 'block';
   }
 }
 
@@ -103,6 +109,57 @@ async function deleteProject(event) {
     console.log(err);
   }
 }
+
+window.addEventListener('DOMContentLoaded', function () {
+  var closeBtn = document.getElementById('closeBtn');
+  var submit = document.getElementById('submitBtn');
+
+  closeBtn.addEventListener('click', function () {
+      windowElement.style.display = 'none';
+  });
+  submit.addEventListener('click', updateProjectName);
+});
+
+async function updateProjectName(event) {
+  event.stopPropagation();
+  const xpathExpression = "//a[contains(@class, 'active')]";
+  const result = document.evaluate(xpathExpression, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+  const projectElement = result.singleNodeValue;
+  
+  const projectId = projectElement.dataset.projectId;
+
+  const url = `/project/update-project/${projectId}`;
+  var field = document.querySelector(".bbdbutton");
+
+  if (!field) {
+    console.log("Element with ID 'textField' not found.");
+    return;
+  }
+
+  var fieldValue = field.value; // Extract the value of the field
+  try {
+    const response = await fetch(url, {
+      method: "PUT",
+      body: JSON.stringify({ fieldValue }), // Include the value in the request body
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Handle the success response
+      console.log(data);
+    } else {
+      // Handle the error response
+      const errorData = await response.json();
+      console.log(errorData);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 
 document.addEventListener("DOMContentLoaded", function () {
   // Get the button and modal elements

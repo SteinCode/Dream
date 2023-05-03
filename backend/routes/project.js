@@ -7,7 +7,10 @@ router.post("/create-project", controller.addProject);
 // /profile
 router.get("/", controller.project);
 
-// /profile/create-project
+// /profile/delete-project
 router.delete("/delete-project/:projectID", controller.deleteProject);
+
+// /profile/update-project
+router.put("/update-project/:projectID", controller.updateProject);
 
 module.exports = router;
