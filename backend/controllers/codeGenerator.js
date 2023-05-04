@@ -27,6 +27,7 @@ module.exports = {
   addCodeToDB,
 };
 
+//Sutvarkyt nes neveikia
 function deleteExpiredCodes() {
   const now = new Date();
   const query = "DELETE FROM codes WHERE expiration_time < ?";

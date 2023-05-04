@@ -15,7 +15,6 @@ exports.tasks = (req, res) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.id;
     const userRole = decodedToken.role;
-
     getUser(userId, (error, user) => {
       if (error) {
         console.log(error);
@@ -130,7 +129,8 @@ exports.createTask = (req, res) => {
     }
   );
 };
-//tasks/update-task-status/:id
+
+//PUT
 exports.updateTaskStatus = (req, res) => {
   const taskId = req.params.id; // Get task ID from URL parameter
   const status = req.body.status;
@@ -147,4 +147,22 @@ exports.updateTaskStatus = (req, res) => {
       }
     }
   );
+};
+
+//DELETE
+exports.deleteTask = (req, res) => {
+  try {
+    const taskId = req.params.id;
+    db.query("DELETE FROM tasks WHERE id = ?", [taskId], (error, results) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Failed to delete task" });
+      }
+      const task = results[0];
+      return res.status(200).json({ message: "Task deleted successfully" });
+    });
+  } catch (err) {
+    console.log(err);
+    return res.redirect("/tasks");
+  }
 };
