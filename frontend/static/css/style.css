@@ -64,6 +64,7 @@ header {
   height: 10%;
   padding: 0 20px;
   display: flex;
+  justify-content: space-between;
   font-family: "Poppins", sans-serif;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
@@ -630,7 +631,7 @@ header .flex-user {
   width: 100%;
 }
 
- .tasklist-container {
+.tasklist-container {
   display: flex;
   flex-direction: column;
   padding: 0 10px;
@@ -638,7 +639,7 @@ header .flex-user {
   box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
   box-sizing: border-box;
   max-height: calc(100vh - 150px);
-} 
+}
 
 .task-card.dragging {
   opacity: 0.4;
@@ -778,7 +779,7 @@ header .flex-user {
     padding: 10px;
   }
 
-  .sidebar-nav .nav-item .text{
+  .sidebar-nav .nav-item .text {
     font-size: 0.8rem !important;
   }
 
@@ -787,11 +788,12 @@ header .flex-user {
     height: 20px;
   }
 
-  .sidebar-nav .current-project-text p:first-child, p:nth-child(2){
+  .sidebar-nav .current-project-text p:first-child,
+  p:nth-child(2) {
     font-size: 0.8rem !important;
   }
 
-  header{
+  header {
     height: 6%;
   }
 
@@ -806,7 +808,7 @@ header .flex-user {
   .performance-btn-filter h5 {
     font-size: 0.8rem !important;
   }
-  .performance-total{
+  .performance-total {
     font-size: 1.1rem !important;
   }
 
@@ -815,61 +817,60 @@ header .flex-user {
   .tasklist-container {
     flex-basis: 100%;
   }
-
 }
 /* Tablet Styles */
 @media only screen and (min-width: 601px) and (max-width: 1024px) {
-.project-column:nth-child(2),
-.project-column:nth-child(3) {
-  display: none;
-}
+  .project-column:nth-child(2),
+  .project-column:nth-child(3) {
+    display: none;
+  }
 
-.project-tasks {
-  grid-template-columns: 1fr 1fr;
-}
+  .project-tasks {
+    grid-template-columns: 1fr 1fr;
+  }
 
-/* Performance content */
-.performance-btn-filter {
-  width: 60px;
-}
+  /* Performance content */
+  .performance-btn-filter {
+    width: 60px;
+  }
 
-.performance-btn-filter h5 {
-  font-size: 0.8rem !important;
-}
-.performance-total{
-  font-size: 1.1rem !important;
-}
+  .performance-btn-filter h5 {
+    font-size: 0.8rem !important;
+  }
+  .performance-total {
+    font-size: 1.1rem !important;
+  }
 
-/* task content */
+  /* task content */
 
-.tasklist-container {
-  flex-basis: 50%;
-}
+  .tasklist-container {
+    flex-basis: 50%;
+  }
 }
 
 /* Desktop Styles */
 @media only screen and (min-width: 1025px) {
-.project {
-  max-width: 100%;
-}
+  .project {
+    max-width: 100%;
+  }
 
-.task-details {
-  width: 100%;
-  display: flex;
-}
+  .task-details {
+    width: 100%;
+    display: flex;
+  }
 
-.tag-progress,
-.task-activity {
-  flex-basis: 50%;
-  background: var(--white);
-  padding: 1rem;
-  border-radius: 8px;
-  margin: 1rem;
-}
+  .tag-progress,
+  .task-activity {
+    flex-basis: 50%;
+    background: var(--white);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem;
+  }
 
- /* task content */
+  /* task content */
 
- .tasklist-container {
-  flex-basis: 25%;
-}
+  .tasklist-container {
+    flex-basis: 25%;
+  }
 }
