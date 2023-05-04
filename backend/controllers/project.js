@@ -41,6 +41,13 @@ exports.project = (req, res) => {
         }); // <-- add this closing brace
       });
     });
+    db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
+      if (error) {
+        console.log(error);
+      }
+      const user = results[0];
+      res.render("project", { user });
+    });
   } catch (err) {
     console.log(err);
     return res.redirect("/login");
