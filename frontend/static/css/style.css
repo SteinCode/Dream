@@ -757,66 +757,66 @@ header .flex-user {
   h1 {
     font-size: 25px;
   }
-}
-.sidebar {
-  width: 25%;
-}
 
-.sidebar-nav {
-  flex: 1;
-}
+  .sidebar {
+    width: 25%;
+  }
 
-.view-content {
-  padding: 10px;
-}
+  .sidebar-nav {
+    flex: 1;
+  }
 
-header .flex-user {
-  font-size: 0.8rem;
-}
+  .view-content {
+    padding: 10px;
+  }
 
-.sidebar-nav a {
-  padding: 10px;
-}
+  header .flex-user {
+    font-size: 0.8rem;
+  }
 
-.sidebar-nav .nav-item .text{
-  font-size: 0.8rem !important;
-}
+  .sidebar-nav a {
+    padding: 10px;
+  }
 
-.nav-item img {
-  width: 20px;
-  height: 20px;
-}
+  .sidebar-nav .nav-item .text{
+    font-size: 0.8rem !important;
+  }
 
-.sidebar-nav .current-project-text p:first-child, p:nth-child(2){
-  font-size: 0.8rem !important;
-}
+  .nav-item img {
+    width: 20px;
+    height: 20px;
+  }
 
-header{
-  height: 6%;
-}
+  .sidebar-nav .current-project-text p:first-child, p:nth-child(2){
+    font-size: 0.8rem !important;
+  }
 
-header .flex-user .user-name {
-  font-size: 1rem !important;
-}
+  header{
+    height: 6%;
+  }
 
-/* Performance content */
-.performance-btn-filter {
-  width: 35px;
-}
-.performance-btn-filter h5 {
-  font-size: 0.8rem !important;
-}
-.performance-total{
-  font-size: 1.1rem !important;
-}
+  header .flex-user .user-name {
+    font-size: 1rem !important;
+  }
 
-/* task content */
+  /* Performance content */
+  .performance-btn-filter {
+    width: 35px;
+  }
+  .performance-btn-filter h5 {
+    font-size: 0.8rem !important;
+  }
+  .performance-total{
+    font-size: 1.1rem !important;
+  }
 
-.tasklist-container {
-  flex-basis: 100%;
+  /* task content */
+
+  .tasklist-container {
+    flex-basis: 100%;
+  }
+
 }
-
-
 /* Tablet Styles */
 @media only screen and (min-width: 601px) and (max-width: 1024px) {
 .project-column:nth-child(2),
