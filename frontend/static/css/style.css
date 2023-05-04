@@ -711,6 +711,35 @@ header .flex-user {
   height: 16px;
 }
 
+.task__tags {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.task__tag {
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.task__stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.project-task-btn__add {
+  background-color: #162f65;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
 /* Performance window  */
 
 .performance-container {
