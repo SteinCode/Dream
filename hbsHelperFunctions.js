@@ -1,14 +1,4 @@
 module.exports = {
-  eq: function (a, b) {
-    if (a === b) {
-      return true;
-    } else {
-      return false;
-    }
-  },
-};
-
-module.exports = {
   formatDateAndTime: function (date) {
     const year = date.getFullYear();
     const month = `${date.getMonth() + 1}`.padStart(2, "0");
@@ -17,5 +7,12 @@ module.exports = {
     const minute = `${date.getMinutes()}`.padStart(2, "0");
     const datetimeLocalString = `${year}-${month}-${day}T${hour}:${minute}`;
     return datetimeLocalString;
+  },
+  eq: function (a, b) {
+    if (a === b) {
+      return true;
+    } else {
+      return false;
+    }
   },
 };

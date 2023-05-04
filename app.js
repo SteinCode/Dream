@@ -33,8 +33,9 @@ app.use(
     saveUninitialized: true,
   })
 );
-hbs.registerHelper(hbsHelperFunctions);
 hbs.registerHelper("formatDateAndTime", hbsHelperFunctions.formatDateAndTime);
+hbs.registerHelper("eq", hbsHelperFunctions.eq);
+
 app.use("/login", loginRoute);
 app.use("/register", registerRoute);
 app.use("/", dashboardRoute);
