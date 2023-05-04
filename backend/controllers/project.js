@@ -41,13 +41,6 @@ exports.project = (req, res) => {
         }); // <-- add this closing brace
       });
     });
-    db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
-      if (error) {
-        console.log(error);
-      }
-      const user = results[0];
-      res.render("project", { user });
-    });
   } catch (err) {
     console.log(err);
     return res.redirect("/login");
@@ -131,3 +124,66 @@ function insertProjectUsers(values) {
     );
   });
 }
+
+// delete project
+exports.deleteProject = async (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const projectId = req.params.projectID;
+    // Delete project users
+    await deleteProjectUsers(db, projectId);
+
+    // Delete project
+    await deleteProjectFromDatabase(db, projectId);
+
+    return res.json({ message: "Project deleted successfully" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: "Internal server error TEST" });
+  }
+};
+
+async function deleteProjectUsers(db, projectId) {
+  try {
+    await db.query("DELETE FROM project_user WHERE project_id = ?", [projectId]);
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+async function deleteProjectFromDatabase(db, projectId) {
+  try {
+    await db.query("DELETE FROM project WHERE project_id = ?", [projectId]);
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+// put project
+exports.updateProject = async (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const projectId = req.params.projectID;
+    const fieldValue  = req.body.fieldValue; // Retrieve the "name" value from the request body
+      console.log(fieldValue);
+    // put
+    await db.query("UPDATE project SET name = ? WHERE project_id = ?", [fieldValue, projectId]);
+
+    return res.json({ message: "Project updated successfully" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
