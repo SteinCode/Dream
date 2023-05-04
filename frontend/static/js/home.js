@@ -9,6 +9,7 @@ btn.addEventListener("click", function () {
 closeBtn.addEventListener("click", function () {
   modal.style.display = "none";
 });
+// POST
 
 const generateButton = document.querySelector("#generate-button");
 const generatedCode = document.querySelector("#generated-code");
@@ -32,11 +33,8 @@ const datetimeInputs = document.querySelectorAll(
 datetimeInputs.forEach((input) => {
   // Add a change event listener to the input element
   input.addEventListener("change", (event) => {
-    // Log the code and the new expiration time to the console
-    const code =
-      event.target.parentNode.parentNode.parentNode.querySelector(
-        "td:first-child"
-      ).textContent;
+
+    const code = event.target.getAttribute("data-code");
     const newExpirationTime = event.target.value;
     // Send a PUT request to update the expiration time of the code
     fetch(`/update-code-expiration-date/${code}`, {
