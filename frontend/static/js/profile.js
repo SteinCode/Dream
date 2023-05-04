@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
 //Delete button
 const deleteButton = document.querySelector(".delete-user");
 deleteButton.addEventListener("click", (event) => {
-  //console.log("---------------------" + userId);
   event.preventDefault();
   fetch(`/profile/delete-user/${userId}`, {
     method: "DELETE",

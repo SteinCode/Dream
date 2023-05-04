@@ -56,7 +56,7 @@ function getUser(userId, callback) {
 function getTasksForUser(userId, userRole, callback) {
   if (userRole === "Project manager") {
     db.query(
-      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users WHERE tasks.manager_id = ?",
+      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users ON tasks.asignee_id = users.id WHERE tasks.manager_id = ?",
       [userId],
       (error, results) => {
         if (error) {
@@ -68,7 +68,7 @@ function getTasksForUser(userId, userRole, callback) {
     );
   } else if (userRole === "Developer") {
     db.query(
-      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users WHERE tasks.asignee_id = ?",
+      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users ON tasks.manager_id = users.id WHERE tasks.asignee_id = ?",
       [userId],
       (error, results) => {
         if (error) {
@@ -84,7 +84,6 @@ function getTasksForUser(userId, userRole, callback) {
     );
   }
 }
-
 function getDevelopers(callback) {
   db.query("SELECT * FROM users WHERE role = 'developer'", (error, results) => {
     if (error) {

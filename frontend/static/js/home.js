@@ -18,7 +18,6 @@ generateButton.addEventListener("click", async () => {
     method: "POST",
   });
   const data = await response.json();
-
   // Set the generated code as the value of the input field
   generatedCode.value = data.code;
 });

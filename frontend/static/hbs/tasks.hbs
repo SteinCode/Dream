@@ -80,7 +80,7 @@
       </div>
       <div id="task-container">
 
-        <div class="tasklist-container ">
+        <div class="tasklist-container">
           <div class="row m-2 tasks-header">
             <div class="col-md-6">
               <h2>To Do</h2>
@@ -90,47 +90,47 @@
               >Add Task</button></div>
           </div>
           <div class="task-list tasklist-to-do">
-          <div class="draggingContainer">
-            {{#each tasks}}
-              {{#if (eq this.status "to do")}}
-                <div
-                  status="{{this.status}}"
-                  task-id="{{this.id}}"
-                  class="task-card"
-                  draggable="true"
-                >
-                  <div class="task__tags">
-                    <span
-                      class="task__tag task__tag--{{this.difficulty}}"
-                    >{{this.difficulty}}</span>
-                    <button class="delete__task">
-                      <i class="fa-solid fa-x"></i>
-                    </button>
+            <div class="draggingContainer">
+              {{#each tasks}}
+                {{#if (eq this.status "to do")}}
+                  <div
+                    status="{{this.status}}"
+                    task-id="{{this.id}}"
+                    class="task-card"
+                    draggable="true"
+                  >
+                    <div class="task__tags">
+                      <span
+                        class="task__tag task__tag--{{this.difficulty}}"
+                      >{{this.difficulty}}</span>
+                      <button class="delete__task">
+                        <i class="fa-solid fa-x"></i>
+                      </button>
+                    </div>
+                    <p class="task-name">{{this.name}}</p>
+                    <div class="task__stats">
+                      <span>
+                        <img
+                          style="opacity:0.5"
+                          width="15px"
+                          src="/static/media/comments.svg"
+                        />
+                        3
+                      </span>
+                      <span>
+                        <img
+                          style="opacity:0.5"
+                          width="15px"
+                          src="/static/media/user.svg"
+                        />
+                        {{this.user_name}}
+                        {{this.user_surname}}
+                      </span>
+                    </div>
                   </div>
-                  <p class="task-name">{{this.name}}</p>
-                  <div class="task__stats">
-                    <span>
-                      <img
-                        style="opacity:0.5"
-                        width="15px"
-                        src="/static/media/comments.svg"
-                      />
-                      3
-                    </span>
-                    <span>
-                      <img
-                        style="opacity:0.5"
-                        width="15px"
-                        src="/static/media/user.svg"
-                      />
-                      {{this.user_name}}
-                      {{this.user_surname}}
-                    </span>
-                  </div>
-                </div>
-              {{/if}}
-            {{/each}}
-          </div>
+                {{/if}}
+              {{/each}}
+            </div>
           </div>
         </div>
 
@@ -139,40 +139,40 @@
             <h2>In Progress</h2>
           </div>
           <div class="task-list tasklist-in-progress">
-          <div class="draggingContainer">
-            {{#each tasks}}
-              {{#if (eq this.status "in progress")}}
-                <div
-                  status="{{this.status}}"
-                  task-id="{{this.id}}"
-                  class="task-card"
-                  draggable="true"
-                >
-                  <div class="task__tags"><span
-                      class="task__tag task__tag--{{this.difficulty}}"
-                    >{{this.difficulty}}</span><button class="task__options"><i
-                        class="fas fa-ellipsis-h"
-                      ></i></button></div>
-                  <p class="task-name">{{this.name}}</p>
-                  <div class="task__stats">
-                    <span><img
-                        style="opacity:0.5"
-                        width="15px"
-                        src="/static/media/comments.svg"
-                      />
-                      0</span>
-                    <span><img
-                        style="opacity:0.5"
-                        width="15px"
-                        src="/static/media/user.svg"
-                      />
-                      {{this.user_name}}
-                      {{this.user_surname}}</span>
+            <div class="draggingContainer">
+              {{#each tasks}}
+                {{#if (eq this.status "in progress")}}
+                  <div
+                    status="{{this.status}}"
+                    task-id="{{this.id}}"
+                    class="task-card"
+                    draggable="true"
+                  >
+                    <div class="task__tags"><span
+                        class="task__tag task__tag--{{this.difficulty}}"
+                      >{{this.difficulty}}</span><button class="delete__task">
+                        <i class="fa-solid fa-x"></i>
+                      </button></div>
+                    <p class="task-name">{{this.name}}</p>
+                    <div class="task__stats">
+                      <span><img
+                          style="opacity:0.5"
+                          width="15px"
+                          src="/static/media/comments.svg"
+                        />
+                        0</span>
+                      <span><img
+                          style="opacity:0.5"
+                          width="15px"
+                          src="/static/media/user.svg"
+                        />
+                        {{this.user_name}}
+                        {{this.user_surname}}</span>
+                    </div>
                   </div>
-                </div>
-              {{/if}}
-            {{/each}}
-          </div>
+                {{/if}}
+              {{/each}}
+            </div>
           </div>
         </div>
 
@@ -181,40 +181,40 @@
             <h2>Needs Review</h2>
           </div>
           <div class="task-list tasklist-needs-review">
-          <div class="draggingContainer">
-            {{#each tasks}}
-              {{#if (eq this.status "needs review")}}
-                <div
-                  status="{{this.status}}"
-                  task-id="{{this.id}}"
-                  class="task-card"
-                  draggable="true"
-                >
-                  <div class="task__tags"><span
-                      class="task__tag task__tag--{{this.difficulty}}"
-                    >{{this.difficulty}}</span><button class="task__options"><i
-                        class="fas fa-ellipsis-h"
-                      ></i></button></div>
-                  <p class="task-name">{{this.name}}</p>
-                  <div class="task__stats">
-                    <span><img
-                        style="opacity:0.5"
-                        width="15px"
-                        src="/static/media/comments.svg"
-                      />
-                      3</span>
-                    <span><img
-                        style="opacity:0.5"
-                        width="15px"
-                        src="/static/media/user.svg"
-                      />
-                      {{this.user_name}}
-                      {{this.user_surname}}</span>
+            <div class="draggingContainer">
+              {{#each tasks}}
+                {{#if (eq this.status "needs review")}}
+                  <div
+                    status="{{this.status}}"
+                    task-id="{{this.id}}"
+                    class="task-card"
+                    draggable="true"
+                  >
+                    <div class="task__tags"><span
+                        class="task__tag task__tag--{{this.difficulty}}"
+                      >{{this.difficulty}}</span><button class="delete__task">
+                        <i class="fa-solid fa-x"></i>
+                      </button></div>
+                    <p class="task-name">{{this.name}}</p>
+                    <div class="task__stats">
+                      <span><img
+                          style="opacity:0.5"
+                          width="15px"
+                          src="/static/media/comments.svg"
+                        />
+                        3</span>
+                      <span><img
+                          style="opacity:0.5"
+                          width="15px"
+                          src="/static/media/user.svg"
+                        />
+                        {{this.user_name}}
+                        {{this.user_surname}}</span>
+                    </div>
                   </div>
-                </div>
-              {{/if}}
-            {{/each}}
-          </div>
+                {{/if}}
+              {{/each}}
+            </div>
           </div>
         </div>
 
@@ -223,40 +223,40 @@
             <h2>Done</h2>
           </div>
           <div class="task-list tasklist-done">
-          <div class="draggingContainer">
-            {{#each tasks}}
-              {{#if (eq this.status "done")}}
-                <div
-                  status="{{this.status}}"
-                  task-id="{{this.id}}"
-                  class="task-card"
-                  draggable="true"
-                >
-                  <div class="task__tags"><span
-                      class="task__tag task__tag--{{this.difficulty}}"
-                    >{{this.difficulty}}</span><button class="task__options"><i
-                        class="fas fa-ellipsis-h"
-                      ></i></button></div>
-                  <p class="task-name">{{this.name}}</p>
-                  <div class="task__stats">
-                    <span><img
-                        style="opacity:0.5"
-                        width="15px"
-                        src="/static/media/comments.svg"
-                      />
-                      0</span>
-                    <span><img
-                        style="opacity:0.5"
-                        width="15px"
-                        src="/static/media/user.svg"
-                      />
-                      {{this.user_name}}
-                      {{this.user_surname}}</span>
+            <div class="draggingContainer">
+              {{#each tasks}}
+                {{#if (eq this.status "done")}}
+                  <div
+                    status="{{this.status}}"
+                    task-id="{{this.id}}"
+                    class="task-card"
+                    draggable="true"
+                  >
+                    <div class="task__tags"><span
+                        class="task__tag task__tag--{{this.difficulty}}"
+                      >{{this.difficulty}}</span><button class="delete__task">
+                        <i class="fa-solid fa-x"></i>
+                      </button></div>
+                    <p class="task-name">{{this.name}}</p>
+                    <div class="task__stats">
+                      <span><img
+                          style="opacity:0.5"
+                          width="15px"
+                          src="/static/media/comments.svg"
+                        />
+                        0</span>
+                      <span><img
+                          style="opacity:0.5"
+                          width="15px"
+                          src="/static/media/user.svg"
+                        />
+                        {{this.user_name}}
+                        {{this.user_surname}}</span>
+                    </div>
                   </div>
-                </div>
-              {{/if}}
-            {{/each}}
-          </div>
+                {{/if}}
+              {{/each}}
+            </div>
           </div>
         </div>
 
