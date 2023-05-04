@@ -19,6 +19,7 @@
   <div class="flex-logo header-part">
     <a href="/" class="dreamwork-logo" data-link>Dreamwork</a>
   </div>
+  <div class="flex-menu header-part"></div>
   <div class="flex-user header-part">
     <a class="user-container" href="/profile">
       <div class="user-name">{{user.name}} {{user.surname}}</div>
@@ -61,17 +62,31 @@
       </div>
     </div>
       <div class="view-content">
+        <div class="window" id="myWindow">
+        <input class="bbdbutton" id="textField" type="text" placeholder="Enter text">
+        <button id="submitBtn">Submit</button>
+        <button id="closeBtn">Close</button>
+    </div>
   <div class="container mt-1 project-container">
+    
     <div class="col projects-col">
+      
       <h2 class="projects-header">Projects</h2>
-      <div class="list-group project-list" onclick="selectProject(event)">
-        {{#each projects}}
-        <a href="#" class="list-group-item list-group-item-action{{#if this.active}} active{{/if}}"
-          aria-current="{{#if this.active}}true{{/if}}">
-          {{this.name}}
-        </a>
-        {{/each}}
-      </div>
+      <div class="list-group project-list">
+  {{#each projects}}
+  <div class="list-group-item-container">
+    <a href="#" class="list-group-item list-group-item-action{{#if this.active}} active{{/if}}"
+      aria-current="{{#if this.active}}true{{/if}}" data-project-id="{{this.project_id}}">
+      {{this.name}}
+    </a>
+    <button class="delete-project-btn" data-project-id="{{this.project_id}}">
+      <img src="/static/media/exit.svg" />
+    </button>
+  </div>
+  {{/each}}
+</div>
+
+
       <button class="create-new-project-btn">
         <h5>Create</h5>
         <img src="/static/media/plus.svg" />
