@@ -107,7 +107,7 @@ taskCards.forEach((taskCard) => {
   taskCard.addEventListener("dragend", async (event) => {
     const taskId = event.target.getAttribute("task-id");
     const taskStatus = event.target.getAttribute("status");
-    const response = await fetch(`/tasks/update-task-status/${taskId}`, {
+    const response = await fetch(`/task/update-task-status/${taskId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -125,7 +125,7 @@ deleteTaskButtons.forEach((button) => {
     event.preventDefault();
 
     const taskId = button.parentNode.parentNode.getAttribute("task-id");
-    fetch(`/tasks/delete-task/${taskId}`, {
+    fetch(`/task/delete-task/${taskId}`, {
       method: "DELETE",
       credentials: "same-origin",
     })

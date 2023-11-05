@@ -11,7 +11,7 @@ const registerRoute = require("./backend/routes/register");
 const dashboardRoute = require("./backend/routes/dashboard");
 const profileRoute = require("./backend/routes/profile");
 const projectRoute = require("./backend/routes/project");
-const tasksRoute = require("./backend/routes/tasks");
+const taskRoute = require("./backend/routes/task");
 const performanceRoute = require("./backend/routes/performance");
 const userRoute = require("./backend/routes/user");
 
@@ -41,7 +41,7 @@ app.use("/register", registerRoute);
 app.use("/", dashboardRoute);
 app.use("/profile", profileRoute);
 app.use("/project", projectRoute);
-app.use("/tasks", tasksRoute);
+app.use("/task", taskRoute);
 app.use("/performance", performanceRoute);
 app.use("/user", userRoute);
 app.use(

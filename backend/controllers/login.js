@@ -46,7 +46,7 @@ exports.loginValidate = async (req, res) => {
 const getUserByEmail = (email) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "SELECT * FROM users WHERE email = ?",
+      "SELECT * FROM user WHERE email = ?",
       [email],
       (error, results) => {
         if (error) {

@@ -1,62 +1,9 @@
 import utils from "./utils.js";
 
-//initialize modals
-var projectModal = document.querySelector("#project-modal-window");
-projectModal.style.display = "none";
-
-document.getElementById("create-project-deadline").min = utils.getCurrentDate();
-
-function showModal(modal) {
-  modal.style.display = "flex";
-}
-
-function hideModal(modal) {
-  modal.style.display = "none";
-}
-
-function addUser() {
-  const select = document.querySelector('select[name="add-user"]');
-  const { dataset, textContent } = select.options[select.selectedIndex];
-  const { id: userId, role } = dataset;
-
-  const table = document.getElementById("user-table");
-  const rowHtml = `
-    <tr>
-      <td>${textContent}</td>
-      <td>${role}</td>
-      <input type="hidden" name="user-id" value="${userId}">
-    </tr>
-  `;
-  table.insertAdjacentHTML("beforeend", rowHtml);
-
-  // Store user data in an object and push it to the users array
-  const userData = { id: userId, name: textContent, role };
-  users.push(userData);
-}
-
-async function createProject() {
-  const projectNameInput = document.getElementById("project-name");
-  const projectName = projectNameInput.value;
-  const table = document.getElementById("user-table");
-  const tableRows = Array.from(table.rows);
-  const users = tableRows.map((row) => {
-    const [userName, role] = row.cells;
-    const userId = row.querySelector('input[name="user-id"]').value;
-    return { id: userId, name: userName.textContent, role: role.textContent };
-  });
-  try {
-    const response = await fetch("/project/create-project", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ projectName, users }),
-    });
-    const data = await response.json();
-    console.log(data);
-    window.alert("Project created successfully!");
-  } catch (error) {
-    console.log(error);
-  }
-}
+//---------- PROJECT PAGE VIEW
+const projectList = document.querySelector(".project-list");
+const selectedProjectName = document.querySelector(".project-name");
+const deleteButtons = document.querySelectorAll(".delete-project-btn");
 
 function selectProject(event) {
   const target = event.target;
@@ -81,12 +28,7 @@ function selectProject(event) {
   }
 }
 
-const projectList = document.querySelector(".project-list");
-const selectedProjectName = document.querySelector(".project-name");
-
 projectList.addEventListener("click", selectProject);
-
-const deleteButtons = document.querySelectorAll(".delete-project-btn");
 
 deleteButtons.forEach((button) => {
   button.addEventListener("click", deleteProject);
@@ -114,60 +56,19 @@ async function deleteProject(event) {
   }
 }
 
-window.addEventListener("DOMContentLoaded", function () {
-  var closeBtn = document.getElementById("closeBtn");
-  var submit = document.getElementById("submitBtn");
+// ---------- CREATE PROJECT VIEW
 
-  closeBtn.addEventListener("click", function () {
-    projectModal.style.display = "none";
-  });
-  submit.addEventListener("click", updateProjectName);
-});
+var projectModal = document.querySelector("#project-modal-window");
+projectModal.style.display = "none";
 
-async function updateProjectName(event) {
-  event.stopPropagation();
-  const xpathExpression = "//a[contains(@class, 'active')]";
-  const result = document.evaluate(
-    xpathExpression,
-    document,
-    null,
-    XPathResult.FIRST_ORDERED_NODE_TYPE,
-    null
-  );
-  const projectElement = result.singleNodeValue;
+document.getElementById("create-project-deadline").min = utils.getCurrentDate();
 
-  const projectId = projectElement.dataset.projectId;
+function showModal(modal) {
+  modal.style.display = "flex";
+}
 
-  const url = `/project/update-project/${projectId}`;
-  var field = document.querySelector(".bbdbutton");
-
-  if (!field) {
-    console.log("Element with ID 'textField' not found.");
-    return;
-  }
-
-  var fieldValue = field.value; // Extract the value of the field
-  try {
-    const response = await fetch(url, {
-      method: "PUT",
-      body: JSON.stringify({ fieldValue }), // Include the value in the request body
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      // Handle the success response
-      console.log(data);
-    } else {
-      // Handle the error response
-      const errorData = await response.json();
-      console.log(errorData);
-    }
-  } catch (err) {
-    console.log(err);
-  }
+function hideModal(modal) {
+  modal.style.display = "none";
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -185,12 +86,25 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   const submitProject = document.getElementById("submit-project");
-  const table = document.getElementById("user-table");
-  let users = [];
 
-  const select = document.querySelector('select[name="add-user"]');
-  select.addEventListener("change", addUser);
   submitProject.addEventListener("click", createProject);
 });
 
-export { showModal, hideModal, addUser, createProject, selectProject };
+async function createProject() {
+  const projectNameInput = document.getElementById("project-name");
+  const projectName = projectNameInput.value;
+  try {
+    const response = await fetch("/project/create-project", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ projectName, users }),
+    });
+    const data = await response.json();
+    console.log(data);
+    window.alert("Project created successfully!");
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export { showModal, hideModal, createProject, selectProject };

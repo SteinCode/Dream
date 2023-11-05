@@ -14,7 +14,7 @@ exports.profile = (req, res) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.id;
 
-    db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
+    db.query("SELECT * FROM user WHERE id = ?", [userId], (error, results) => {
       if (error) {
         console.log(error);
       }
@@ -123,7 +123,7 @@ async function updatePassword(
 
 async function getUserById(userId) {
   return new Promise((resolve, reject) => {
-    db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
+    db.query("SELECT * FROM user WHERE id = ?", [userId], (error, results) => {
       if (error) {
         reject(error);
       } else {
@@ -136,7 +136,7 @@ async function getUserById(userId) {
 async function updateUserPassword(userId, hashedPassword) {
   return new Promise((resolve, reject) => {
     db.query(
-      "UPDATE users SET password = ? WHERE id = ?",
+      "UPDATE user SET password = ? WHERE id = ?",
       [hashedPassword, userId],
       (error, results) => {
         if (error) {
@@ -189,7 +189,7 @@ async function updateProfile(
 async function updateUser(userId, name, surname, email, phoneNumber) {
   return new Promise((resolve, reject) => {
     db.query(
-      "UPDATE users SET name = ?, surname = ?, email = ?, phoneNumber = ? WHERE id = ?",
+      "UPDATE user SET name = ?, surname = ?, email = ?, phoneNumber = ? WHERE id = ?",
       [name, surname, email, phoneNumber, userId],
       (error, results) => {
         if (error) {
@@ -208,7 +208,7 @@ exports.deleteUser = (req, res) => {
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = req.params.id;
-    db.query("DELETE FROM users WHERE id = ?", [userId], (error, results) => {
+    db.query("DELETE FROM user WHERE id = ?", [userId], (error, results) => {
       if (error) {
         console.log(error);
         return res.status(500).json({ message: "Failed to delete user" });

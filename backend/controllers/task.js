@@ -5,7 +5,7 @@ const db = require("../../database.js");
 const { json } = require("body-parser");
 
 //GET
-exports.tasks = (req, res) => {
+exports.task = (req, res) => {
   const token = req.cookies.token; // Read cookie
   if (!token) {
     return res.redirect("/login");
@@ -33,7 +33,7 @@ exports.tasks = (req, res) => {
             return res.redirect("/login");
           }
 
-          res.render("tasks", { user, tasks, developers });
+          res.render("task", { user, tasks, developers });
         });
       });
     });
@@ -44,7 +44,7 @@ exports.tasks = (req, res) => {
 };
 
 function getUser(userId, callback) {
-  db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
+  db.query("SELECT * FROM user WHERE id = ?", [userId], (error, results) => {
     if (error) {
       return callback(error);
     }
@@ -56,7 +56,7 @@ function getUser(userId, callback) {
 function getTasksForUser(userId, userRole, callback) {
   if (userRole === "Project manager") {
     db.query(
-      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users ON tasks.asignee_id = users.id WHERE tasks.manager_id = ?",
+      "SELECT task.*, user.name AS user_name, user.surname AS user_surname FROM task INNER JOIN user ON task.asignee_id = user.id WHERE task.manager_id = ?",
       [userId],
       (error, results) => {
         if (error) {
@@ -68,7 +68,7 @@ function getTasksForUser(userId, userRole, callback) {
     );
   } else if (userRole === "Developer") {
     db.query(
-      "SELECT tasks.*, users.name AS user_name, users.surname AS user_surname FROM tasks INNER JOIN users ON tasks.manager_id = users.id WHERE tasks.asignee_id = ?",
+      "SELECT task.*, user.name AS user_name, user.surname AS user_surname FROM task INNER JOIN user ON task.manager_id = user.id WHERE task.asignee_id = ?",
       [userId],
       (error, results) => {
         if (error) {
@@ -85,7 +85,7 @@ function getTasksForUser(userId, userRole, callback) {
   }
 }
 function getDevelopers(callback) {
-  db.query("SELECT * FROM users WHERE role = 'developer'", (error, results) => {
+  db.query("SELECT * FROM user WHERE role = 'developer'", (error, results) => {
     if (error) {
       return callback(error);
     }
@@ -108,7 +108,7 @@ exports.createTask = (req, res) => {
     assignedUserId,
   } = req.body;
   db.query(
-    "INSERT INTO tasks SET ?",
+    "INSERT INTO task SET ?",
     {
       name: taskName,
       description: taskDescription,
@@ -124,7 +124,7 @@ exports.createTask = (req, res) => {
         console.log(error);
         res.status(500).send("Error creating task");
       } else {
-        return res.redirect("/tasks");
+        return res.redirect("/task");
       }
     }
   );
@@ -132,11 +132,11 @@ exports.createTask = (req, res) => {
 
 //PUT
 exports.updateTaskStatus = (req, res) => {
-  const taskId = req.params.id; // Get task ID from URL parameter
+  const taskId = req.params.id;
   const status = req.body.status;
   console.log(status);
   db.query(
-    "UPDATE tasks SET status=? WHERE id=?",
+    "UPDATE task SET status=? WHERE id=?",
     [status, taskId],
     (error, results) => {
       if (error) {
@@ -153,7 +153,7 @@ exports.updateTaskStatus = (req, res) => {
 exports.deleteTask = (req, res) => {
   try {
     const taskId = req.params.id;
-    db.query("DELETE FROM tasks WHERE id = ?", [taskId], (error, results) => {
+    db.query("DELETE FROM task WHERE id = ?", [taskId], (error, results) => {
       if (error) {
         console.log(error);
         return res.status(500).json({ message: "Failed to delete task" });
@@ -163,6 +163,6 @@ exports.deleteTask = (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    return res.redirect("/tasks");
+    return res.redirect("/task");
   }
 };

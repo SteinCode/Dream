@@ -3,56 +3,66 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const db = require("../../database.js");
 const flash = require("express-flash");
+const user = require("./user.js");
 
-// GET method to display project page
+// GET method to render the "project" page
 exports.project = (req, res) => {
-  const token = req.cookies.token; // Read cookie
+  const token = req.cookies.token;
+
   if (!token) {
-    return res.redirect("/login");
+    handleUnauthenticatedUser(res);
   }
 
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.id;
-    getUser(userId, (error, user) => {
-      if (error) {
-        console.log(error);
-        return res.redirect("/login");
-      }
-      getProjects((error, projectResults) => {
-        if (error) {
-          console.log(error);
-          return res.redirect("/login");
-        }
-        const projects = projectResults;
-        getUsers((error, usersResults) => {
-          if (error) {
-            console.log(error);
-            return res.redirect("/login");
-          }
-          const users = usersResults;
-          res.render("project", {
-            user,
-            users,
-            projects,
-            successMessage: req.flash("successMessage"),
-            errorMessage: req.flash("errorMessage"),
-          });
-        }); // <-- add this closing brace
-      });
-    });
+    getUserDataById(req, res, userId);
   } catch (err) {
-    console.log(err);
-    return res.redirect("/login");
+    handleError(res, err);
   }
 };
 
-// Helper function to get all users
-function getUsers(callback) {
-  db.query("SELECT * FROM users", callback);
-}
+// Function to handle rendering the "project" page
+const renderProjectPage = (req, res, user, projects) => {
+  res.render("project", {
+    user,
+    projects,
+    successMessage: req.flash("successMessage"),
+    errorMessage: req.flash("errorMessage"),
+  });
+};
 
-// Helper function to get all projects
+const handleUnauthenticatedUser = (res) => {
+  res.redirect("/login");
+};
+
+const handleError = (res, error) => {
+  console.log(error);
+  res.redirect("/login");
+};
+
+const getUserDataById = (req, res, userId) => {
+  user.getUserById(userId, (error, userData) => {
+    if (error) {
+      handleError(res, error);
+    } else {
+      getProjectsData(req, res, userData);
+    }
+  });
+};
+
+// Function to get projects data
+const getProjectsData = (req, res, user) => {
+  getProjects((error, projectResults) => {
+    if (error) {
+      handleError(res, error);
+    } else {
+      const projects = projectResults;
+      renderProjectPage(req, res, user, projects);
+    }
+  });
+};
+
 function getProjects(callback) {
   db.query("SELECT * FROM project", callback);
 }
@@ -82,15 +92,6 @@ exports.addProject = async (req, res) => {
   }
 };
 
-function getUser(userId, callback) {
-  db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
-    if (error) {
-      return callback(error);
-    }
-    const user = results[0];
-    return callback(null, user);
-  });
-}
 // Helper function to insert a new project
 function insertProject(project) {
   return new Promise((resolve, reject) => {
@@ -150,7 +151,9 @@ exports.deleteProject = async (req, res) => {
 
 async function deleteProjectUsers(db, projectId) {
   try {
-    await db.query("DELETE FROM project_user WHERE project_id = ?", [projectId]);
+    await db.query("DELETE FROM project_user WHERE project_id = ?", [
+      projectId,
+    ]);
   } catch (err) {
     console.log(err);
     throw err;
@@ -176,10 +179,13 @@ exports.updateProject = async (req, res) => {
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const projectId = req.params.projectID;
-    const fieldValue  = req.body.fieldValue; // Retrieve the "name" value from the request body
-      console.log(fieldValue);
+    const fieldValue = req.body.fieldValue; // Retrieve the "name" value from the request body
+    console.log(fieldValue);
     // put
-    await db.query("UPDATE project SET name = ? WHERE project_id = ?", [fieldValue, projectId]);
+    await db.query("UPDATE project SET name = ? WHERE project_id = ?", [
+      fieldValue,
+      projectId,
+    ]);
 
     return res.json({ message: "Project updated successfully" });
   } catch (err) {

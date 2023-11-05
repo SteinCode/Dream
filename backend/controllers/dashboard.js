@@ -13,7 +13,7 @@ exports.home = (req, res) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.id;
 
-    db.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
+    db.query("SELECT * FROM user WHERE id = ?", [userId], (error, results) => {
       if (error) {
         console.log(error);
       }

@@ -29,7 +29,7 @@ exports.registerUser = (req, res) => {
     return res.redirect("/register");
   } else {
     db.query(
-      "SELECT email FROM users WHERE email = ?",
+      "SELECT email FROM user WHERE email = ?",
       [email],
       async (error, results) => {
         if (error) {
@@ -68,7 +68,7 @@ exports.registerUser = (req, res) => {
             let hashedPassword = await bcrypt.hash(password, 8);
 
             db.query(
-              "INSERT INTO users SET ?",
+              "INSERT INTO user SET ?",
               {
                 name: name,
                 surname: surname,
