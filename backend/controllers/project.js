@@ -59,7 +59,6 @@ const getProjectsData = (user) => {
   });
 };
 
-// Function to handle rendering the "project" page
 const renderProjectPage = (req, res, user, projects) => {
   res.render("project", {
     user,

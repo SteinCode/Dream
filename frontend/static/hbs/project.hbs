@@ -26,7 +26,7 @@
       </div>
    </header>
    <body>
-       <div class="body-flex">
+      <div class="body-flex">
          <div class="sidebar">
             <div class="sidebar-nav nav-top">
                <a class="nav-item projects" href="/project">
@@ -72,17 +72,19 @@
                         <img class = "h2-header-icon" src="/static/media/plus.svg" />
                      </button>
                   </div>
-                  <div class="list-group project-list">
-                     <a
-                        href="#"
-                        class="list-group-items list-group-item-action active"
-                        aria-current="true"
-                        >
-                     Sukurti dreamworką
-                     </a>
-                     <a href="#" class="list-group-items list-group-item-action">Project
-                     2</a>
-                  </div>
+                  <ul class="list-group project-list">
+                     {{#each projects}}
+                        <div class="project-list-item">
+                           <a href="#" class="list-group-items list-group-item-action{{#if this.active}} active{{/if}}"
+                              aria-current="{{#if this.active}}true{{/if}}" data-project-id="{{this.project_id}}">
+                           {{this.name}}
+                           </a>
+                           <button class="project-list-item-delete" data-project-id="{{this.project_id}}">
+                              <img src="/static/media/exit.svg" />
+                           </button>
+                      </div>
+                      {{/each}}
+                  </ul>
                   
                </div>
                <div class = "col project-info-col">
