@@ -7,8 +7,10 @@ function hideModal() {
   const modal = document.querySelector(".project-modal-window");
   modal.style.display = "none";
 }
-var windowElement = document.getElementById('myWindow');
-windowElement.style.display = 'none';
+
+var windowElement = document.querySelector(".project-modal-window");
+windowElement.style.display = "none";
+
 function addUser() {
   const select = document.querySelector('select[name="add-user"]');
   const { dataset, textContent } = select.options[select.selectedIndex];
@@ -47,7 +49,7 @@ async function createProject() {
     });
     const data = await response.json();
     console.log(data);
-    window.alert('Project created successfully!');
+    window.alert("Project created successfully!");
   } catch (error) {
     console.log(error);
   }
@@ -59,21 +61,20 @@ function selectProject(event) {
 
   if (target.classList.contains("delete-project-btn")) {
     deleteProject(event);
-  } 
-  else if (target.classList.contains(".btn btn-primary"))
-  {console.log("asdsadsadsad");
+  } else if (target.classList.contains(".btn btn-primary")) {
+    console.log("asdsadsadsad");
     editProject(event);
-  }else if (target.classList.contains("list-group-item")) {
+  } else if (target.classList.contains("list-group-item")) {
     const selectedProject = target.textContent.trim();
     selectedProjectName.textContent = selectedProject;
 
     // Remove the 'active' class from all project items
-    const projectItems = document.querySelectorAll('.list-group-item');
-    projectItems.forEach(item => item.classList.remove('active'));
+    const projectItems = document.querySelectorAll(".list-group-item");
+    projectItems.forEach((item) => item.classList.remove("active"));
 
     // Add the 'active' class to the selected project item
-    target.classList.add('active');
-    windowElement.style.display = 'block';
+    target.classList.add("active");
+    windowElement.style.display = "block";
   }
 }
 
@@ -110,22 +111,28 @@ async function deleteProject(event) {
   }
 }
 
-window.addEventListener('DOMContentLoaded', function () {
-  var closeBtn = document.getElementById('closeBtn');
-  var submit = document.getElementById('submitBtn');
+window.addEventListener("DOMContentLoaded", function () {
+  var closeBtn = document.getElementById("closeBtn");
+  var submit = document.getElementById("submitBtn");
 
-  closeBtn.addEventListener('click', function () {
-      windowElement.style.display = 'none';
+  closeBtn.addEventListener("click", function () {
+    windowElement.style.display = "none";
   });
-  submit.addEventListener('click', updateProjectName);
+  submit.addEventListener("click", updateProjectName);
 });
 
 async function updateProjectName(event) {
   event.stopPropagation();
   const xpathExpression = "//a[contains(@class, 'active')]";
-  const result = document.evaluate(xpathExpression, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+  const result = document.evaluate(
+    xpathExpression,
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  );
   const projectElement = result.singleNodeValue;
-  
+
   const projectId = projectElement.dataset.projectId;
 
   const url = `/project/update-project/${projectId}`;
@@ -142,8 +149,8 @@ async function updateProjectName(event) {
       method: "PUT",
       body: JSON.stringify({ fieldValue }), // Include the value in the request body
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
 
     if (response.ok) {
@@ -160,15 +167,12 @@ async function updateProjectName(event) {
   }
 }
 
-
 document.addEventListener("DOMContentLoaded", function () {
-  // Get the button and modal elements
-  const btn = document.querySelector(".create-new-project-btn");
-  const closeBtn = document.querySelector(".close-modal");
+  const createProjectBtn = document.querySelector(".create-new-project-btn");
+  const closeProjectBtn = document.querySelector(".close-modal");
 
-  // Add a click event listener to the button
-  btn.addEventListener("click", showModal);
-  closeBtn.addEventListener("click", hideModal);
+  createProjectBtn.addEventListener("click", showModal);
+  closeProjectBtn.addEventListener("click", hideModal);
 
   const createButton = document.getElementById("create-button");
   const table = document.getElementById("user-table");
