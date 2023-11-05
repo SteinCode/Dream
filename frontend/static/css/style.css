@@ -279,6 +279,10 @@ header .flex-user {
   flex-basis: 44%;
 }
 
+.create-project-form {
+  margin-top: 14px;
+}
+
 .h2-header {
   padding: 7px 7px 10px 7px;
   border-bottom: rgba(99, 99, 99, 0.5) solid 2px;
@@ -322,6 +326,17 @@ h4 {
   width: 12px;
 }
 
+#submit-project {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  background-color: #162f65;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
 .project-container {
   display: flex;
   flex-wrap: wrap;
@@ -361,6 +376,7 @@ h4 {
 }
 
 .modal-window {
+  display: none;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -377,7 +393,7 @@ h4 {
   border-radius: 20px;
   max-width: 1300px;
   width: 90%;
-  height: 80%;
+  height: 50%;
   padding: 20px;
   position: relative;
 }
@@ -401,10 +417,6 @@ h4 {
 
 .create-new-project-window .flex-col-right {
   flex-basis: 48%;
-}
-
-.project-modal-window {
-  display: none;
 }
 
 .close-modal {

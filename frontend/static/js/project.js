@@ -1,15 +1,13 @@
-function showModal() {
-  const modal = document.querySelector(".project-modal-window");
+//initialize modals
+var projectModal = document.querySelector("#project-modal-window");
+
+function showModal(modal) {
   modal.style.display = "flex";
 }
 
-function hideModal() {
-  const modal = document.querySelector(".project-modal-window");
+function hideModal(modal) {
   modal.style.display = "none";
 }
-
-var windowElement = document.querySelector(".project-modal-window");
-windowElement.style.display = "none";
 
 function addUser() {
   const select = document.querySelector('select[name="add-user"]');
@@ -74,7 +72,7 @@ function selectProject(event) {
 
     // Add the 'active' class to the selected project item
     target.classList.add("active");
-    windowElement.style.display = "block";
+    projectModal.style.display = "block";
   }
 }
 
@@ -116,7 +114,7 @@ window.addEventListener("DOMContentLoaded", function () {
   var submit = document.getElementById("submitBtn");
 
   closeBtn.addEventListener("click", function () {
-    windowElement.style.display = "none";
+    projectModal.style.display = "none";
   });
   submit.addEventListener("click", updateProjectName);
 });
@@ -171,16 +169,23 @@ document.addEventListener("DOMContentLoaded", function () {
   const createProjectBtn = document.querySelector(".create-new-project-btn");
   const closeProjectBtn = document.querySelector(".close-modal");
 
-  createProjectBtn.addEventListener("click", showModal);
-  closeProjectBtn.addEventListener("click", hideModal);
+  const projectModal = document.querySelector("#project-modal-window");
 
-  const createButton = document.getElementById("create-button");
+  createProjectBtn.addEventListener("click", function () {
+    showModal(projectModal);
+  });
+
+  closeProjectBtn.addEventListener("click", function () {
+    hideModal(projectModal);
+  });
+
+  const submitProject = document.getElementById("submit-project");
   const table = document.getElementById("user-table");
   let users = [];
 
   const select = document.querySelector('select[name="add-user"]');
   select.addEventListener("change", addUser);
-  createButton.addEventListener("click", createProject);
+  submitProject.addEventListener("click", createProject);
 });
 
 export { showModal, hideModal, addUser, createProject, selectProject };

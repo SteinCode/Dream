@@ -143,11 +143,11 @@
             </div>
          </div>
       </div>
-         <div class="modal-window project-modal-window">
+         <div class="modal-window" id = "project-modal-window">
             <div class="create-new-project-window">
                <button class="close-modal"><img src="static/media/exit.svg" /></button>
                <h1>New Project</h1>
-               <form method="POST" action="project/create-project">
+               <form class = "create-project-form" method="POST" action="project/create-project">
                   <div class="form-group">
                      <label for="project-name">Project name:</label>
                      <input
@@ -178,30 +178,7 @@
                         required
                         />
                   </div>
-                  <div class="form-group">
-                     <label for="add-user">Add user:</label>
-                     <select name="add-user" id="add-user-select" class="form-control">
-                        {{#each users}}
-                        <option
-                           value="{{this.id}}"
-                           data-id="{{this.id}}"
-                           data-role="{{this.role}}"
-                           >{{this.name}}</option>
-                        {{/each}}
-                     </select>
-                  </div>
-                  <table>
-                     <thead>
-                        <tr>
-                           <th>User name</th>
-                           <th>Role</th>
-                        </tr>
-                     </thead>
-                     <tbody id="user-table">
-                     </tbody>
-                  </table>
-                  <br />
-                  <button type="button" id="create-button">Create project</button>
+                  <button type="button" id="submit-project">Create project</button>
                </form>
             </div>
          </div>
