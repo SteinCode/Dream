@@ -152,33 +152,37 @@
                      <label for="project-name">Project name:</label>
                      <input
                         type="text"
-                        id="project-name"
-                        name="project-name"
+                        id="create-project-name"
+                        name="create-project-name"
                         class="form-control"
+                        oninvalid="this.setCustomValidity('Please enter a project name')"
+                        required
                         />
                   </div>
                   <div class="form-group">
                      <label for="project-description">Project description:</label>
                      <textarea
                         type="text"
-                        id="project-description"
-                        name="project-description"
+                        id="create-project-description"
+                        name="create-project-description"
                         class="form-control"
+                        oninvalid="this.setCustomValidity('Please enter a description name')"
+                        required
                         ></textarea>
                   </div>
                   <div class="form-group">
                      <label for="project-deadline">Task Deadline</label>
                      <input
-                        name="project-deadline"
+                        name="create-project-deadline"
                         type="date"
                         class="form-control"
-                        id="project-deadline"
+                        id="create-project-deadline"
                         oninvalid="this.setCustomValidity('Please select a valid date')"
                         min=""
                         required
                         />
                   </div>
-                  <button type="button" id="submit-project">Create project</button>
+                  <button class="btn btn-primary" type="submit" id="submit-project">Create project</button>
                </form>
             </div>
          </div>

@@ -1,5 +1,10 @@
+import utils from "./utils.js";
+
 //initialize modals
 var projectModal = document.querySelector("#project-modal-window");
+projectModal.style.display = "none";
+
+document.getElementById("create-project-deadline").min = utils.getCurrentDate();
 
 function showModal(modal) {
   modal.style.display = "flex";

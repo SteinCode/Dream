@@ -1,3 +1,7 @@
+import utils from "./utils.js";
+
+document.getElementById("taskDeadline").min = utils.getCurrentDate();
+
 // Create task window
 const createTaskBtn = document.querySelector(".project-task-btn__add");
 const modal = document.querySelector(".create-task-modal-window");
@@ -112,24 +116,6 @@ taskCards.forEach((taskCard) => {
     });
   });
 });
-//Get current date for task deadline
-function getCurrentDate() {
-  const currentDate = new Date();
-  const year = currentDate.getFullYear();
-  let month = currentDate.getMonth() + 1;
-  let day = currentDate.getDate();
-
-  // Add leading zero to single digit month and day values
-  if (month < 10) {
-    month = "0" + month;
-  }
-  if (day < 10) {
-    day = "0" + day;
-  }
-
-  return `${year}-${month}-${day}`;
-}
-document.getElementById("taskDeadline").min = getCurrentDate();
 
 //Delete task
 const deleteTaskButtons = document.querySelectorAll(".delete__task");
