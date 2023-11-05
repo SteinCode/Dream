@@ -26,7 +26,7 @@
       </div>
    </header>
    <body>
-      <div class="body-flex">
+       <div class="body-flex">
          <div class="sidebar">
             <div class="sidebar-nav nav-top">
                <a class="nav-item projects" href="/project">
@@ -66,49 +66,75 @@
          <div class="view-content">
             <div class="container mt-1 project-container">
                <div class="col projects-col">
-                  <h2 class="projects-header">Projects</h2>
-                  <div class="list-group project-list">
-                    {{#each projects}}
-                        <a href="#" class="list-group-items list-group-item-action{{#if this.active}} active{{/if}}"
-                           aria-current="{{#if this.active}}true{{/if}}" data-project-id="{{this.project_id}}">
-                        {{this.name}}
-                        </a>
-                        <button class="delete-project-btn" data-project-id="{{this.project_id}}">
-                        <img src="/static/media/exit.svg" />
-                        </button>
-                     {{/each}}
-
-                  </div>
-                  <div class="create-center">
-                     <button class="create-new-project-btn">
-                        <h5>Create</h5>
-                        <img src="/static/media/plus.svg" />
+                  <div class = "h2-header">
+                     <h2 class="projects-header">Projects</h2>
+                     <button class="h2-button create-new-project-btn">
+                     <img class = "h2-header-icon" src="/static/media/plus.svg" />
                      </button>
                   </div>
+                  <div class="list-group project-list">
+                     <a
+                        href="#"
+                        class="list-group-items list-group-item-action active"
+                        aria-current="true"
+                        >
+                     Sukurti dreamworką
+                     </a>
+                     <a href="#" class="list-group-items list-group-item-action">Project
+                     2</a>
+                  </div>
+                  
                </div>
                <div class = "col project-info-col">
-                  <h2 class="projects-header">Details</h2>
+                  <div class = "h2-header">
+                     <h2 class="projects-header">Details</h2>
+                  </div>
                   <div class = "project-detail-table">
                      <div class="project-detail-bigger-container">
-                        <div class = "project-detail-header">Project name</div>
+                        <div class = "project-detail-header">
+                           <h4>Name</h4>  
+                           <button class="h4-button">
+                           <img class = "h4-header-icon" src="/static/media/pen.svg" />
+                           </button>
+                        </div>
                         <div class = "project-name">Sukurti dreamworką</div>
                      </div>
                      <div class="project-detail-bigger-container">
-                        <div class = "project-detail-header">Project description</div>
+                        <div class = "project-detail-header">
+                           <h4>Description</h4>  
+                           <button class="h4-button">
+                           <img class = "h4-header-icon" src="/static/media/pen.svg" />
+                           </button>
+                        </div>
                         <div class = "project-description">Projektų ir užduočių valdymo sistema yra įrankis, kuris padeda organizuoti ir sekti darbo eigą, svarbias datos, susijusias su projektų ir užduočių įvykdymu. Ji gali apimti skirtingus funkcionalumus, tokius kaip darbo planavimas, projektų, užduočių ir laiko valdymas, resursų skyrimas, bendravimas ir komunikacija, ataskaitų ir statistikų analizavimas.</div>
                      </div>
                      <div class="project-detail-smaller-container">
-                        <div class = "project-detail-header">Projekto pabaigos data</div>
+                        <div class = "project-detail-header">
+                           <h4>Deadline</h4>  
+                           <button class="h4-button">
+                           <img class = "h4-header-icon" src="/static/media/pen.svg" />
+                           </button>
+                        </div>
                         <div class = "project-deadline">2023-05-04</div>
                      </div>
                      <div class="project-detail-smaller-container">
-                        <div class = "project-detail-header">Projekto vadovas</div>
+                        <div class = "project-detail-header">
+                           <h4>Project manager</h4>  
+                           <button class="h4-button">
+                           <img class = "h4-header-icon" src="/static/media/pen.svg" />
+                           </button>
+                        </div>
                         <div class = "project-manager">Green Velvet</div>
                      </div>
                   </div>
                </div>
                <div class="col users-list-col">
-                  <h2 class="projects-header">Attendants</h2>
+                  <div class = "h2-header">
+                     <h2 class="projects-header">Attendants</h2>
+                     <button class="h2-button create-new-project-btn">
+                     <img class = "h2-header-icon" src="/static/media/plus.svg" />
+                     </button>
+                  </div>
                   <ul class="list-group attendant-list">
                      <li class="attendant-list-group-items">Ignas Dudėnas <button class="attendant-list-item-delete">X</button></li>
                      <li class="attendant-list-group-items">Andrius Bogda <button class="attendant-list-item-delete">X</button></li>

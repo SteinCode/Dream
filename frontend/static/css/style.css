@@ -279,10 +279,47 @@ header .flex-user {
   flex-basis: 44%;
 }
 
-.projects-header {
+.h2-header {
   padding: 7px 7px 10px 7px;
   border-bottom: rgba(99, 99, 99, 0.5) solid 2px;
   margin-bottom: 0px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.h2-header-icon {
+  background: transparent;
+  border: none;
+  padding: 0px;
+  margin: 0px;
+  width: 20px;
+}
+
+.h2-button {
+  background: transparent;
+  border: none;
+  padding: 0px;
+  margin: 0px;
+  width: 20px;
+}
+
+h4 {
+  display: inline-block;
+}
+
+.h4-button {
+  display: inline-block;
+  width: 12px;
+  border: none;
+  padding: 0px;
+  margin: 0px;
+  background: transparent;
+  position: relative;
+  bottom: 2px;
+}
+
+.h4-header-icon {
+  width: 12px;
 }
 
 .project-container {
@@ -318,32 +355,9 @@ header .flex-user {
   background: rgba(0, 0, 0, 0.063);
 }
 
-.create-new-project-btn {
-  width: 80%;
-  display: flex;
-  padding: 5px 0px;
-  margin-bottom: 2rem;
-  justify-content: center;
-  align-items: center;
-  border: 0px solid black;
-  gap: 5px;
-  bottom: 0;
-  position: absolute;
-}
-
 .create-center {
   display: flex;
   justify-content: center;
-}
-
-.create-new-project-btn img {
-  width: 23px;
-}
-
-.create-new-project-btn h5 {
-  margin: 0px;
-  font-weight: 300;
-  font-size: 14px;
 }
 
 .modal-window {
