@@ -12,7 +12,6 @@ function selectProject(event) {
   if (target.classList.contains("delete-project-btn")) {
     deleteProject(event);
   } else if (target.classList.contains(".btn btn-primary")) {
-    console.log("asdsadsadsad");
     editProject(event);
   } else if (target.classList.contains("list-group-item")) {
     const selectedProject = target.textContent.trim();
@@ -60,8 +59,14 @@ async function deleteProject(event) {
 
 var projectModal = document.querySelector("#project-modal-window");
 projectModal.style.display = "none";
+const projectNameInput = document.getElementById("createProjectName");
+const projectDescriptionInput = document.getElementById(
+  "createProjectDescription"
+);
+const projectDeadlineInput = document.getElementById("createProjectDeadline");
+const submitButton = document.getElementById("submit-project");
 
-document.getElementById("create-project-deadline").min = utils.getCurrentDate();
+document.getElementById("createProjectDeadline").min = utils.getCurrentDate();
 
 function showModal(modal) {
   modal.style.display = "flex";
@@ -84,27 +89,25 @@ document.addEventListener("DOMContentLoaded", function () {
   closeProjectBtn.addEventListener("click", function () {
     hideModal(projectModal);
   });
-
-  const submitProject = document.getElementById("submit-project");
-
-  submitProject.addEventListener("click", createProject);
 });
 
-async function createProject() {
-  const projectNameInput = document.getElementById("project-name");
-  const projectName = projectNameInput.value;
-  try {
-    const response = await fetch("/project/create-project", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ projectName, users }),
-    });
-    const data = await response.json();
-    console.log(data);
-    window.alert("Project created successfully!");
-  } catch (error) {
-    console.log(error);
-  }
+//Disable create button if fileds is not filled
+function checkFields() {
+  const projectNameFilled = projectNameInput.value.trim() !== "";
+  const projectDescriptionFilled = projectDescriptionInput.value.trim() !== "";
+  const projectDeadlineFilled = projectDeadlineInput.value.trim() !== "";
+
+  submitButton.disabled = !(
+    projectNameFilled &&
+    projectDescriptionFilled &&
+    projectDeadlineFilled
+  );
 }
 
-export { showModal, hideModal, createProject, selectProject };
+projectNameInput.addEventListener("input", checkFields);
+projectDescriptionInput.addEventListener("input", checkFields);
+projectDeadlineInput.addEventListener("input", checkFields);
+
+checkFields();
+
+export { showModal, hideModal, selectProject };

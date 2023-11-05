@@ -6,20 +6,57 @@ const flash = require("express-flash");
 const user = require("./user.js");
 
 // GET method to render the "project" page
-exports.project = (req, res) => {
+exports.project = async (req, res) => {
   const token = req.cookies.token;
 
   if (!token) {
-    handleUnauthenticatedUser(res);
+    return handleUnauthenticatedUser(res);
   }
 
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.id;
-    getUserDataById(req, res, userId);
+
+    const userData = await getUserDataById(userId);
+    const projects = await getProjectsData(userData);
+
+    renderProjectPage(req, res, userData, projects);
   } catch (err) {
     handleError(res, err);
   }
+};
+
+const handleUnauthenticatedUser = (res) => {
+  res.redirect("/login");
+};
+
+const handleError = (res, error) => {
+  console.log(error);
+  res.redirect("/login");
+};
+
+const getUserDataById = (userId) => {
+  return new Promise((resolve, reject) => {
+    user.getUserById(userId, (error, userData) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(userData);
+      }
+    });
+  });
+};
+
+const getProjectsData = (user) => {
+  return new Promise((resolve, reject) => {
+    getProjects((error, projectResults) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(projectResults);
+      }
+    });
+  });
 };
 
 // Function to handle rendering the "project" page
@@ -32,98 +69,55 @@ const renderProjectPage = (req, res, user, projects) => {
   });
 };
 
-const handleUnauthenticatedUser = (res) => {
-  res.redirect("/login");
-};
-
-const handleError = (res, error) => {
-  console.log(error);
-  res.redirect("/login");
-};
-
-const getUserDataById = (req, res, userId) => {
-  user.getUserById(userId, (error, userData) => {
-    if (error) {
-      handleError(res, error);
-    } else {
-      getProjectsData(req, res, userData);
-    }
-  });
-};
-
-// Function to get projects data
-const getProjectsData = (req, res, user) => {
-  getProjects((error, projectResults) => {
-    if (error) {
-      handleError(res, error);
-    } else {
-      const projects = projectResults;
-      renderProjectPage(req, res, user, projects);
-    }
-  });
-};
-
 function getProjects(callback) {
   db.query("SELECT * FROM project", callback);
 }
 
 // POST method to add a new project
-exports.addProject = async (req, res) => {
-  const token = req.cookies.token; // Read cookie
+exports.createProject = async (req, res) => {
+  const token = req.cookies.token;
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  const userId = decodedToken.id;
   if (!token) {
     return res.status(401).json({ error: "Unauthorized" });
   }
   try {
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const { projectName, users } = req.body;
-    const project = { name: projectName };
+    const projectName = req.body.createProjectName;
+    const projectDeadline = req.body.createProjecDeadline;
+    const projectDescription = req.body.createProjectDescription;
+    const projectManagerId = userId;
 
-    const projectId = await insertProject(project);
+    await insertProjectIntoDatabase(
+      db,
+      projectName,
+      projectDeadline,
+      projectDescription,
+      projectManagerId
+    );
 
-    if (users && users.length > 0) {
-      const values = users.map((user) => [projectId, user.id]);
-      await insertProjectUsers(values);
-    }
-
-    return res.json({ projectId });
+    res.redirect("/project");
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
 
-// Helper function to insert a new project
-function insertProject(project) {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "INSERT INTO project (name) VALUES (?)",
-      [project.name],
-      (error, results) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(results.insertId);
-        }
-      }
+async function insertProjectIntoDatabase(
+  db,
+  projectName,
+  projectDeadline,
+  projectDescription,
+  projectManagerId
+) {
+  try {
+    await db.query(
+      "INSERT INTO project (name, deadline, description, manager) VALUES (?, ?, ?, ?)",
+      [projectName, projectDeadline, projectDescription, projectManagerId]
     );
-  });
-}
-
-// Helper function to insert project users
-function insertProjectUsers(values) {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "INSERT INTO project_user (project_id, user_id) VALUES ?",
-      [values],
-      (error, results) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(results);
-        }
-      }
-    );
-  });
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 }
 
 // delete project

@@ -149,34 +149,34 @@
                <h1>New Project</h1>
                <form class = "create-project-form" method="POST" action="project/create-project">
                   <div class="form-group">
-                     <label for="project-name">Project name:</label>
+                     <label for="createProjectName">Project name:</label>
                      <input
                         type="text"
-                        id="create-project-name"
-                        name="create-project-name"
+                        id="createProjectName"
+                        name="createProjectName"
                         class="form-control"
                         oninvalid="this.setCustomValidity('Please enter a project name')"
                         required
                         />
                   </div>
                   <div class="form-group">
-                     <label for="project-description">Project description:</label>
+                     <label for="createProjectDescription">Project description:</label>
                      <textarea
                         type="text"
-                        id="create-project-description"
-                        name="create-project-description"
+                        id="createProjectDescription"
+                        name="createProjectDescription"
                         class="form-control"
                         oninvalid="this.setCustomValidity('Please enter a description name')"
                         required
                         ></textarea>
                   </div>
                   <div class="form-group">
-                     <label for="project-deadline">Task Deadline</label>
+                     <label for="createProjecDeadline">Task Deadline</label>
                      <input
-                        name="create-project-deadline"
+                        name="createProjecDeadline"
                         type="date"
                         class="form-control"
-                        id="create-project-deadline"
+                        id="createProjectDeadline"
                         oninvalid="this.setCustomValidity('Please select a valid date')"
                         min=""
                         required
