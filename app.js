@@ -12,7 +12,6 @@ const dashboardRoute = require("./backend/routes/dashboard");
 const profileRoute = require("./backend/routes/profile");
 const projectRoute = require("./backend/routes/project");
 const taskRoute = require("./backend/routes/task");
-const performanceRoute = require("./backend/routes/performance");
 const userRoute = require("./backend/routes/user");
 
 const app = express();
@@ -42,7 +41,6 @@ app.use("/", dashboardRoute);
 app.use("/profile", profileRoute);
 app.use("/project", projectRoute);
 app.use("/task", taskRoute);
-app.use("/performance", performanceRoute);
 app.use("/user", userRoute);
 app.use(
   "/media",

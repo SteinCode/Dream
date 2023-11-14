@@ -14,12 +14,13 @@ function selectProject(event) {
   ) {
     var projectId = clickedElement.getAttribute("data-project-id");
     var url = `/project/set-active-project/${projectId}`;
-
     fetch(url, { method: "PUT" })
       .then((response) => {
         if (response.ok) {
+          reloadPage();
           return response.json();
         } else {
+          reloadPage();
           throw new Error("Something went wrong");
         }
       })
@@ -30,6 +31,10 @@ function selectProject(event) {
         console.log(err);
       });
   }
+}
+
+function reloadPage() {
+  location.reload();
 }
 
 const deleteButtons = document.querySelectorAll(".delete-project-btn");

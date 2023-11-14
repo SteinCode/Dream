@@ -20,7 +20,17 @@ exports.project = async (req, res) => {
     const userData = await getUserDataById(userId);
     const projects = await getProjectsData(userData);
 
-    renderProjectPage(req, res, userData, projects);
+    let activeProject = req.cookies.activeProjectId;
+    let activeProjectData;
+
+    if (activeProject) {
+      activeProjectData = await getProjectById(activeProject);
+    } else {
+      activeProject = await getFirstProjectId();
+      activeProjectData = await getProjectById(activeProject);
+    }
+    console.log(activeProjectData);
+    renderProjectPage(req, res, userData, projects, activeProjectData);
   } catch (err) {
     handleError(res, err);
   }
@@ -47,6 +57,38 @@ const getUserDataById = (userId) => {
   });
 };
 
+const getProjectById = (projectId) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT * FROM project WHERE project_id = ?",
+      [projectId],
+      (error, results) => {
+        if (error) {
+          reject(error);
+        } else if (results.length === 0) {
+          resolve(null);
+        } else {
+          resolve(results[0]);
+        }
+      }
+    );
+  });
+};
+
+const getFirstProjectId = () => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT project_id FROM project LIMIT 1", (error, results) => {
+      if (error) {
+        reject(error);
+      } else if (results.length === 0) {
+        resolve(-1);
+      } else {
+        resolve(results[0].id);
+      }
+    });
+  });
+};
+
 const getProjectsData = (user) => {
   return new Promise((resolve, reject) => {
     getProjects((error, projectResults) => {
@@ -59,17 +101,25 @@ const getProjectsData = (user) => {
   });
 };
 
-const renderProjectPage = (req, res, user, projects) => {
+const renderProjectPage = (req, res, user, projects, activeProject) => {
+  console.log(activeProject);
   res.render("project", {
     user,
     projects,
+    activeProject,
     successMessage: req.flash("successMessage"),
     errorMessage: req.flash("errorMessage"),
   });
 };
 
 function getProjects(callback) {
-  db.query("SELECT * FROM project", callback);
+  db.query("SELECT * FROM project", (error, results) => {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
 }
 
 // POST method to add a new project
@@ -173,7 +223,6 @@ exports.updateProject = async (req, res) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const projectId = req.params.projectID;
     const fieldValue = req.body.fieldValue; // Retrieve the "name" value from the request body
-    console.log(fieldValue);
     // put
     await db.query("UPDATE project SET name = ? WHERE project_id = ?", [
       fieldValue,
@@ -197,37 +246,13 @@ exports.setActiveProject = async (req, res) => {
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const projectId = req.params.projectID;
-
-    // Get project details from the database
-    const projectDetails = await getProjectDetailsById(projectId);
-    // Save project details in cookies
-    res.cookie("activeProject", JSON.stringify(projectDetails), {
+    res.cookie("activeProjectId", projectId, {
       maxAge: 900000,
       httpOnly: true,
     });
-
-    // Redirect to the project page
-    res.redirect("/project");
+    return res.json({ message: "Active project set successfully" });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
-
-async function getProjectDetailsById(projectId) {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "SELECT * FROM project WHERE project_id = ?",
-      [projectId],
-      (error, results) => {
-        if (error) {
-          reject(error);
-        } else {
-          // Assuming there's only one project with the given ID
-          const projectDetails = results[0];
-          resolve(projectDetails);
-        }
-      }
-    );
-  });
-}
