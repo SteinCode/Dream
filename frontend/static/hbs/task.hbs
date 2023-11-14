@@ -61,10 +61,6 @@
             <img class="icon" src="/static/media/profile.svg" />
             <div class="text">Profile</div>
           </a>
-          <a class="nav-item performance" href="/performance">
-            <img class="icon" src="/static/media/performance.svg" />
-            <div class="text">Performance</div>
-          </a>
         </div>
         <div class="sidebar-nav nav-bottom">
           <a
@@ -266,7 +262,7 @@
           <button class="close-modal"><img
               src="static/media/exit.svg"
             /></button>
-          <form id="create-task-form" action="/tasks/create-task" method="POST">
+          <form id="create-task-form" action="/task/create-task" method="POST">
             <h1>Create a task</h1>
             <div class="flex-container">
               <div class="flex-col-left">
@@ -291,8 +287,6 @@
                     rows="3"
                     placeholder="Enter task description"
                     name="taskDescription"
-                    oninvalid="this.setCustomValidity('Please input a task description')"
-                    required
                     maxLength="2000"
                   ></textarea>
                 </div>

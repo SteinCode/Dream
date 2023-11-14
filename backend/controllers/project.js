@@ -186,3 +186,48 @@ exports.updateProject = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+//Set Active Project in Cookie Session, by setting the active field to string "true"
+exports.setActiveProject = async (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const projectId = req.params.projectID;
+
+    // Get project details from the database
+    const projectDetails = await getProjectDetailsById(projectId);
+    // Save project details in cookies
+    res.cookie("activeProject", JSON.stringify(projectDetails), {
+      maxAge: 900000,
+      httpOnly: true,
+    });
+
+    // Redirect to the project page
+    res.redirect("/project");
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+async function getProjectDetailsById(projectId) {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT * FROM project WHERE project_id = ?",
+      [projectId],
+      (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          // Assuming there's only one project with the given ID
+          const projectDetails = results[0];
+          resolve(projectDetails);
+        }
+      }
+    );
+  });
+}

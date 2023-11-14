@@ -3,16 +3,19 @@ const controller = require("../controllers/project");
 
 const router = express.Router();
 
-// /profile
+// /project
 router.get("/", controller.project);
 
-// /profile/create-project
+// /project/create-project
 router.post("/create-project", controller.createProject);
 
-// /profile/delete-project
+// /project/delete-project
 router.delete("/delete-project/:projectID", controller.deleteProject);
 
-// /profile/update-project
+// /project/update-project
 router.put("/update-project/:projectID", controller.updateProject);
+
+// /project/set-active-project
+router.put("/set-active-project/:projectID", controller.setActiveProject);
 
 module.exports = router;

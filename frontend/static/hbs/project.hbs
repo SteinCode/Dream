@@ -46,10 +46,6 @@
                   <img class="icon" src="/static/media/profile.svg" />
                   <div class="text">Profile</div>
                </a>
-               <a class="nav-item performance" href="/performance">
-                  <img class="icon" src="/static/media/performance.svg" />
-                  <div class="text">Performance</div>
-               </a>
             </div>
             <div class="sidebar-nav nav-bottom">
                <a
@@ -75,14 +71,13 @@
                   <ul class="list-group project-list">
                      {{#each projects}}
                         <div class="project-list-item">
-                           <a href="#" class="list-group-items list-group-item-action{{#if this.active}} active{{/if}}"
-                              aria-current="{{#if this.active}}true{{/if}}" data-project-id="{{this.project_id}}">
-                           {{this.name}}
+                           <a href="#" class="list-group-items list-group-item-action" data-project-id="{{this.project_id}}" active={{#if this.active}}"true"{{else}}"false"{{/if}}>
+                              {{this.name}}
                            </a>
                            <button class="project-list-item-delete" data-project-id="{{this.project_id}}">
                               <img src="/static/media/exit.svg" />
                            </button>
-                      </div>
+                        </div>
                      {{/each}}
                   </ul>
                   

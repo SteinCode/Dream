@@ -1,33 +1,38 @@
 import utils from "./utils.js";
 
 //---------- PROJECT PAGE VIEW
+
 const projectList = document.querySelector(".project-list");
-const selectedProjectName = document.querySelector(".project-name");
-const deleteButtons = document.querySelectorAll(".delete-project-btn");
+
+projectList.addEventListener("click", selectProject);
 
 function selectProject(event) {
-  const target = event.target;
-  console.log(target.classList);
+  var clickedElement = event.target;
+  if (
+    clickedElement.classList.contains("list-group-items") &&
+    clickedElement.classList.contains("list-group-item-action")
+  ) {
+    var projectId = clickedElement.getAttribute("data-project-id");
+    var url = `/project/set-active-project/${projectId}`;
 
-  if (target.classList.contains("delete-project-btn")) {
-    deleteProject(event);
-  } else if (target.classList.contains(".btn btn-primary")) {
-    editProject(event);
-  } else if (target.classList.contains("list-group-item")) {
-    const selectedProject = target.textContent.trim();
-    selectedProjectName.textContent = selectedProject;
-
-    // Remove the 'active' class from all project items
-    const projectItems = document.querySelectorAll(".list-group-item");
-    projectItems.forEach((item) => item.classList.remove("active"));
-
-    // Add the 'active' class to the selected project item
-    target.classList.add("active");
-    projectModal.style.display = "block";
+    fetch(url, { method: "PUT" })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Something went wrong");
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }
 
-projectList.addEventListener("click", selectProject);
+const deleteButtons = document.querySelectorAll(".delete-project-btn");
 
 deleteButtons.forEach((button) => {
   button.addEventListener("click", deleteProject);
