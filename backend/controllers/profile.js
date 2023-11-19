@@ -13,14 +13,16 @@ exports.profile = (req, res) => {
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.id;
-
+    const activeProjectName = req.cookies.activeProjectName;
     db.query("SELECT * FROM user WHERE id = ?", [userId], (error, results) => {
       if (error) {
         console.log(error);
       }
       const user = results[0];
+
       res.render("profile", {
         user,
+        activeProjectName,
         successMessage: req.flash("successMessage"),
         errorMessage: req.flash("errorMessage"),
       });

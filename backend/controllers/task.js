@@ -12,6 +12,7 @@ exports.task = (req, res) => {
   }
 
   try {
+    activeProjectName = req.cookies.activeProjectName;
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.id;
     const userRole = decodedToken.role;
@@ -33,7 +34,7 @@ exports.task = (req, res) => {
             return res.redirect("/login");
           }
 
-          res.render("task", { user, tasks, developers });
+          res.render("task", { user, tasks, developers, activeProjectName });
         });
       });
     });

@@ -24,9 +24,6 @@ function selectProject(event) {
           throw new Error("Something went wrong");
         }
       })
-      .then((data) => {
-        console.log(data);
-      })
       .catch((err) => {
         console.log(err);
       });
@@ -53,10 +50,8 @@ async function deleteProject(event) {
 
     if (response.ok) {
       const data = await response.json();
-      // Handle the success response
       console.log(data);
     } else {
-      // Handle the error response
       const errorData = await response.json();
       console.log(errorData);
     }

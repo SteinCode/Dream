@@ -47,10 +47,12 @@
           <a class="nav-item projects" href="/project">
             <img class="icon" src="/static/media/project.svg" />
             <div class="text">Projects</div>
-            <div class="current-project-text">
-              <p>Current project:</p>
-              <p>Sukurti dreamworką</p>
-            </div>
+            {{#if activeProjectName}}
+              <div class="current-project-text">
+                <p>Current project:</p>
+                <p>{{activeProjectName}}</p>
+              </div>
+            {{/if}}
           </a>
           <a class="nav-item tasks" href="/task">
             <div class="active-indicator"></div>

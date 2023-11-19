@@ -12,7 +12,7 @@ exports.home = (req, res) => {
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.id;
-
+    const activeProjectName = req.cookies.activeProjectName;
     db.query("SELECT * FROM user WHERE id = ?", [userId], (error, results) => {
       if (error) {
         console.log(error);
@@ -22,7 +22,7 @@ exports.home = (req, res) => {
         if (err) {
           console.log(err);
         }
-        res.render("home", { user, codes });
+        res.render("home", { user, codes, activeProjectName });
       });
     });
   } catch (err) {

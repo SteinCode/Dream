@@ -18,7 +18,7 @@ exports.project = async (req, res) => {
     const userId = decodedToken.id;
 
     const userData = await getUserDataById(userId);
-    const projects = await getProjectsData(userData);
+    const projects = await getProjects();
 
     let activeProject = req.cookies.activeProjectId;
     let activeProjectData;
@@ -29,7 +29,6 @@ exports.project = async (req, res) => {
       activeProject = await getFirstProjectId();
       activeProjectData = await getProjectById(activeProject);
     }
-    console.log(activeProjectData);
     renderProjectPage(req, res, userData, projects, activeProjectData);
   } catch (err) {
     handleError(res, err);
@@ -89,20 +88,7 @@ const getFirstProjectId = () => {
   });
 };
 
-const getProjectsData = (user) => {
-  return new Promise((resolve, reject) => {
-    getProjects((error, projectResults) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(projectResults);
-      }
-    });
-  });
-};
-
 const renderProjectPage = (req, res, user, projects, activeProject) => {
-  console.log(activeProject);
   res.render("project", {
     user,
     projects,
@@ -112,13 +98,15 @@ const renderProjectPage = (req, res, user, projects, activeProject) => {
   });
 };
 
-function getProjects(callback) {
-  db.query("SELECT * FROM project", (error, results) => {
-    if (error) {
-      callback(error, null);
-    } else {
-      callback(null, results);
-    }
+function getProjects() {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT * FROM project", (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
   });
 }
 
@@ -222,7 +210,7 @@ exports.updateProject = async (req, res) => {
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const projectId = req.params.projectID;
-    const fieldValue = req.body.fieldValue; // Retrieve the "name" value from the request body
+    const fieldValue = req.body.fieldValue;
     // put
     await db.query("UPDATE project SET name = ? WHERE project_id = ?", [
       fieldValue,
@@ -236,7 +224,6 @@ exports.updateProject = async (req, res) => {
   }
 };
 
-//Set Active Project in Cookie Session, by setting the active field to string "true"
 exports.setActiveProject = async (req, res) => {
   const token = req.cookies.token;
   if (!token) {
@@ -246,7 +233,14 @@ exports.setActiveProject = async (req, res) => {
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const projectId = req.params.projectID;
+    const projectData = await getProjectById(projectId);
+    const projectName = projectData.name;
     res.cookie("activeProjectId", projectId, {
+      maxAge: 900000,
+      httpOnly: true,
+    });
+    res.cookie("activeProjectName", projectName, {
+      // Add a new cookie for the project name
       maxAge: 900000,
       httpOnly: true,
     });
