@@ -167,11 +167,12 @@ exports.deleteProject = async (req, res) => {
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const projectId = req.params.projectID;
-    // Delete project users
+
     await deleteProjectUsers(db, projectId);
 
-    // Delete project
-    await deleteProjectFromDatabase(db, projectId);
+    await deleteProjectTasks(db, projectId);
+
+    await deleteProject(db, projectId);
 
     return res.json({ message: "Project deleted successfully" });
   } catch (err) {
@@ -191,12 +192,20 @@ async function deleteProjectUsers(db, projectId) {
   }
 }
 
-async function deleteProjectFromDatabase(db, projectId) {
+async function deleteProject(db, projectId) {
   try {
     await db.query("DELETE FROM project WHERE project_id = ?", [projectId]);
   } catch (err) {
     console.log(err);
     throw err;
+  }
+}
+
+async function deleteProjectTasks(db, projectId) {
+  try {
+    await db.query("DELETE FROM task WHERE project_id = ?", "project_id");
+  } catch (error) {
+    console.log(error);
   }
 }
 

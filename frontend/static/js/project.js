@@ -34,7 +34,7 @@ function reloadPage() {
   location.reload();
 }
 
-const deleteButtons = document.querySelectorAll(".delete-project-btn");
+const deleteButtons = document.querySelectorAll(".project-list-item-delete");
 
 deleteButtons.forEach((button) => {
   button.addEventListener("click", deleteProject);
@@ -49,8 +49,7 @@ async function deleteProject(event) {
     const response = await fetch(url, { method: "DELETE" });
 
     if (response.ok) {
-      const data = await response.json();
-      console.log(data);
+      reloadPage();
     } else {
       const errorData = await response.json();
       console.log(errorData);
