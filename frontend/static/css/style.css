@@ -412,7 +412,7 @@ h4 {
   align-items: center;
 }
 
-.create-new-project-window {
+.inner-modal {
   background: white;
   border-radius: 20px;
   max-width: 1300px;
@@ -422,24 +422,24 @@ h4 {
   position: relative;
 }
 
-.create-new-project-window form {
+.inner-modal form {
   height: 100%;
 }
 
-.create-new-project-window .flex-container {
+.inner-modal .flex-container {
   display: flex;
   justify-content: space-between;
 }
 
-.create-new-project-window .form-group {
+.inner-modal .form-group {
   margin-bottom: 20px;
 }
 
-.create-new-project-window .flex-col-left {
+.inner-modal .flex-col-left {
   flex-basis: 48%;
 }
 
-.create-new-project-window .flex-col-right {
+.inner-modal .flex-col-right {
   flex-basis: 48%;
 }
 
@@ -957,4 +957,41 @@ h4 {
   .tasklist-container {
     flex-basis: 25%;
   }
+}
+
+.lists-wrapper {
+  display: flex;
+  height: 90%;
+}
+
+/* Attendants modal */
+.attendants-list-container {
+  flex: 1; /* Each list container will take up half of the wrapper width */
+  overflow-y: auto; /* Enables vertical scrolling if content is too tall */
+  border: 1px solid #ddd;
+  margin: 10px;
+  padding: 20px;
+}
+
+.attendants-user-list {
+  list-style-type: none;
+  padding: 0;
+  height: 100%; /* Make the ul take up the full height of its container */
+  overflow-y: auto; /* Enables vertical scrolling if content is too tall */
+  margin-bottom: 0; /* Remove the margin at the bottom */
+}
+
+.attendants-user-list li {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.attendants-user-list li:hover {
+  background-color: #f0f0f0;
+}
+
+#attendants-modal-window .inner-modal {
+  height: 80%;
 }

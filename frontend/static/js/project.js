@@ -61,9 +61,48 @@ async function deleteProject(event) {
 
 // ------------ ATENDANTS ----------
 
-// const addAttendantsButton = document.querySelector("add-new-attendants-btn");
+const addAttendantsButton = document.querySelector(".add-new-attendants-btn");
+const attendantsModal = document.querySelector("#attendants-modal-window");
+attendantsModal.style.display = "none";
+addAttendantsButton.addEventListener("click", showAttendantsModal);
 
-// addAttendantsButton.addEventListener("click", showAttendantsModal);
+function showAttendantsModal(event) {
+  event.stopPropagation();
+  console.log("showing attendants modal");
+  showModal(attendantsModal);
+}
+
+const closeAttendantsModal = document.querySelector(".close-attendants-modal");
+closeAttendantsModal.addEventListener("click", hideAttendantsModal);
+
+function hideAttendantsModal(event) {
+  event.stopPropagation();
+  hideModal(attendantsModal);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const users = ["Alice", "Bob", "Charlie", "Dana", "Eve"]; // Example user list
+  const usersList = document.getElementById("users-list");
+  const addedUsersList = document.getElementById("added-users-list");
+
+  function createUserListItem(userName) {
+    const li = document.createElement("li");
+    li.textContent = userName;
+    li.onclick = function () {
+      if (this.parentNode.id === "users-list") {
+        addedUsersList.appendChild(this);
+      } else {
+        usersList.appendChild(this);
+      }
+    };
+    return li;
+  }
+
+  // Populate the initial list
+  users.forEach((user) => {
+    usersList.appendChild(createUserListItem(user));
+  });
+});
 
 // ---------- CREATE PROJECT VIEW
 

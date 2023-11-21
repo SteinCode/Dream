@@ -145,7 +145,7 @@
          </div>
       </div>
          <div class="modal-window" id = "project-modal-window">
-            <div class="create-new-project-window">
+            <div class="inner-modal">
                <button class="close-modal"><img src="static/media/exit.svg" /></button>
                <h1>New Project</h1>
                <form class = "create-project-form" method="POST" action="project/create-project">
@@ -187,6 +187,31 @@
                </form>
             </div>
          </div>
+
+         <div class = "modal-window" id = "attendants-modal-window">
+            <div class = "inner-modal">
+               <button class="close-attendants-modal close-modal"><img src="static/media/exit.svg" /></button>
+               <h1>Add users to the project: </h1>
+                  <div class = "lists-wrapper">
+                     <div class="attendants-list-container">
+                     <h2>Available Users</h2>
+                     <ul id="users-list" class="attendants-user-list">
+                        <!-- Dynamically filled with JavaScript -->
+                     </ul>
+                  </div>
+
+                  <div class="attendants-list-container">
+                     <h2>Added Users</h2>
+                     <ul id="added-users-list" class="attendants-user-list">
+                        <!-- Users will be moved here -->
+                     </ul>
+                  </div>
+               </div>
+               
+
+            </div>
+         </div>
+
       </div>
       </div>
       </form>
