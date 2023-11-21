@@ -68,7 +68,6 @@ addAttendantsButton.addEventListener("click", showAttendantsModal);
 
 function showAttendantsModal(event) {
   event.stopPropagation();
-  console.log("showing attendants modal");
   showModal(attendantsModal);
 }
 
@@ -81,27 +80,59 @@ function hideAttendantsModal(event) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const users = ["Alice", "Bob", "Charlie", "Dana", "Eve"]; // Example user list
+  // Get the container elements for the user lists
   const usersList = document.getElementById("users-list");
   const addedUsersList = document.getElementById("added-users-list");
 
-  function createUserListItem(userName) {
-    const li = document.createElement("li");
-    li.textContent = userName;
-    li.onclick = function () {
+  function createUserListItem(userElement) {
+    const clonedUserElement = userElement.cloneNode(true);
+
+    clonedUserElement.addEventListener("click", function () {
       if (this.parentNode.id === "users-list") {
         addedUsersList.appendChild(this);
       } else {
         usersList.appendChild(this);
       }
-    };
-    return li;
+    });
+
+    return clonedUserElement;
   }
 
-  // Populate the initial list
-  users.forEach((user) => {
-    usersList.appendChild(createUserListItem(user));
+  // Get all existing user list items from the template
+  const users = document.querySelectorAll(".attendant-list-group-item");
+
+  // Iterate over each user element and append a clone to the usersList
+  users.forEach((userElement) => {
+    // Append the cloned and event-bound user list item to usersList
+    usersList.appendChild(createUserListItem(userElement));
+    // Remove the original to avoid duplicates
+    userElement.remove();
   });
+
+  function addAttendant(projectId, attendantId) {
+    return fetch(`/add-attendant/${projectId}/${attendantId}`, {
+      method: "POST",
+      // Add any necessary headers, body, etc.
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json(); // or .text(), etc. depending on your response
+    });
+  }
+
+  // Function to handle the DELETE request to remove an attendant
+  function deleteAttendant(projectId, attendantId) {
+    return fetch(`/delete-attendant/${projectId}/${attendantId}`, {
+      method: "DELETE",
+      // Add any necessary headers, body, etc.
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json(); // or .text(), etc. depending on your response
+    });
+  }
 });
 
 // ---------- CREATE PROJECT VIEW
@@ -140,7 +171,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-//Disable create button if fileds is not filled
 function checkFields() {
   const projectNameFilled = projectNameInput.value.trim() !== "";
   const projectDescriptionFilled = projectDescriptionInput.value.trim() !== "";

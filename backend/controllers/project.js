@@ -20,17 +20,28 @@ exports.project = async (req, res) => {
     const userData = await getUserDataById(userId);
     const projects = await getProjects();
 
-    let activeProject = req.cookies.activeProjectId;
+    let activeProjectId = req.cookies.activeProjectId;
     let activeProjectData;
     let activeProjectManagerName = req.cookies.activeProjectManagerName;
     let activeProjectManagerSurname = req.cookies.activeProjectManagerSurname;
-    console.log(activeProjectManagerName);
-    console.log(activeProjectManagerSurname);
-    if (activeProject) {
-      activeProjectData = await getProjectById(activeProject);
+    let activeProjectAttendantsIds = await getAttendantsFromDatabase(
+      db,
+      activeProjectId
+    );
+    console.log(activeProjectAttendantsIds);
+    let activeProjectAttendants = [];
+
+    for (let i = 0; i < activeProjectAttendantsIds.length; i++) {
+      let attendantData = await getUserDataById(
+        activeProjectAttendantsIds[i].user_id
+      );
+      activeProjectAttendants.push(attendantData);
+    }
+    if (activeProjectId) {
+      activeProjectData = await getProjectById(activeProjectId);
     } else {
       activeProject = await getFirstProjectId();
-      activeProjectData = await getProjectById(activeProject);
+      activeProjectData = await getProjectById(activeProjectId);
     }
     renderProjectPage(
       req,
@@ -39,7 +50,8 @@ exports.project = async (req, res) => {
       projects,
       activeProjectData,
       activeProjectManagerName,
-      activeProjectManagerSurname
+      activeProjectManagerSurname,
+      activeProjectAttendants
     );
   } catch (err) {
     handleError(res, err);
@@ -106,7 +118,8 @@ const renderProjectPage = (
   projects,
   activeProject,
   activeProjectManagerName,
-  activeProjectManagerSurname
+  activeProjectManagerSurname,
+  activeProjectAttendants
 ) => {
   res.render("project", {
     user,
@@ -114,6 +127,7 @@ const renderProjectPage = (
     activeProject,
     activeProjectManagerName,
     activeProjectManagerSurname,
+    activeProjectAttendants,
     successMessage: req.flash("successMessage"),
     errorMessage: req.flash("errorMessage"),
   });
@@ -289,3 +303,102 @@ exports.setActiveProject = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+exports.addAttendant = async (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const projectId = req.params.projectID;
+    const attendantId = req.params.attendantID;
+
+    await insertAttendantIntoDatabase(db, projectId, attendantId);
+
+    return res.json({ message: "Attendant added successfully" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+async function insertAttendantIntoDatabase(db, projectId, attendantId) {
+  try {
+    await db.query(
+      "INSERT INTO project_user (project_id, user_id) VALUES (?, ?)",
+      [projectId, attendantId]
+    );
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+exports.deleteAttendant = async (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const projectId = req.params.projectID;
+    const attendantId = req.params.attendantID;
+
+    await deleteAttendantFromDatabase(db, projectId, attendantId);
+
+    return res.json({ message: "Attendant deleted successfully" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+async function deleteAttendantFromDatabase(db, projectId, attendantId) {
+  try {
+    await db.query(
+      "DELETE FROM project_user WHERE project_id = ? AND user_id = ?",
+      [projectId, attendantId]
+    );
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+exports.getAttendants = async (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const projectId = req.params.projectID;
+
+    const attendants = await getAttendantsFromDatabase(db, projectId);
+
+    return res.json({ attendants });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+async function getAttendantsFromDatabase(db, projectId) {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT user_id FROM project_user WHERE project_id = ?",
+      [projectId],
+      (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      }
+    );
+  });
+}

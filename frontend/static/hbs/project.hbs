@@ -92,36 +92,36 @@
                      <div class="project-detail-bigger-container">
                         <div class = "project-detail-header">
                            <h4>Name</h4>  
-                           <button class="h4-button">
+                           {{!-- <button class="h4-button">
                            <img class = "h4-header-icon" src="/static/media/pen.svg" />
-                           </button>
+                           </button> --}}
                         </div>
                         <div class = "project-name">{{activeProject.name}}</div>
                      </div>
                      <div class="project-detail-bigger-container">
                         <div class = "project-detail-header">
                            <h4>Description</h4>  
-                           <button class="h4-button">
+                           {{!-- <button class="h4-button">
                            <img class = "h4-header-icon" src="/static/media/pen.svg" />
-                           </button>
+                           </button> --}}
                         </div>
                         <div class = "project-description">{{activeProject.description}}</div>
                      </div>
                      <div class="project-detail-smaller-container">
                         <div class = "project-detail-header">
                            <h4>Deadline</h4>  
-                           <button class="h4-button">
+                           {{!-- <button class="h4-button">
                            <img class = "h4-header-icon" src="/static/media/pen.svg" />
-                           </button>
+                           </button> --}}
                         </div>
                         <div class = "project-deadline">{{activeProject.deadline}}</div>
                      </div>
                      <div class="project-detail-smaller-container">
                         <div class = "project-detail-header">
                            <h4>Project manager</h4>  
-                           <button class="h4-button">
+                           {{!-- <button class="h4-button">
                            <img class = "h4-header-icon" src="/static/media/pen.svg" />
-                           </button>
+                           </button> --}}
                         </div>
                         <div class = "project-manager">{{activeProjectManagerName}} {{activeProjectManagerSurname}}</div>
                      </div>
@@ -135,10 +135,9 @@
                      </button>
                   </div>
                   <ul class="list-group attendant-list">
-                     <li class="attendant-list-group-items">Arminas Petraitis <button class="attendant-list-item-delete">X</button></li>
-                     <li class="attendant-list-group-items">Andrius Bogda <button class="attendant-list-item-delete">X</button></li>
-                     <li class="attendant-list-group-items">Karolina Augustinaitė <button class="attendant-list-item-delete">X</button></li>
-                     <li class="attendant-list-group-items">Lukas Liaukaitis <button class="attendant-list-item-delete">X</button></li>
+                     {{#each activeProjectAttendants}}
+                        <li class="attendant-list-group-items">{{this.name}} {{this.surname}} <button class="attendant-list-item-delete" data-user-id="{{this.user_id}}">X</button></li>
+                     {{/each}}
                   </ul>
                </div>
             </div>
@@ -196,7 +195,10 @@
                      <div class="attendants-list-container">
                      <h2>Available Users</h2>
                      <ul id="users-list" class="attendants-user-list">
-                        <!-- Dynamically filled with JavaScript -->
+                        <!-- Users will be moved here -->
+                         {{#each activeProjectAttendants}}
+                           <li class="attendant-list-group-item">{{this.name}} {{this.surname}} <button class="attendant-list-item-delete" data-user-id="{{this.user_id}}">X</button></li>
+                        {{/each}}
                      </ul>
                   </div>
 
