@@ -22,14 +22,25 @@ exports.project = async (req, res) => {
 
     let activeProject = req.cookies.activeProjectId;
     let activeProjectData;
-
+    let activeProjectManagerName = req.cookies.activeProjectManagerName;
+    let activeProjectManagerSurname = req.cookies.activeProjectManagerSurname;
+    console.log(activeProjectManagerName);
+    console.log(activeProjectManagerSurname);
     if (activeProject) {
       activeProjectData = await getProjectById(activeProject);
     } else {
       activeProject = await getFirstProjectId();
       activeProjectData = await getProjectById(activeProject);
     }
-    renderProjectPage(req, res, userData, projects, activeProjectData);
+    renderProjectPage(
+      req,
+      res,
+      userData,
+      projects,
+      activeProjectData,
+      activeProjectManagerName,
+      activeProjectManagerSurname
+    );
   } catch (err) {
     handleError(res, err);
   }
@@ -88,11 +99,21 @@ const getFirstProjectId = () => {
   });
 };
 
-const renderProjectPage = (req, res, user, projects, activeProject) => {
+const renderProjectPage = (
+  req,
+  res,
+  user,
+  projects,
+  activeProject,
+  activeProjectManagerName,
+  activeProjectManagerSurname
+) => {
   res.render("project", {
     user,
     projects,
     activeProject,
+    activeProjectManagerName,
+    activeProjectManagerSurname,
     successMessage: req.flash("successMessage"),
     errorMessage: req.flash("errorMessage"),
   });
@@ -244,12 +265,21 @@ exports.setActiveProject = async (req, res) => {
     const projectId = req.params.projectID;
     const projectData = await getProjectById(projectId);
     const projectName = projectData.name;
+
+    managerData = await getUserDataById(projectData.manager);
     res.cookie("activeProjectId", projectId, {
       maxAge: 900000,
       httpOnly: true,
     });
     res.cookie("activeProjectName", projectName, {
-      // Add a new cookie for the project name
+      maxAge: 900000,
+      httpOnly: true,
+    });
+    res.cookie("activeProjectManagerName", managerData["name"], {
+      maxAge: 900000,
+      httpOnly: true,
+    });
+    res.cookie("activeProjectManagerSurname", managerData["surname"], {
       maxAge: 900000,
       httpOnly: true,
     });

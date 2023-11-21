@@ -59,6 +59,12 @@ async function deleteProject(event) {
   }
 }
 
+// ------------ ATENDANTS ----------
+
+// const addAttendantsButton = document.querySelector("add-new-attendants-btn");
+
+// addAttendantsButton.addEventListener("click", showAttendantsModal);
+
 // ---------- CREATE PROJECT VIEW
 
 var projectModal = document.querySelector("#project-modal-window");
