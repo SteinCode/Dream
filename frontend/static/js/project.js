@@ -171,7 +171,15 @@ const deleteAttendantButtons = document.querySelectorAll(
 deleteAttendantButtons.forEach((button) => {
   const userId = button.getAttribute("data-user-id");
   button.addEventListener("click", () => {
-    deleteAttendant(activeProjectId, userId);
+    deleteAttendant(activeProjectId, userId)
+      .then(() => {
+        // Remove the list element from the view
+        const listItem = button.closest("li");
+        listItem.remove();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   });
 });
 
