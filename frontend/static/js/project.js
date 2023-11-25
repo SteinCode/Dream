@@ -79,61 +79,128 @@ function hideAttendantsModal(event) {
   hideModal(attendantsModal);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  // Get the container elements for the user lists
-  const usersList = document.getElementById("users-list");
-  const addedUsersList = document.getElementById("added-users-list");
+const projectContainer = document.querySelector(".project-container");
+const activeProjectId = projectContainer.getAttribute("active-project-id");
 
-  function createUserListItem(userElement) {
-    const clonedUserElement = userElement.cloneNode(true);
+// Function to move a user list item from its current list to a target list
+function moveUserItem(listItem, targetListId) {
+  const userId = listItem.getAttribute("data-user-id"); // Extract user ID
+  const targetList = document.getElementById(targetListId);
 
-    clonedUserElement.addEventListener("click", function () {
-      if (this.parentNode.id === "users-list") {
-        addedUsersList.appendChild(this);
-      } else {
-        usersList.appendChild(this);
-      }
-    });
+  // Remove the item from its current parent list
+  listItem.parentNode.removeChild(listItem);
 
-    return clonedUserElement;
+  // Append the item to the target list
+  targetList.appendChild(listItem);
+
+  // Depending on the target list, call the appropriate function
+  if (targetListId === "added-users-list") {
+    addAttendant(activeProjectId, userId)
+      .then((response) => {
+        console.log("Attendant added:", response);
+      })
+      .catch((error) => {
+        console.error("Error adding attendant:", error);
+      });
+  } else {
+    deleteAttendant(activeProjectId, userId)
+      .then((response) => {
+        console.log("Attendant removed:", response);
+      })
+      .catch((error) => {
+        console.error("Error removing attendant:", error);
+      });
   }
 
-  // Get all existing user list items from the template
-  const users = document.querySelectorAll(".attendant-list-group-item");
-
-  // Iterate over each user element and append a clone to the usersList
-  users.forEach((userElement) => {
-    // Append the cloned and event-bound user list item to usersList
-    usersList.appendChild(createUserListItem(userElement));
-    // Remove the original to avoid duplicates
-    userElement.remove();
+  // Reattach the event handler for the new position of the list item
+  listItem.addEventListener("click", function (event) {
+    if (
+      event.target.tagName === "LI" &&
+      !event.target.classList.contains("attendant-list-item-delete")
+    ) {
+      // Determine the new target list based on the current list of the item
+      const newTargetListId =
+        targetListId === "available-users-list"
+          ? "added-users-list"
+          : "available-users-list";
+      moveUserItem(listItem, newTargetListId);
+    }
   });
+}
 
-  function addAttendant(projectId, attendantId) {
-    return fetch(`/add-attendant/${projectId}/${attendantId}`, {
-      method: "POST",
-      // Add any necessary headers, body, etc.
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+// Now update the event listeners to handle the click event correctly
+function initializeListHandlers() {
+  document
+    .getElementById("available-users-list")
+    .addEventListener("click", function (event) {
+      let target = event.target;
+      // Ensure the click is not on the delete button
+      if (target.classList.contains("attendant-list-item-delete")) {
+        return;
       }
-      return response.json(); // or .text(), etc. depending on your response
+      // If the target is not the LI itself, find the LI ancestor
+      if (target.tagName !== "LI") {
+        target = target.closest("li");
+      }
+      moveUserItem(target, "added-users-list");
     });
-  }
 
-  // Function to handle the DELETE request to remove an attendant
-  function deleteAttendant(projectId, attendantId) {
-    return fetch(`/delete-attendant/${projectId}/${attendantId}`, {
-      method: "DELETE",
-      // Add any necessary headers, body, etc.
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+  document
+    .getElementById("added-users-list")
+    .addEventListener("click", function (event) {
+      let target = event.target;
+      // Ensure the click is not on the delete button
+      if (target.classList.contains("attendant-list-item-delete")) {
+        return;
       }
-      return response.json(); // or .text(), etc. depending on your response
+      // If the target is not the LI itself, find the LI ancestor
+      if (target.tagName !== "LI") {
+        target = target.closest("li");
+      }
+      moveUserItem(target, "available-users-list");
     });
-  }
+}
+
+// Call the function to initialize event handlers
+initializeListHandlers();
+
+const deleteAttendantButtons = document.querySelectorAll(
+  ".attendant-list-item-delete"
+);
+
+deleteAttendantButtons.forEach((button) => {
+  const userId = button.getAttribute("data-user-id");
+  button.addEventListener("click", () => {
+    deleteAttendant(activeProjectId, userId);
+  });
 });
+
+function addAttendant(projectId, attendantId) {
+  console.log(projectId);
+  console.log(attendantId);
+  return fetch(`project/add-attendant/${projectId}/${attendantId}`, {
+    method: "POST",
+    // Add any necessary headers, body, etc.
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json(); // or .text(), etc. depending on your response
+  });
+}
+
+// Function to handle the DELETE request to remove an attendant
+function deleteAttendant(projectId, attendantId) {
+  return fetch(`project/delete-attendant/${projectId}/${attendantId}`, {
+    method: "DELETE",
+    // Add any necessary headers, body, etc.
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json(); // or .text(), etc. depending on your response
+  });
+}
 
 // ---------- CREATE PROJECT VIEW
 

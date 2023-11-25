@@ -28,7 +28,18 @@ exports.project = async (req, res) => {
       db,
       activeProjectId
     );
-    console.log(activeProjectAttendantsIds);
+    let availableUserIds = await getAvailableUsersFromDatabase(
+      db,
+      activeProjectId
+    );
+
+    let availableUsers = [];
+
+    for (let i = 0; i < availableUserIds.length; i++) {
+      let availableUserData = await getUserDataById(availableUserIds[i].id);
+      availableUsers.push(availableUserData);
+    }
+
     let activeProjectAttendants = [];
 
     for (let i = 0; i < activeProjectAttendantsIds.length; i++) {
@@ -37,6 +48,7 @@ exports.project = async (req, res) => {
       );
       activeProjectAttendants.push(attendantData);
     }
+
     if (activeProjectId) {
       activeProjectData = await getProjectById(activeProjectId);
     } else {
@@ -51,7 +63,8 @@ exports.project = async (req, res) => {
       activeProjectData,
       activeProjectManagerName,
       activeProjectManagerSurname,
-      activeProjectAttendants
+      activeProjectAttendants,
+      availableUsers
     );
   } catch (err) {
     handleError(res, err);
@@ -119,7 +132,8 @@ const renderProjectPage = (
   activeProject,
   activeProjectManagerName,
   activeProjectManagerSurname,
-  activeProjectAttendants
+  activeProjectAttendants,
+  availableUsers
 ) => {
   res.render("project", {
     user,
@@ -128,6 +142,7 @@ const renderProjectPage = (
     activeProjectManagerName,
     activeProjectManagerSurname,
     activeProjectAttendants,
+    availableUsers,
     successMessage: req.flash("successMessage"),
     errorMessage: req.flash("errorMessage"),
   });
@@ -379,7 +394,7 @@ exports.getAttendants = async (req, res) => {
     const projectId = req.params.projectID;
 
     const attendants = await getAttendantsFromDatabase(db, projectId);
-
+    console.log(attendants);
     return res.json({ attendants });
   } catch (err) {
     console.log(err);
@@ -391,6 +406,22 @@ async function getAttendantsFromDatabase(db, projectId) {
   return new Promise((resolve, reject) => {
     db.query(
       "SELECT user_id FROM project_user WHERE project_id = ?",
+      [projectId],
+      (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      }
+    );
+  });
+}
+
+async function getAvailableUsersFromDatabase(db, projectId) {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT id FROM user WHERE id NOT IN (SELECT user_id FROM project_user WHERE project_id = ?)",
       [projectId],
       (error, results) => {
         if (error) {

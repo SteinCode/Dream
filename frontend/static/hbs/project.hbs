@@ -62,7 +62,7 @@
             </div>
          </div>
          <div class="view-content">
-            <div class="container mt-1 project-container">
+            <div class="container mt-1 project-container" active-project-id = {{activeProject.project_id}}>
                <div class="col projects-col">
                   <div class = "h2-header">
                      <h2 class="projects-header">Projects</h2>
@@ -136,7 +136,7 @@
                   </div>
                   <ul class="list-group attendant-list">
                      {{#each activeProjectAttendants}}
-                        <li class="attendant-list-group-items">{{this.name}} {{this.surname}} <button class="attendant-list-item-delete" data-user-id="{{this.user_id}}">X</button></li>
+                        <li class="attendant-list-group-items">{{this.name}} {{this.surname}} <button class="attendant-list-item-delete" data-user-id="{{this.id}}">X</button></li>
                      {{/each}}
                   </ul>
                </div>
@@ -194,10 +194,10 @@
                   <div class = "lists-wrapper">
                      <div class="attendants-list-container">
                      <h2>Available Users</h2>
-                     <ul id="users-list" class="attendants-user-list">
+                     <ul id="available-users-list" class="attendants-user-list">
                         <!-- Users will be moved here -->
-                         {{#each activeProjectAttendants}}
-                           <li class="attendant-list-group-item">{{this.name}} {{this.surname}} <button class="attendant-list-item-delete" data-user-id="{{this.user_id}}">X</button></li>
+                         {{#each availableUsers}}
+                           <li class="available-list-group-item" data-user-id="{{this.id}}">{{this.name}} {{this.surname}} <button class="attendant-list-item-delete" >X</button></li>
                         {{/each}}
                      </ul>
                   </div>
@@ -205,7 +205,9 @@
                   <div class="attendants-list-container">
                      <h2>Added Users</h2>
                      <ul id="added-users-list" class="attendants-user-list">
-                        <!-- Users will be moved here -->
+                       {{#each activeProjectAttendants}}
+                           <li class="attendant-list-group-item" data-user-id="{{this.id}}" >{{this.name}} {{this.surname}} <button class="attendant-list-item-delete" >X</button></li>
+                        {{/each}}
                      </ul>
                   </div>
                </div>
